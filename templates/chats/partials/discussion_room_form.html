@@ -1,0 +1,30 @@
+
+{% load static crispy_forms_tags %}
+
+<div id="modal-backdrop" class="modal-backdrop fade show" style="display:block;"></div>
+<div id="modal" class="modal fade show animated--grow-in" tabindex="-1" style="display:block;">
+	<div class="modal-dialog modal-dialog-centered">
+	  <div class="modal-content radius-400 overflow-hidden border-0">
+
+		<div class="modal-header px-3 py-2 bg-fb-primary-200 border-0">
+		  <h6 class="modal-title">{% if update %}Update Room{% else %}Create Room{% endif %} <i class="zmdi zmdi-comments"></i></h6>
+		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeModal()"></button>
+		</div>
+		<div class="modal-body">
+
+			{{ form.media.css }}
+			<form method="POST" action="{{ request.path }}">
+				{% csrf_token %}
+				{{ form|crispy }}
+				{% if update %}
+				<button type="submit" class="btn btn-fb-primary">Update Room</button>
+				{% else %}
+				<button type="submit" class="btn btn-fb-primary">+ Create Room</button>
+				{% endif %}
+			</form>
+			{{ form.media.js }}
+			
+		</div>
+	  </div>
+	</div>
+</div>

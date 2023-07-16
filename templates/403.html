@@ -1,0 +1,22 @@
+{% extends '_base.html' %}
+
+{% block content %}
+
+<div class="container-fluid my-5">
+
+	<!-- 403 Error Text -->
+	<div class="text-center">
+		<div class="error mx-auto" data-text="I'm afraid">I'm afraid</div>
+		<p class="lead text-gray-800 mb-5">You need a permission to do that</p>
+		<p class="text-gray-500 mb-0">If you already have the permission, please
+			<a href="{% url 'core:contact' %}">contact</a> us.
+		</p>
+		<a href="{% url 'core:home' %}">← Back to App</a>
+	</div>
+
+</div>
+
+{% endblock %}
+
+{% block newsletter %}{% endblock %}
+{% block footer %}{% endblock %}

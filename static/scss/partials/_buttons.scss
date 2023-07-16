@@ -1,0 +1,181 @@
+.btn-fb-primary {
+  color: #fff;
+  background-color: #41b3a3;
+  border-color: #41b3a3;
+}
+.btn-fb-primary:hover {
+  color: #fff;
+  background-color: #3e8e83;
+  border-color: #3a887d;
+}
+.btn-check:focus + .btn-fb-primary,
+.btn-fb-primary:focus {
+  color: #fff;
+  background-color: #3e8e83;
+  border-color: #3a887d;
+  box-shadow: 0 0 0 0.25rem rgba(101, 203, 165, 0.5);
+}
+.btn-check:checked + .btn-fb-primary,
+.btn-check:active + .btn-fb-primary,
+.btn-fb-primary:active,
+.btn-fb-primary.active,
+.show > .btn-fb-primary.dropdown-toggle {
+  color: #fff;
+  background-color: #3a887d;
+  border-color: #367c73;
+}
+.btn-check:checked + .btn-fb-primary:focus,
+.btn-check:active + .btn-fb-primary:focus,
+.btn-fb-primary:active:focus,
+.btn-fb-primary.active:focus,
+.show > .btn-fb-primary.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.25rem rgba(101, 203, 165, 0.5);
+}
+.btn-fb-primary:disabled,
+.btn-fb-primary.disabled {
+  color: #fff;
+  background-color: #41b3a3;
+  border-color: #41b3a3;
+}
+
+.btn.shadow {
+  box-shadow: 0 0 15px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+.btn-x-sm {
+  font-size: 12px;
+  padding: 2px 5px;
+}
+
+//   .btn-nav {
+// 	font-size: 28px;
+// 	width: 38px;
+// 	height: 38px;
+// 	border-radius: 4px;
+// 	display: flex;
+// 	align-items: center;
+// 	justify-content: center;
+// 	// background-color: #fff;
+// 	color: rgba(0, 0, 0, 0.4) !important;
+// 	border: none;
+// 	transition: background-color 0.28s, color 0.28s;
+// 	&:hover {
+// 	  color: #000000 !important;
+// 	  background-color: #f1f1f1;
+// 	}
+//   }
+.nav-link.active-link,
+.nav-link:focus,
+.btn-nav.active-link,
+.btn-nav:focus {
+  background-color: transparent !important;
+  color: rgb(65, 179, 163) !important;
+  text-shadow: 0 0 15px rgba(65, 179, 163, 0.5);
+}
+
+.nav-link.active {
+  border-bottom-width: medium;
+}
+
+.btn.btn-circle {
+  width: 30px;
+  height: 30px;
+  padding: 6px 0px;
+  border-radius: 15px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.42857;
+}
+
+// overrite the default bootstrap close-button
+.btn-close {
+  transition: background-color 0.2s;
+  box-shadow: none !important;
+}
+.btn-close:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+// ==========================
+// btn style
+// ==========================
+
+.btn {
+  box-shadow: none !important;
+  border-radius: 16px;
+  transition: background-color 0.25s, border-color 0.25s;
+}
+.btn-outline-primary {
+  background-color: rgba(13, 110, 253, 0.1);
+  border-color: rgba(13, 110, 253, 0.2);
+  color: #0d6efd !important;
+}
+.btn-outline-primary:hover {
+  background-color: rgba(13, 110, 253, 0.2);
+  border-color: rgba(13, 110, 253, 0.2);
+}
+
+.btn.btn-candy-primary {
+  box-shadow: none !important;
+}
+.btn-candy-primary {
+  background-color: var(--fb-light-green);
+  color: var(--dark);
+  border-color: hsl(177, 42%, 72%);
+  background-image: linear-gradient(
+    to bottom,
+    hsl(177, 42%, 76%),
+    hsl(177, 42%, 56%)
+  );
+  transition: border 0.05;
+}
+.btn-candy-danger {
+  background-color: var(--bs-danger);
+  color: var(--bs-light) !important;
+  border: none;
+  background-image: linear-gradient(
+    to bottom,
+    hsl(9, 100%, 89%),
+    var(--bs-danger)
+  );
+  transition: border 0.05;
+}
+.btn-outline-fb-primary {
+  background-color: transparent;
+  color: var(--dark);
+  border-color: hsl(177, 42%, 72%);
+  transition: border 0.05;
+}
+
+.edit-btn {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  width: 35px;
+  height: 35px;
+  border-radius: 35px;
+  border: 2px solid #fff;
+  // background-color: #6c63ff;
+  // color: #fff !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.close-content-btn {
+  display: inline-block;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: rgb(160, 160, 160);
+  font-size: 18px;
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  &:hover {
+    background-color: #efefef;
+  }
+}

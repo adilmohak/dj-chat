@@ -1,0 +1,48 @@
+{% extends '_base.html' %}
+
+{% load i18n %}
+{% load static crispy_forms_tags account %}
+
+{% block title %} {% trans "Signup" %} | FidelBooks {% endblock %}
+
+{% block content %}
+
+<div class="container pb-3 pt-lg-3">
+	<div class="row justify-content-center">
+		<div class="col-md-4 bg-white p-3 pt-4 py-lg-3">
+			<h4 class="text-primary">{% trans "Sign Up" %}</h4>
+
+			<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+				{% csrf_token %}
+				<div class="pt-4 px-4">
+					{{ form|crispy }}
+					{% if redirect_field_value %}
+					<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+					{% endif %}
+					<button type="submit" class="btn btn-fb-primary w-100">
+						{% trans "Sign Up" %} <i class="zmdi zmdi-long-arrow-right ms-2"></i>
+					</button>
+				</div>
+			</form>
+			<div class="text-center mt-4">
+				Have an account? <a href="{{ login_url }}"> Login </a>
+			</div>
+
+		</div>
+		<div class="col-md-4 border-left d-flex flex-column justify-content-center align-items-center bg-dark p-3">
+			<div class="text-muted text-center">
+				<p class="small">
+					By continuing, you agree to FidelBooks's
+					<a href="#" class="text-light"> Conditions of Use </a> and <a href="#" class="text-light"> Privacy
+						Notice </a>.
+				</p>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
+
+{% block script %}
+{% endblock %}

@@ -1,0 +1,41 @@
+{% load static %}
+{% load chats_extras %}
+
+{% for room in rooms %}
+
+{% get_partner current_user=request.user room=room as partner %}
+{% is_unread msg=room.room.latest_message user=request.user as unread %}
+{% unread_count room=room.room user=request.user as count %}
+
+<li>
+	<a class="dropdown-item position-relative
+	{% if unread == True %} unread {% endif %}" 
+	href="{% url 'chats:thread' partner.id %}">
+		{% if count > 0 %}
+		<span class="notify-badge" style="display: block;">
+			<span>{{ count }}</span>
+			<span class="visually-hidden">unread message</span>
+		</span>
+		{% endif %}
+		<div class="row">
+			<div class="col-2 position-relative px-0">
+				<div class="avatar avatar-md">
+					<img src="{{ partner.avatar.url }}" alt="">
+				</div>
+				<div class="status-indicator bg-success"></div>
+			</div>
+			<div class="col-10">
+				<div class="small text-truncate">{{ room.room.latest_message.content }}</div>
+				<div class="x-small text-truncate text-gray-500">{{ partner.get_name }} · {{ room.room.latest_message.created|timesince }}</div>
+			</div>
+		</div>
+	</a>
+</li>
+
+{% empty %}
+<div class="rounded-pill text-center p-2 bg-gray-200 my-4">Your messages will appear here</div>
+{% endfor %}
+<!-- {% if rooms.count >= 6 %}
+<a class="dropdown-item text-center small p-2 bg-white text-primary" 
+	href="{% url 'chats:threads' %}">Read More Messages</a>
+{% endif %} -->

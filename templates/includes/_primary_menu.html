@@ -1,0 +1,306 @@
+{% load static %}
+{% load i18n %}
+
+<style>
+	/* .primary-search {
+		display: block;
+	}
+	.primary-search input:read-only {
+		background-color: #f1f1f1;
+	}
+	.primary-search input::placeholder {
+		color: #949494;
+	} */
+	.search-sm {
+		display: none;
+	}
+
+	@media screen and (max-width: 767px) {
+		.primary-search {
+			display: none;
+		}
+
+		.search-sm {
+			display: block;
+		}
+	}
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white py-1 d-flex" style="flex-wrap: nowrap !important;"
+	id="navbar_top">
+	<div class="container">
+
+		<!-- nav menu left -->
+		<ul class="navbar-nav me-auto mb-lg-0">
+			<a href="/">
+				<img src="{% static 'images/favicons/favicon-txt-141x30.png' %}" width="120px" alt="FidelBooks">
+			</a>
+			{% if request.user.is_authenticated %}
+			<li class="nav-item ms-2">
+				<a class="nav-link d-flex flex-column text-center small py-0
+				{% if fee in request.path or rec in request.path or new in request.path or boo in request.path or peo in request.path or rec_ in request.path or bes in request.path %} active-link {% endif %}"
+					style="line-height: .8;" href="">
+					<i class="zmdi zmdi-home" style="font-size: 25px;"></i> <span class="small">{% translate 'Home'
+						%}</span></a>
+			</li>
+			{% endif %}
+
+		</ul>
+
+		<!-- nav menu center -->
+		<div class="primary-search position-relative w-100 mx-2" role="button" data-bs-toggle="modal"
+			data-bs-target="#primarySearchModal">
+			<input role="button" class="form-control ps-5" placeholder="Search chat rooms & peoples" readonly>
+			<i class="zmdi zmdi-search fa-2x me-3 input-icon-left"></i>
+		</div>
+
+		<!-- nav menu right -->
+		<ul class="navbar-nav ms-auto mb-lg-0">
+			<button class="search-sm btn btn-circle mx-2 align-self-center border bg-light text-muted"
+				data-bs-toggle="modal" data-bs-target="#primarySearchModal">
+				<i class="zmdi zmdi-search fa-1-5x text-gray-400"></i></button>
+
+			{% if not request.user.is_authenticated %}
+			<li class="nav-item my-2 me-2">
+				<a class="btn btn-light border" href="{% url 'account_login' %}">{% translate 'Login' %}</a>
+			</li>
+			<li class="nav-item my-2">
+				<a class="btn btn-fb-primary" href="{% url 'account_signup' %}">{% translate 'Signup' %}</a>
+			</li>
+			{% endif %}
+
+			{% if request.user.is_authenticated %}
+			<!-- Notification panel -->
+			<li class="nav-item dropdown scroller me-2">
+				<a hx-get="" hx-target="#notifications-list" class="btn-nav nav-link position-relative" href="#"
+					id="notificationPanel" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+					data-bs-auto-close="outside">
+					<i class="zmdi zmdi-notifications fw-900"></i>
+					<span class="notify-badge">
+						<span id="total-unread-main-notifications-counter"></span>
+						<span class="visually-hidden">unread notifications</span>
+					</span>
+				</a>
+				<!-- Dropdown - notifications -->
+				<ul class="dropdown-list dropdown-menu dropdown-menu-end dropdown-menu-sm-popup animated--grow-in origin-right"
+					aria-labelledby="addPanel">
+					<h6 class="small pt-2 text-center text-gray-500">
+						{% translate 'Notification Center' %}
+					</h6>
+					<div id="notifications-list">
+						<div class="text-center m-3">
+							<span class="dots-loader">
+								<i class="spinner__dot spinner__dot--one"></i>
+								<i class="spinner__dot spinner__dot--two"></i>
+								<i class="spinner__dot spinner__dot--three"></i>
+							</span>
+						</div>
+					</div>
+				</ul>
+			</li>
+			<!-- Discussion panel -->
+			<li class="nav-item me-2">
+				<a class="nav-link btn-nav position-relative 
+				{% if request.path == roo %} active-link {% endif %}" href="{% url 'chats:rooms' %}">
+					<i class="zmdi zmdi-comments fw-900"></i>
+					<!-- <i class="zmdi zmdi-comment-text-alt"></i> -->
+					<span class="notify-badge">
+						<span id="total-unread-discussion-notifications-counter"></span>
+						<span class="visually-hidden">unread discussions</span>
+					</span>
+				</a>
+			</li>
+			<!-- Message panel -->
+			<li class="nav-item dropdown scroller me-2">
+				<a hx-get="{% url 'chats:threads' %}" hx-target="#threads-list"
+					class="btn-nav nav-link position-relative" href="#" id="messagesDropdown" role="button"
+					data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+					<i class="zmdi zmdi-email fw-900"></i>
+					<span class="notify-badge">
+						<span id="total-unread-msgs"></span>
+						<span class="visually-hidden">unread messages</span>
+					</span>
+				</a>
+				<!-- Dropdown - Messages -->
+				<ul class="dropdown-list dropdown-menu dropdown-menu-end dropdown-menu-sm-popup animated--grow-in origin-right"
+					aria-labelledby="messagesDropdown">
+					<div class="d-flex align-items-center px-2">
+						<h6 class="small my-3 text-center text-gray-500">
+							{% translate 'Messages' %}
+						</h6>
+						<a role="button" class="btn btn-sm btn-outline-primary ms-auto"
+							hx-get="{% url 'chats:thread_new' %}?next={{ request.path }}" hx-target="#modals-here">
+							+ New message
+							<div class="text-center htmx-indicator">
+								<span class="dots-loader">
+									<i class="spinner__dot spinner__dot--one"></i>
+									<i class="spinner__dot spinner__dot--two"></i>
+									<i class="spinner__dot spinner__dot--three"></i>
+								</span>
+							</div>
+						</a>
+					</div>
+					<div id="threads-list">
+						<div class="text-center">
+							<span class="dots-loader">
+								<i class="spinner__dot spinner__dot--one"></i>
+								<i class="spinner__dot spinner__dot--two"></i>
+								<i class="spinner__dot spinner__dot--three"></i>
+							</span>
+						</div>
+					</div>
+				</ul>
+			</li>
+			<!-- Cart panel -->
+			<li class="nav-item dropdown scroller me-2">
+				<a hx-get="" hx-target="#cart-items" hx-trigger="click"
+					class="btn-nav nav-link position-relative {% if request.path == car %} active-link {% endif %}"
+					href="#" id="cartPanel" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+					data-bs-auto-close="outside">
+					<i class="zmdi zmdi-shopping-cart fw-900"></i>
+					<span class="notify-badge">
+						<span id="cart-items-counter"></span>
+						<span class="visually-hidden">uncheckout cart items</span>
+					</span>
+				</a>
+				<!-- Dropdown - cart -->
+				<div class="dropdown-list dropdown-menu dropdown-menu-end dropdown-menu-sm-popup animated--grow-in origin-right py-0"
+					aria-labelledby="messagesDropdown">
+
+					<h6 class="small pt-2 text-center text-gray-500">
+						{% translate 'Your Cart' %}
+					</h6>
+					<div id="cart-items">
+						<div class="text-center m-3">
+							<span class="dots-loader">
+								<i class="spinner__dot spinner__dot--one"></i>
+								<i class="spinner__dot spinner__dot--two"></i>
+								<i class="spinner__dot spinner__dot--three"></i>
+							</span>
+						</div>
+					</div>
+				</div>
+			</li>
+			<!-- Add panel -->
+			<li class="nav-item dropdown scroller me-2">
+				<a class="btn-nav nav-link position-relative" href="#" id="addPanel" role="button"
+					data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+					<i class="zmdi zmdi-plus fw-900"></i>
+				</a>
+				<ul class="dropdown-list dropdown-menu dropdown-menu-end animated--grow-in origin-right"
+					aria-labelledby="addPanel">
+					<h6 class="small pt-2 text-center text-gray-500">{% translate 'Add Panel' %}</h6>
+					<li>
+						<a class="dropdown-item d-flex align-items-center px-2" href="">
+							<img src="{% static 'images/open-book-plus-45.png' %}" class="me-2" alt="">
+							<div>
+								<h6 class="m-0 small">Add Book</h6>
+								<p class="x-small text-gray-500">
+									Add a book, set your price, and start selling right away.
+								</p>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a class="dropdown-item d-flex align-items-center px-2" href="?type=swap">
+							<img src="{% static 'images/book-hold-plus-45.png' %}" class="me-2" alt="">
+							<div>
+								<h6 class="m-0 small">Add Book To Swap</h6>
+								<p class="x-small text-gray-500">
+									Have a book already? Add it here and choose which books you want to exchange.
+								</p>
+							</div>
+						</a>
+					</li>
+					<!-- <li>
+						<a class="dropdown-item d-flex align-items-center px-2"
+							href="?type=giveaway">
+							<img src="{% static 'images/gift-plus-45.png' %}" class="me-2" alt="">
+							<div>
+								<h6 class="m-0 small">Add Giveaway</h6>
+								<p class="small text-gray-500">
+									Lorem ipsum dolor sit amet consect adipisicing elit. Error repellendus.
+								</p>
+							</div>
+						</a>
+					</li> -->
+					<li>
+						<a class="dropdown-item d-flex align-items-center px-2" href="">
+							<img src="{% static 'images/business-page-plus-45.png' %}" class="me-2" alt="">
+							<div>
+								<h6 class="m-0 small">Create Collection</h6>
+								<span class="badge bg-warning small-200 rounded-pill"><strong><i
+											class="zmdi zmdi-fire"></i> Need verification
+									</strong></span><br>
+								<p class="x-small text-gray-500">
+									Have you own a bookstore? Add it here and start selling from your bookstore.
+								</p>
+							</div>
+						</a>
+					</li>
+				</ul>
+			</li>
+			<!-- User panel -->
+			<li class="nav-item dropdown scroller">
+				<a href="#user-panel" id="userPanel" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+					data-bs-auto-close="outside">
+					<div class="avatar">
+						<img src="{{ request.user.avatar.url }}" alt="{{ request.user.get_name }}">
+					</div>
+				</a>
+				<ul class="dropdown-menu dropdown-menu-end animated--grow-in origin-right" aria-labelledby="userPanel"
+					style="max-width: 260px;">
+
+					<!-- {% if not perms.books.special_status %}
+							<li class="text-center"><a href="#" class="my-2 text-warning">Go pro now.</a></li>
+						{% endif %} -->
+					<li><a class="dropdown-item" href="{{ request.user.get_absolute_url }}"><i
+								class="zmdi zmdi-account me-2"></i> Profile</a></li>
+					<li><a class="dropdown-item" href="{% url 'collections:list' %}">
+							<i class="zmdi zmdi-collection-item me-2"></i> My Collections</a>
+					</li>
+					<li><a class="dropdown-item" href="{% url 'carts:order_history' %}">
+							<i class="zmdi zmdi-time-restore me-2"></i> History</a>
+					</li>
+					<li><a class="dropdown-item" href="{% url 'accounts:profile_setting' %}">
+							<i class="zmdi zmdi-settings me-2"></i> Setting</a>
+					</li>
+					{% if request.user.is_superuser %}
+					<li><a class="dropdown-item" href="/admin/" target="_blank">
+							<i class="zmdi zmdi-view-dashboard me-2"></i> Administration</a>
+					</li>
+					{% endif %}
+
+					<!-- <div class="divider my-2"></div>
+
+						<li><div class="text-muted text-center small mb-2">Your Pages</div></li>
+						
+						<div id="user-pages">
+							<div class="text-center" id="pages-indicator">
+								<span class="dots-loader">
+									<i class="spinner__dot spinner__dot--one"></i>
+									<i class="spinner__dot spinner__dot--two"></i>
+									<i class="spinner__dot spinner__dot--three"></i>
+								</span>
+							</div>
+						</div> -->
+
+					<div class="divider my-2"></div>
+
+					<li>
+						<div class="x-small">last joined: {{ request.user.last_joined|date }}</div>
+						<form method="post" action="{% url 'account_logout' %}">
+							{% csrf_token %}
+							{% if redirect_field_value %}
+							<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+							{% endif %}
+							<button type="submit" class="btn btn-sm bg-gray-200"><i class="zmdi zmdi-power me-1"></i>
+								Logout</button>
+						</form>
+					</li>
+				</ul>
+			</li>
+			{% endif %}
+		</ul>
+	</div>
+</nav>

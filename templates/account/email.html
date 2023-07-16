@@ -1,0 +1,73 @@
+{% extends 'accounts/_profile_settings_base.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block setting_content %}
+
+<h5 class="mb-3"><i class="icon-circle bg-fb-primary-200 text-fb-primary fa fa-envelope"></i> {% trans "E-mail Addresses" %}</h5>
+
+{% if user.emailaddress_set.all %}
+  <p class="text-muted small">{% trans 'The following e-mail addresses are associated with your account:' %}</p>
+
+  <form action="{% url 'account_email' %}" class="email_list" method="post">
+    {% csrf_token %}
+    <fieldset class="blockLabels">
+    
+      {% for emailaddress in user.emailaddress_set.all %}
+      <div class="ctrlHolder">
+          <label for="email_radio_{{forloop.counter}}" class="{% if emailaddress.primary %}primary_email{%endif%}">
+    
+          <input id="email_radio_{{forloop.counter}}" type="radio" name="email" {% if emailaddress.primary or user.emailaddress_set.count == 1 %}checked="checked"{%endif %} value="{{emailaddress.email}}"/>
+      
+        {{ emailaddress.email }} | 
+          {% if emailaddress.verified %}
+            <span class="verified text-success bold-500">{% trans "Verified" %}</span>
+          {% else %}
+            <span class="unverified text-danger bold-500">{% trans "Unverified" %}</span>
+          {% endif %}
+          {% if emailaddress.primary %} | <span class="primary text-success bold-500">{% trans "Primary" %}</span>{% endif %}
+        </label>
+      </div>
+        {% endfor %}
+      
+      <div class="buttonHolder mt-2">
+        <button class="secondaryAction btn btn-sm bg-gray-200" type="submit" name="action_primary" >{% trans 'Make Primary' %}</button>
+        <button class="secondaryAction btn btn-sm bg-gray-200" type="submit" name="action_send" >{% trans 'Re-send Verification' %}</button>
+        <button class="primaryAction btn btn-sm bg-gray-200" type="submit" name="action_remove" >{% trans 'Remove' %}</button>
+      </div>
+    
+    </fieldset>
+  </form>
+
+{% else %}
+<p><strong>{% trans 'Warning:'%}</strong> {% trans "You currently do not have any e-mail address set up. You should really add an e-mail address so you can receive notifications, reset your password, etc." %}</p>
+{% endif %}
+
+<div class="divider"></div>
+
+{% if can_add_email %}
+  <h6><i class="fa fa-plus p-2 bg-fb-primary-200 text-fb-primary radius-200"></i> {% trans "Add E-mail Address" %}</h6>
+
+  <form method="post" action="{% url 'account_email' %}" class="js-form add_email">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <button name="action_add" type="submit" class="btn btn-fb-primary">{% trans "Add E-mail" %}</button>
+  </form>
+{% endif %}
+
+<script type="text/javascript">
+  (function() {
+    var message = "{% trans 'Do you really want to remove the selected e-mail address?' %}";
+    var actions = document.getElementsByName('action_remove');
+    if (actions.length) {
+      actions[0].addEventListener("click", function(e) {
+        if (! confirm(message)) {
+          e.preventDefault();
+        }
+      });
+    }
+  })();
+</script>
+
+{% endblock %}
+

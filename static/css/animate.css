@@ -1,0 +1,175 @@
+@keyframes navAnim {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes msgAnim {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes animatedGrowIn {
+  from {
+    transform: scale(0.9);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+.animated--grow-in {
+  animation: animatedGrowIn forwards 0.2s ease;
+}
+.animated--grow-in.origin-right {
+  transform-origin: top right;
+}
+.animated--grow-in.origin-left {
+  transform-origin: top left;
+}
+
+@keyframes slideIn {
+  0% {
+      transform: translateY(1rem);
+      opacity: 0;
+  }
+  100% {
+      transform: translateY(0rem);
+      opacity: 1;
+  }
+}
+
+.slide--in {
+  -webkit-animation-name: slideIn;
+  animation-name: slideIn;
+  animation-duration: 0.4s;
+  animation-fill-mode: both;
+}
+
+.animated--fade-in {
+  animation: fadeIn forwards 0.5s ease;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: .6;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animated--fade-up {
+  animation: fadeIn forwards 0.3s ease;
+}
+@keyframes fadeUp {
+  0% {
+    opacity: .6;
+    transform: translate(-10px, 10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
+
+.animated--fade-down {
+  animation: fadeDown forwards 0.3s ease;
+}
+@keyframes fadeDown {
+  0% {
+    opacity: .6;
+    transform: translateY(-15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animated--grow-right {
+  transform-origin: bottom right;
+  animation: scaleIn forwards 0.3s ease;
+}
+.animated--grow-left {
+  transform-origin: bottom left;
+  animation: scaleIn forwards 0.3s ease;
+}
+@keyframes scaleIn {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* .animated-bg {
+  animation-name: bell-ring;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+} */
+
+.animated-bell-ring {
+  animation-name: bell-ring;
+  animation-duration: 2s;
+  /* animation-iteration-count: infinite; */
+}
+@keyframes bell-ring {
+	0% {
+		transform: rotate(0deg);
+	}
+	5%, 15% {
+		transform: rotate(25deg) scale(1.2);
+    color: rgba(255, 0, 0, .5);
+	}
+	10%, 20% {
+		transform: rotate(-25deg) scale(1.2);
+	}
+	25%  {
+		transform: rotate(0deg) scale(1);
+	}
+	100% {
+		transform: rotate(0deg);
+    color: rgba(0, 0, 0, .4);
+	}
+}
+
+@keyframes scaleInOut {
+  0% {
+    transform: scale(1);
+  }
+  10% {
+    transform: scale(0);
+  }
+  90% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animated--scale-in-out {
+  animation: scaleInOut forwards 1s ease;
+}
+
+
+@keyframes rotate-keyframes {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.anim-rotate {
+  animation: 1s linear 0s infinite normal none running rotate-keyframes;
+}

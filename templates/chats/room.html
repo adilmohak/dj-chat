@@ -1,0 +1,243 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block title %}{{ room.headline }} | FidelBooks{% endblock %}
+
+{% block content %}
+
+<!-- ❤🤦‍♀️🤦‍♂️🤷‍♀️🤷‍♂️👀✌😂😍👌🤣🤣 -->
+
+<style>
+	#chat-log li {
+		list-style: none;
+	}
+
+	.message {
+		display: inline-block;
+		position: relative;
+		border: 1px solid #cecece;
+		border-radius: 15px;
+		animation: msgAnim 0.3s forwards ease;
+	}
+
+	.message.reply {
+		transform-origin: top left;
+	}
+
+	.message.reply::after {
+		content: "";
+		display: block;
+		position: absolute;
+		left: 15px;
+		top: -7px;
+		width: 14px;
+		height: 14px;
+		background-color: var(--bs-gray-200);
+		transform: rotate(45deg);
+		border-left: 1px solid #cecece;
+		border-top: 1px solid #cecece;
+	}
+
+	.message.sent {
+		border-top-right-radius: 0px;
+		transform-origin: top right;
+	}
+</style>
+
+<section class="chat-section">
+	<div class="container">
+		<div class="row">
+
+			<div class="col-md-3 me-auto p-0 mt-3">
+				<div class="card p-3">
+					<h4>✔ Discussion Topic</h4>
+					<small>
+						<b>{{ room.headline }}:</b>
+						{{ room.description }}
+					</small>
+				</div>
+				<div class="break-title text-muted">🔥 Trendings</div>
+				<div class="card bg-light mb-2 p-2">
+					<small> The most expensive book ever purchased was sold for $30.8 million... </small>
+				</div>
+				<div class="card bg-light mb-2 p-2">
+					<small> There's a word for loving the smell of old books.... </small>
+				</div>
+				<div class="card bg-light mb-2 p-2">
+					<small> There's a word for loving.... </small>
+				</div>
+
+			</div>
+
+			<div class="col-md-6 me-auto mt-3">
+
+				<div class="bg-white border" style="box-shadow: 0 0 170px 155px rgba(0,0,0,.1);">
+
+					<ul id="chat-log" class="p-3"></ul>
+
+					<!-- <textarea name="message" id="chat-message-input" class="form-control mb-2"
+						placeholder="What's your thought..."></textarea>
+					<button type="submit" class="btn btn-fb-primary" id="chat-message-submit">
+						<i class="zmdi zmdi-mail-send"></i> Send
+					</button> -->
+					<div class="chat-footer d-flex align-items-center py-2 px-5 border-top bg-white"
+						style="position: sticky; bottom: 0;">
+						<button type="button" class="btn btn-light me-3 rounded-pill">
+							<i class="fa fa-face-angry"></i>
+						</button>
+						<textarea name="" id="chat-message-input" class="form-control" rows="1"
+							placeholder="Write a message..."></textarea>
+						<button type="button" class="btn btn-fb-primary rounded-pill ms-3" id="chat-message-submit">
+							<i class="fa fa-paper-plane"></i>
+						</button>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right side -->
+			<div class="col-md-3 p-0 mt-3">
+				<div class="card p-3 bg-light mb-2">
+					<h4 class="text-center">🤔 Did you know?</h4>
+					<small>
+						<b>There are over 129 million books in existence.</b>
+						According to Google, 129,864,880 million books had been published as of 2010. That number is
+						obviously a lot higher now. So when you say out loud “Ugh, can't find a good book to read,” know
+						that you have a lot to choose from.
+					</small>
+				</div>
+				<div class="card p-3 bg-light mb-2 py-2">
+					<small> The most expensive book ever purchased was sold for $30.8 million... </small>
+				</div>
+				<div class="card p-3 bg-light mb-2 py-2">
+					<small> There's a word for loving the smell of old books.... </small>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</section>
+
+<br><br>
+{% endblock %}
+
+{% block newsletter %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block script %}
+<script>
+	roomName = {{ room_name_json }}
+	username = {{ username }}
+	roomId = {{ room.id }}
+	// const roomName = JSON.parse(document.getElementById('room-name').textContent);
+	// const roomName = room_name;
+
+	const chatSocket = new ReconnectingWebSocket(
+		(window.location.protocol === 'https:' ? 'wss' : 'ws') + '://'
+		+ window.location.host
+		+ '/ws/chats/'
+		+ roomName
+		+ '/'
+	);
+
+	chatSocket.onopen = function (e) {
+		var msgs = fetchMessages();
+	}
+
+	const chatInput = document.querySelector('#chat-message-input');
+	const chatSubmit = document.querySelector('#chat-message-submit');
+	const chatLog = document.querySelector('#chat-log');
+
+	chatSocket.onmessage = function (e) {
+		const data = JSON.parse(e.data);
+		if (data['command'] === 'messages') {
+			// Check if the room has messages, if not exit with some text
+			if (data['messages'].length === 0) {
+				$('#chat-log').append(
+					`<div class="bg-light p-2">
+					<h6 class="text-center">This room has no messages yet.</h6>
+					<p class="text-muted text-center">Be the first to write about the discussion topic.</p>
+					</div>`
+				)
+				return
+			}
+			// Loop though each message and append to the chat log
+			for (let i = 0; i < data['messages'].length; i++) {
+				createMessage(data['messages'][i]);
+			}
+		} else if (data['command'] === 'new_message') {
+			createMessage(data['message']);
+		}
+	};
+
+	function createMessage(message) {
+		var author = message['author']
+		if (author === username) {
+			$('#chat-log').append(
+				`<li class="clearfix">
+					<div class="float-end text-end animated--grow-right">
+						<div class="message-box text-start bg-dark text-light position-relative px-3 py-2" style="border-radius: 2em 2em 0 2em;">
+							${message.content}
+							<div style="box-sizing: border-box; display: flex; position: absolute; right: -6px; bottom: 0px; transform: scaleX(-1);">
+								<svg width="6" height="11" viewBox="0 0 6 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M-3.05176e-05 10.5019C-3.05176e-05 10.777 0.222986 11 0.49809 11H5.99997V0C5.99997 4.06498 4.64357 7.63316 0.640783 9.52185C0.25977 9.70162 -3.05176e-05 10.0768 -3.05176e-05 10.4981V10.4981L-2.69413e-05 10.5L-3.05176e-05 10.5019V10.5019Z" fill="#212529"></path>
+								</svg>
+							</div>
+						</div>
+						<p class="fd-dynamicFontSize--tiny ms-auto text-muted mt-1 mb-3">${message.date_created}</p>
+					</div>
+				</li>`
+			);
+		}
+		else {
+			$('#chat-log').append(
+				`<li class="mb-2">
+					<a href="${message.author_uri}" target="_blank" class="text-dark d-inline-flex align-items-center">
+						<img class="avatar avatar-md" src="${message.avatar}"
+							alt="avatar">
+						<span class="small ms-1">${message.name}</span>
+					</a><br>
+					<div class="message reply bg-gray-200 mt-2 px-3 py-2">
+						${message.content}
+					</div>
+					<p class="fd-dynamicFontSize--tiny text-muted mt-1 ps-2">${message.date_created}</p>
+				</li>`
+			);
+		}
+		$('html').scrollTop(chatLog.scrollHeight);
+	}
+
+	chatSocket.onclose = function (e) {
+		console.error('Chat socket closed unexpectedly');
+	};
+
+	// chatInput.focus();
+	// chatInput.onkeyup = function (e) {
+	// 	if (e.keyCode === 13) {  // enter, return
+	// 		chatSubmit.click();
+	// 	}
+	// };
+
+	chatSubmit.onclick = function (e) {
+		const messageInputDom = chatInput;
+		const message = messageInputDom.value.trim();
+		if (message === '') {
+			return
+		}
+		chatSocket.send(JSON.stringify({
+			'roomId': roomId,
+			'command': 'new_message',
+			'message': message,
+			'from': username
+		}));
+		messageInputDom.value = '';
+	};
+
+	function fetchMessages() {
+		chatSocket.send(JSON.stringify({
+			'roomId': roomId,
+			'command': 'fetch_messages'
+		}));
+	}
+</script>
+{% endblock %}

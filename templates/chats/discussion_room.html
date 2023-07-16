@@ -1,0 +1,214 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block title %}{{ room.headline }} | FidelBooks{% endblock %}
+
+{% block og %}
+<!-- Open Graph tags to customize link previews -->
+<meta property="og:url" content="{{ request.build_absolute_uri }}" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="{{ room.headline }}" />
+<meta property="og:description" content="{{ room.description }}" />
+<meta property="og:image" content="{{ room.owner.avatar.url }}" />
+{% endblock %}
+
+{% block content %}
+
+<script src="{% static 'js/chat.js' %}"></script>
+
+<!-- ❤🤦‍♀️🤦‍♂️🤷‍♀️🤷‍♂️👀✌😂😍👌🤣 -->
+
+<style>
+	.cursor-pointer {
+		cursor: pointer;
+	}
+</style>
+
+<!-- Discussion Modal -->
+<div class="d-lg-none modal fade" id="topicModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+	aria-labelledby="topicModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content radius-400">
+			<div class="modal-header border-0">
+				<h6 class="modal-title bg-dark text-light px-2 rounded-pill" id="topicModalLabel">Topic</h6>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body text-center mb-3">
+				<span class="bold-400">{{ room.headline }}:</span> <span class="small">{{ room.description }}</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div
+	class="container-fluid d-lg-none py-2 topic-area bg-light shadow sticky-top sticky-under-navbar sticky-under-navbar-0">
+	<div class="row">
+		<div class="col-10">
+			<div class="bg-white cursor-pointer px-2 mb-1" data-bs-toggle="modal" data-bs-target="#topicModal">
+				<div class="small text-truncate">
+					<span class="bg-dark small text-light px-1 rounded-pill">Topic</span>
+					<b>{{ room.headline }}:</b>{{ room.description }}
+				</div>
+			</div>
+			<div class="d-flex align-items-center small">
+				<span class="me-2">SHARE</span>
+				<a href="https://www.facebook.com/sharer/sharer.php?kid_directed_site=0&sdk=joey&u={{ request.build_absolute_uri }}&display=popup&ref=plugin&src=share_button"
+					target="_blank" class="me-2 social-share fst-facebook"><i class="fab fa-facebook"></i></a>
+				<a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text=What's your thought? {% for tag in room.tags.all %} #{{ tag }} {% endfor %} @fidelbooks"
+					target="_blank" class="me-2 social-share fst-facebook"><i class="fab fa-telegram"></i></a>
+				<a href="https://www.linkedin.com/sharing/share-offsite/?mini=true&url={{ request.build_absolute_uri }}"
+					target="_blank" class="me-2 social-share fst-facebook"><i class="fab fa-linkedin"></i></a>
+				<a href="https://twitter.com/intent/tweet?text={{ room.headline }}: {{ room.description }} {{ request.build_absolute_uri }} {% for tag in room.tags.all %} #{{ tag }} {% endfor %} via @adilmohak"
+					target="_blank" class="me-2 social-share fst-twitter"><i class="fab fa-twitter"></i></a>
+			</div>
+		</div>
+		<div class="col-2 d-flex align-items-start">
+			<a href="#" hx-get="{% url 'chats:invite_people' %}?room={{ room.id }}" hx-target="#modals-here"
+				class="btn btn-sm btn-primary">
+				<i class="fa fa-user-plus"></i>
+			</a>
+			{% if room.owner == request.user %}
+			<div class="dropdown ms-2">
+				<button class="btn btn-sm" type="button" id="configDiscussion" data-bs-toggle="dropdown"
+					aria-expanded="false">
+					<i class="fa fa-ellipsis-v"></i>
+				</button>
+				<ul class="dropdown-menu" aria-labelledby="configDiscussion">
+					<li><a class="dropdown-item" href="{% url 'chats:discussion_update' room.id %}">Edit</a></li>
+					<!-- <li><a class="dropdown-item text-danger" href="#">Delete</a></li> -->
+				</ul>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+<section class="chat-section">
+	<div class="container">
+		<div class="row">
+
+			<div class="col-lg-3 d-none d-lg-block me-auto p-0 mt-3">
+				<div class="card border p-3">
+					<div class="d-flex">
+						<h5>✔ Discussion Topic</h5>
+						{% if room.owner == request.user %}
+						<div class="dropdown ms-auto">
+							<button class="btn btn-sm" type="button" id="configDiscussion" data-bs-toggle="dropdown"
+								aria-expanded="false">
+								<i class="fa fa-ellipsis-v"></i>
+							</button>
+							<ul class="dropdown-menu" aria-labelledby="configDiscussion">
+								<li><a class="dropdown-item" href="#"
+										hx-get="{% url 'chats:discussion_update' room.id %}"
+										hx-target="#modals-here">Edit</a></li>
+								<!-- <li><a class="dropdown-item text-danger" href="#">Delete</a></li> -->
+							</ul>
+						</div>
+						{% endif %}
+					</div>
+					<p><span class="bold-400">{{ room.headline }}:</span> <span class="small">{{ room.description
+							}}</span></p>
+					<div class="d-flex">
+						{% for tag in room.tags.all %}
+						<span class="small bg-fb-primary-200 text-primary rounded-pill px-2 me-1">{{ tag }}</span>
+						{% endfor %}
+					</div>
+				</div>
+				<div class="d-flex align-items-center justify-content-center">
+					<span class="me-2">SHARE</span>
+					<a href="https://www.facebook.com/sharer/sharer.php?kid_directed_site=0&sdk=joey&u={{ request.build_absolute_uri }}&display=popup&ref=plugin&src=share_button"
+						target="_blank" class="me-2 social-share fst-facebook"><i class="fab fa-facebook"></i></a>
+					<a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text=What's your thought? {% for tag in room.tags.all %} #{{ tag }} {% endfor %} @fidelbooks"
+						target="_blank" class="me-2 social-share fst-facebook"><i class="fab fa-telegram"></i></a>
+					<a href="https://www.linkedin.com/sharing/share-offsite/?mini=true&url={{ request.build_absolute_uri }}"
+						target="_blank" class="me-2 social-share fst-facebook"><i class="fab fa-linkedin"></i></a>
+					<a href="https://twitter.com/intent/tweet?text={{ room.headline }}: {{ room.description }} {{ request.build_absolute_uri }} {% for tag in room.tags.all %} #{{ tag }} {% endfor %} via @adilmohak"
+						target="_blank" class="me-2 social-share fst-twitter"><i class="fab fa-twitter"></i></a>
+				</div>
+				<div class="d-flex justify-content-center mt-2">
+					<a href="#" hx-get="{% url 'chats:invite_people' %}?room={{ room.id }}" hx-target="#modals-here"
+						class="btn btn-primary me-2"><i class="fa fa-user-plus"></i> Invite</a>
+				</div>
+				<div class="break-title text-muted">🔥 Trendings</div>
+				<div hx-get="{% url 'chats:trendings' %}" hx-trigger="load">
+					<div class="text-center dots-loader">
+						<i class="spinner__dot spinner__dot--one"></i>
+						<i class="spinner__dot spinner__dot--two"></i>
+						<i class="spinner__dot spinner__dot--three"></i>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="col-lg-6 me-auto mt-3 px-4">
+
+				<div class="chat-body bg-white radius-200 py-3" style="box-shadow: 0 0 170px 155px rgba(0,0,0,.1);">
+					<div class="text-center mb-3">
+						<a role="button" id="load-more" class="a-fb-default d-inline-flex x-small mb-auto bold-500"></a>
+					</div>
+					<ul id="chat-log" class="p-3"></ul>
+					<div class="chat-footer d-flex align-items-center p-2 border-top bg-white">
+						<div>
+							<button type="button" class="btn btn-light me-3 btn-circle">
+								<i class="fa fa-face-angry"></i>
+							</button>
+						</div>
+						<textarea name="content" id="chat-message-input" class="form-control" rows="1"
+							placeholder="Write a message..." autofocus></textarea>
+						<div>
+							<button type="button" class="btn btn-fb-primary btn-circle ms-3" id="chat-message-submit">
+								<i class="fa fa-paper-plane"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Right side -->
+			<div class="col-lg-3 d-none d-lg-block p-0 mt-3">
+				<div class="card border p-3 bg-light mb-2">
+					<h4 class="text-center">🤔 Did you know?</h4>
+					<small>
+						<b>There are over 129 million books in existence.</b>
+						According to Google, 129,864,880 million books had been published as of 2010. That number is
+						obviously a lot higher now. So when you say out loud “Ugh, can't find a good book to read,” know
+						that you have a lot to choose from.
+					</small>
+				</div>
+				<div class="card border p-3 bg-light mb-2 py-2">
+					<small> The most expensive book ever purchased was sold for $30.8 million... </small>
+				</div>
+				<div class="card border p-3 bg-light mb-2 py-2">
+					<small> There's a word for loving the smell of old books.... </small>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</section>
+
+
+{% endblock %}
+
+{% block newsletter %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block script %}
+<script>
+	roomName = {{ room_name_json }};
+	username = {{ username }};
+	roomId = {{ room.room.id }};
+	// next = '{{ next_page }}';
+
+	$().chat(roomName, username, roomId, null, true);
+
+	$(document).ready(function () {
+		// Javascript that triggers only for medium screen sizes 992px
+		if ($(window).width() <= 992) {
+			var topicModal = new bootstrap.Modal(document.getElementById('topicModal'), {})
+			topicModal.show()
+		}
+	})
+</script>
+{% endblock %}

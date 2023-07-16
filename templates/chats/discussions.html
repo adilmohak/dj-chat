@@ -1,0 +1,170 @@
+{% extends '_base.html' %}
+
+{% load static crispy_forms_tags %}
+
+{% load django_htmx %}
+{% django_htmx_script %}
+
+{% block title %} Discussion Rooms | FidelBooks {% endblock %}
+
+{% block content %}
+
+<br>
+
+<div class="d-md-none plus-area">
+	<a role="button" class="btn btn-lg btn-fb-primary shadow border" hx-get="{% url 'chats:discussion_create' %}"
+		hx-target="#modals-here" hx-indicator="#indicator"><i class="fa fa-plus"></i></a>
+	<a role="button" class="btn btn-lg btn-light shadow border" hx-get="{% url 'chats:recent_rooms' %}?display=modal"
+		hx-target="#modals-here" hx-indicator="#indicator"><i class="fa fa-history"></i>
+		<span class="notify-badge" style="display: block;">
+			<span id="">34</span>
+			<span class="visually-hidden">unread notifications</span>
+		</span></a>
+</div>
+
+<section>
+	<div class="container">
+		<div class="row align-items-top">
+			<div class="col-md-4 d-none d-md-block">
+				<div class="card p-3 mb-2">
+					<a href="{{ request.user.get_absolute_url }}" class="d-flex align-items-top mb-1">
+						<div class="avatar me-2">
+							<img src="{{ request.user.avatar.url }}" alt="">
+						</div>
+						<div class="publisher-detail">
+							<h6 class="p-0 m-0">{{ request.user }}</h6>
+							<h6 class="p-0 mb-2 text-muted">{{ request.user.job }}</h6>
+						</div>
+					</a>
+					<a role="button" class="btn btn-sm btn-fb-primary" hx-get="{% url 'chats:discussion_create' %}"
+						hx-target="#modals-here" hx-indicator="#indicator">+ Create a New Room</a>
+				</div>
+				<div class="card p-3 mb-2">
+					<h6>Recent Rooms</h6>
+					<!-- <div class="" hx-get="{% url 'chats:recent_rooms' %}?display=sticky" hx-trigger="load"
+						hx-target="this" id="user-books-list">
+						<span class="dots-loader">
+							<i class="spinner__dot spinner__dot--one"></i>
+							<i class="spinner__dot spinner__dot--two"></i>
+							<i class="spinner__dot spinner__dot--three"></i>
+						</span>
+					</div> -->
+				</div>
+			</div>
+			<div class="col-md-8">
+
+				<div class="d-flex justify-content-between align-items-center">
+					<h4>Discussion Rooms</h4>
+					<div class="dropdown">
+						<a class="dropdown-toggle" href="#" id="sortOption" role="button" data-bs-toggle="dropdown"
+							aria-expanded="false"></a>
+						<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="sortOption">
+							<li><a class="sort-action dropdown-item" id="trendings" href="?sort=trendings"
+									hx-get="?sort=trendings" hx-target="#roomsContainer>.row" hx-push-url="true"
+									hx-indicator="#indicator">Trendings</a></li>
+							<li><a class="sort-action dropdown-item" id="newest" href="?sort=newest"
+									hx-get="?sort=newest" hx-target="#roomsContainer>.row" hx-push-url="true"
+									hx-indicator="#indicator">Newest</a></li>
+							<li><a class="sort-action dropdown-item" id="oldest" href="?sort=oldest"
+									hx-get="?sort=oldest" hx-target="#roomsContainer>.row" hx-push-url="true"
+									hx-indicator="#indicator">Oldest</a></li>
+						</ul>
+					</div>
+				</div>
+
+				<!-- room search box -->
+				<div class="position-relative p-0 mb-3">
+					<input class="form-control ps-5" type="search" name="q" placeholder="Search rooms..."
+						aria-label="Search" hx-get="{% url 'chats:search_room' %}"
+						hx-trigger="keyup changed delay:500ms" hx-target="#roomsContainer"
+						hx-indicator="#rooms-filter-indicator">
+					<i class="fa fa-search input-icon-left"></i>
+					<input type="submit" hidden>
+				</div>
+
+				<div class="htmx-indicator static" id="rooms-filter-indicator">
+					<span class="dots-loader mb-2">
+						<i class="spinner__dot spinner__dot--one"></i>
+						<i class="spinner__dot spinner__dot--two"></i>
+						<i class="spinner__dot spinner__dot--three"></i>
+					</span>
+					<!-- <img src="{% static 'images/preloader-md.svg' %}" class="mb-3" width="40px"> -->
+				</div>
+
+				<div id="roomsContainer">
+					<div class="row">
+						{% include 'chats/partials/discussion_card.html' %}
+						{% if rooms.has_next %}
+						<div id="paginator">
+							<a hx-get="{% url 'chats:rooms' %}?page={{ rooms.next_page_number }}" hx-target="#paginator"
+								hx-trigger="click" hx-swap="outerHTML" role="button" id="load-more"
+								class="btn btn-fb-primary w-100">
+								Load More <i class="fa fa-circle-arrow-right fa-2x"></i>
+								<div class="htmx-indicator">
+									<span class="dots-loader">
+										<i class="spinner__dot spinner__dot--one"></i>
+										<i class="spinner__dot spinner__dot--two"></i>
+										<i class="spinner__dot spinner__dot--three"></i>
+									</span>
+								</div>
+							</a>
+						</div>
+						{% endif %}
+					</div>
+					<!-- <button class="btn btn-outline-primary w-100" id="htmx-loader"
+						hx-get="{% url 'chats:rooms' %}?page={{ page_number|add:'1' }}" hx-target="#roomsContainer>.row"
+						hx-swap="beforeend">
+						Load More Rooms...
+					</button> -->
+				</div>
+
+			</div>
+		</div>
+	</div>
+</section>
+
+<div id="indicator" class="htmx-indicator loader-full">
+	<img id="spinner" width="60px" src="{% static 'images/preloader-md.svg' %}"
+		style="box-shadow: 0 0 15px 5px rgba(0,0,0,.1);" alt="Loading..." />
+</div>
+
+<br><br><br>
+
+{% endblock %}
+
+{% block newsletter %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block script %}
+<script>
+	var sort = '{{ sort }}';
+
+	// let next_page = parseInt({{ page_number }}) + 1;
+	// let total_pages = {{ num_pages }};
+	// let url = "{% url 'chats:rooms' %}?page=";
+
+	$(document).ready(function () {
+		$('.sort-action').on('click', function () {
+			sort = $(this).attr('id');
+			sortBtnAppearance();
+		})
+		function sortBtnAppearance() {
+			$sortOption = $('#sortOption');
+			$('.sort-action').removeClass('active');
+			if (sort == 'newest') {
+				$sortOption.html('⏱ Newest')
+				$('#newest').addClass('active')
+			}
+			else if (sort == 'oldest') {
+				$sortOption.html('⏳ oldest')
+				$('#oldest').addClass('active')
+			}
+			else {
+				$sortOption.html('🔥 Trendings')
+				$('#trendings').addClass('active')
+			}
+		}
+		sortBtnAppearance();
+	})
+</script>
+{% endblock %}

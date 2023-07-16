@@ -1,0 +1,36 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<div id="modal-backdrop" class="modal-backdrop fade show" style="display:block;"></div>
+<div id="modal" class="modal fade show animated--grow-in" tabindex="-1" style="display:block;">
+	<div class="modal-dialog modal-dialog-centered">
+	  <div class="modal-content radius-400 overflow-hidden border-0">
+
+		<div class="modal-header px-3 py-2 border-0">
+		  <h5 class="modal-title"><i class="fa fa-user-plus"></i> Invite people</h5>
+		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeModal()"></button>
+		</div>
+		<div class="modal-body" id="id_invitation">
+
+			{{ form.media.css }}
+			<form action="{% url 'chats:invite_people' %}" method="POST">{% csrf_token %}
+				{% for field in form %}
+				<div class="mb-3">
+					{{ field|as_crispy_field }}
+				</div>
+				{% endfor %}
+				<input type="hidden" name="next" value="{{ next }}">
+				<button hx-post="{% url 'chats:invite_people' %}" hx-target="#id_invitation"
+				type="submit" class="btn btn-fb-primary"><i class="fa fa-paper-plane"></i> Send Invitation</button>
+			</form>
+			{{ form.media.js }}
+
+		</div>
+		<!-- <div class="modal-footer">
+			<a href="{% url 'core:people_nearby' %}" class="small a-fb-default">
+				<i class="fas fa-street-view fa-1x"></i> Nearby peoples
+			</a>
+		</div> -->
+	  </div>
+	</div>
+</div>

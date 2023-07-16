@@ -1,0 +1,911 @@
+{% load static i18n %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{% block title %} Dj-chat - Simple chat service {% endblock %}</title>
+
+	<meta name="description"
+		content="Dj-chat is a Platform that allows you to connect with peoples all around the world by providing group and private chat service.">
+	<meta name="keywords" content="discussion, group chat, private chat, one-on-one, multiple">
+
+	<link rel="apple-touch-icon" href="{% static 'images/favicons/apple-touch-icon.png' %}" sizes="180x180">
+	<link rel="icon" href="{% static 'images/favicons/favicon-32x32.png' %}" sizes="32x32" type="image/png">
+	<link rel="icon" href="{% static 'images/favicons/favicon-16x16.png' %}" sizes="16x16" type="image/png">
+	<link rel="shortcut icon" href="{% static 'images/favicons/favicon.ico' %}" type="image/x-icon">
+
+	<!-- Add manifest file here `site.webmanifest` -->
+	{% comment %}
+	<link rel="manifest" href="{% static 'images/favicons/site.webmanifest' %}">{% endcomment %}
+
+	<!-- place mask icon here, it should be an svg file -->
+
+	{% block og %}
+	<!-- Open Graph tags to customize link previews -->
+	<meta property="og:url" content="{{ request.path }}" />
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="Dj-chat - Simple chat service" />
+	<meta property="og:description"
+		content="Dj-chat is a Platform that allows you to connect with peoples all around the world by providing group and private chat service." />
+	<meta property="og:image" content="{% static 'images/favicons/apple-touch-icon.png' %}" />
+	{% endblock %}
+
+	<!--Material Design Iconic Font-->
+	<link rel="stylesheet" href="{% static 'dist/material-design/css/material-design-iconic-font.css' %}" />
+	<!-- Font Awesome Icon Font -->
+	<link rel="stylesheet" href="{% static 'dist/fontawesome-free-6.0.0-beta3-web/css/all.min.css' %}" />
+
+	<link rel="stylesheet" href="{% static 'dist/bootstrap-5.1.3-dist/css/bootstrap.min.css' %}">
+
+	<link rel="stylesheet" href="{% static 'css/animate.css' %}">
+
+	<!-- htmx -- Load from unpkg -->
+	<!-- <script src="https://unpkg.com/htmx.org@1.6.1"></script> -->
+	<script src="{% static 'dist/htmx/htmx.min.js' %}"></script>
+
+	<script src="{% static 'dist/jquery-3.6.0/jquery-3.6.0.min.js' %}"></script>
+	<!-- Websocket reconnecting -->
+	<script src="{% static 'js/reconnecting-websocket.js' %}"></script>
+
+	<!-- Toaster -->
+	<link href="{% static 'dist/toastr/build/toastr.min.css' %}" rel="stylesheet" />
+
+	<!-- Main custom style -->
+	<link rel="stylesheet" href="{% static 'css/main.min.css' %}">
+
+	{% block head %}
+	{% endblock %}
+</head>
+
+<body>
+
+
+	<style>
+		.swal2-popup.swal2-toast {
+			padding: .5em;
+		}
+
+		.swal2-popup {
+			padding: 0 0 0;
+		}
+
+		/* .swal2-popup.swal2-toast .swal2-icon {
+			grid-column: 1;
+			grid-row: 1/99;
+			align-self: center;
+			width: 2em;
+			min-width: 2em;
+			height: 2em;
+			margin: 0 .5em 0 0;
+		} */
+		.swal2-popup.swal2-toast .swal2-title {
+			/* margin: .5em 1em; */
+			/* padding: 0; */
+			font-size: 1em;
+			text-align: initial;
+		}
+
+		.swal2-title {
+			font-size: 1.875em;
+			font-weight: 400;
+		}
+	</style>
+
+	<!-- <svg style="box-sizing: content-box; color: var(--color-icon-primary);" width="32" height="32" viewBox="0 0 16 16" fill="none" data-view-component="true" class="d-block mx-auto anim-rotate">
+		<circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+		<path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+	</svg> -->
+
+	<!-- Search Modal -->
+	<div class="modal fade" id="primarySearchModal" tabindex="-1" aria-labelledby="primarySearchModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content radius-500 pb-3 px-3 px-lg-5 py-lg-3">
+				<div class="modal-header border-0 px-0">
+					<h5 class="mb-0"><i class="fa fa-search text-fb-primary"></i> Search</h5>
+					<button type="button" class="btn-close float-end" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body p-0">
+					<div class="position-relative">
+						<input type="search" name="q" autocomplete="off" class="form-control p-2 ps-3"
+							id="id_primary_search_input"
+							placeholder="Search books, collections, discussions, & accounts" hx-get=""
+							hx-trigger="keyup changed delay:500ms" hx-target="#results" hx-indicator="#search-indicator"
+							style="border-radius: 2em !important;">
+					</div>
+					<div id="search-indicator" class="htmx-indicator static ms-2">
+						<span class="dots-loader">
+							<i class="spinner__dot spinner__dot--one"></i>
+							<i class="spinner__dot spinner__dot--two"></i>
+							<i class="spinner__dot spinner__dot--three"></i>
+						</span>
+					</div>
+					<div id="results" class="animated--fade-in">
+						<div class="ms-2 mt-1 text-muted small">{% translate 'Start typing' %}...</div>
+					</div>
+					<!-- <h6 class="mt-4 pb-2 border-bottom">Recent searches</h6>
+					<span class="badge bg-light text-dark border-pill border me-2">The Alchemist</span>
+					<span class="badge bg-light text-dark border-pill border me-2">The Alchemist</span>
+					<span class="badge bg-light text-dark border-pill border me-2">The Alchemist</span> -->
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{% block nav %}
+	{% include 'includes/_primary_menu.html' %}
+	{% endblock %}
+
+	<!-- {% include 'includes/_messages.html' %} -->
+
+	<div id="content" hx-history-elt>
+		{% block content %}
+		{% endblock %}
+	</div>
+
+	<div id="modals-here"></div>
+	<div id="chat-popup"></div>
+
+	{% block footer %}{% include 'includes/_footer.html' %}{% endblock %}
+
+	<script src="{% static 'dist/bootstrap-5.1.3-dist/js/bootstrap.bundle.js' %}"></script>
+	<!-- Toastr -->
+	<script src="{% static 'dist/toastr/build/toastr.min.js' %}"></script>
+
+	<!-- Custom js -->
+	<script src="{% static 'js/main.js' %}"></script>
+	{% if request.user.is_authenticated %}
+	<script src="{% static 'js/notifications.js' %}"></script>
+	{% endif %}
+
+	<script>
+		// log all events triggered by htmx -- usefull for debuging
+		// htmx.logger = function(elt, event, data) {
+		// 	if(console) {
+		// 		console.log(event, elt, data);
+		// 	}
+		// }
+	</script>
+
+	<script>
+		$(document).ready(function () {
+			primarySearchModal = document.getElementById('primarySearchModal');
+			primarySearchInput = document.getElementById('id_primary_search_input');
+			primarySearchModal.addEventListener('shown.bs.modal', function () {
+				primarySearchInput.focus()
+			})
+
+			$.fn.datepicker.defaults.format = "yyyy-mm-dd"; // Compatable with default django date field format
+			$('.datepicker').datepicker();
+
+			var input = document.querySelector("#id_phone");
+			if (input) {
+				window.intlTelInput(input, {
+					onlyCountries: ['et'],
+					separateDialCode: true,
+					utilsScript: "{% static 'dist/intl-tel-input/js/utils.js' %}",
+				});
+			}
+
+			$('.collapse').collapse();
+
+			$(".navbar").hsMenu();
+
+			$(document).on('mouseover', '.book-wrap', function (evt) {
+				$(this).find('.book-title-wrap').children().removeClass('text-truncate');
+			})
+			$(document).on('mouseleave', '.book-wrap', function (evt) {
+				$(this).find('.book-title-wrap').children().addClass('text-truncate');
+			})
+
+			// dim screen
+			dimBG = document.createElement('div');
+			$(dimBG).addClass("dim-overlay").insertAfter($('.aside-nav'));
+
+			$('.aside-nav-toggler').click(function () {
+				$('.aside-nav').toggleClass('show');
+				$(dimBG).toggle(500);
+			})
+
+			$(window).click(function (e) {
+				if (
+					$(e.target).closest(
+						".aside-nav"
+					).length
+				) {
+					return;
+				}
+
+				$('.aside-nav').removeClass("show");
+				$(dimBG).fadeOut();
+			});
+			$('.close-aside').click(function () {
+				$('.aside-nav').removeClass("show");
+				$(dimBG).fadeOut();
+			})
+		})
+
+		const Toast = Swal.mixin({
+			toast: true,
+			position: 'bottom-left',
+			showConfirmButton: false,
+			timer: 5000,
+			timerProgressBar: false,
+			didOpen: (toast) => {
+				toast.addEventListener('mouseenter', Swal.stopTimer)
+				toast.addEventListener('mouseleave', Swal.resumeTimer)
+			}
+		})
+		{% if messages %}
+
+		{% autoescape off %}
+		{% for msg in messages %}
+		Toast.fire({
+			icon: '{{ msg.level_tag }}',
+			title: `{{ msg|safe }}`
+		})
+		{% endfor %}
+		{% endautoescape %}
+		// toastr.options = {
+		// 	"closeButton": false,
+		// 	"debug": false,
+		// 	"newestOnTop": false,
+		// 	// "progressBar": true,
+		// 	"positionClass": "toast-bottom-left",
+		// 	"preventDuplicates": false,
+		// 	"onclick": null,
+		// 	"showDuration": "300",
+		// 	"hideDuration": "1000",
+		// 	"timeOut": "5000",
+		// 	"extendedTimeOut": "1000",
+		// 	"showEasing": "swing",
+		// 	"hideEasing": "linear",
+		// 	"showMethod": "fadeIn",
+		// 	"hideMethod": "fadeOut"
+		// };
+		// {% autoescape off %}
+		// 	{% for msg in messages %}
+		// 		toastr.{{ msg.level_tag }}(`{{ msg|safe }}`);
+		// 	{% endfor %}
+		// {% endautoescape %}
+		{% endif %}
+	</script>
+
+	{% if request.user.is_authenticated %}
+	<script>
+		// const private_rooms_url = "/api-chats/private_rooms/";
+
+		$(document).ready(function () {
+
+			// handle when error happen in processing user request
+			function requestFailHandler(
+				error = null,
+				msg = "Something went wrong while processing your request. \nTry again!",
+				refreash = true
+			) {
+				if (error) {
+					msg = `ERROR(${error.code}): ${error.message}\n${msg}`
+				}
+				toastr.error(msg);
+			}
+
+			// loadPages = () => {
+			// 	$.ajax({
+			// 	type: 'GET',
+			// 	url: "",
+			// 	success: function (response) {
+			// 		if (response.length === 0){
+			// 			$('#user-pages').append(`<li class='text-center'>
+			// 				<a class="btn btn-x-sm p-1 btn-warning mx-2 small" href="">
+			// 					<i class="zmdi zmdi-plus"></i> Create New Page</a></li>`);
+			// 		}
+			// 		$.each(response, function (index, value) {
+			// 			var pageItem = `
+			// 			<li>
+			// 				<a class="dropdown-item d-flex align-items-center small" href="${value.uri}">
+			// 					<div class="avatar me-1">
+			// 						<img src="${value.logo}" alt="${value.name}">
+			// 					</div>
+			// 					${value.name}
+			// 				</a>
+			// 			</li>`;
+			// 			$('#user-pages').append(pageItem);
+			// 		})
+			// 	},
+			// 	error: function (response) {
+			// 		console.log(response)
+			// 		requestFailHandler()
+			// 	}
+			// })}
+			// loadPages();
+
+			function cartItemsCount() {
+				$.ajax({
+					type: 'GET',
+					url: "{% url 'carts:cart_items_counter' %}",
+					success: function (response) {
+						if (response['counter'] > 0) {
+							$('#cart-items-counter').parent('.notify-badge').css('display', 'block')
+							$('#cart-items-counter').text(`${response['counter']}`);
+							$('.zmdi-shopping-cart').addClass('animated-bell-ring');
+							removeAnim("animated-bell-ring");
+						}
+						else { $('#cart-items-counter').parent('.notify-badge').css('display', 'none') }
+					},
+					error: function (response) {
+						console.log(response)
+						requestFailHandler()
+					}
+				})
+			}
+			cartItemsCount()
+
+			// function total_unread_messages() {
+			// 	$.ajax({
+			// 			type: 'GET',
+			// 			url: "{% url 'chats:total_unread_messages' %}",
+			// 			success: function (response) {
+			// 				if (response['total_unread_counter'] > 0){
+			// 					$('#total-unread-msgs').parent('.notify-badge').css('display', 'block')
+			// 					$('#total-unread-msgs').text(`${response['total_unread_counter']}`);
+			// 					$('.zmdi-email').addClass('animated-bell-ring');
+			// 				}
+			// 				else {$('#total-unread-msgs').parent('.notify-badge').css('display', 'none')}
+			// 			},
+			// 			error: function (response) {
+			// 				console.log(response)
+			// 				requestFailHandler()
+			// 			}
+			// 	})
+			// }
+			// total_unread_messages()
+
+			// Update quantity for each item
+			// quantity = $('select[name=quantity]');
+			// quantityUpdateUrl = "{% url 'carts:update_quantity' %}";
+			// $(quantity).change(function () {
+			// 	this_ = $(this);
+			// 	data = this_.closest('form').serialize();
+			// 	$.ajax({
+			// 		type: 'POST',
+			// 		url: quantityUpdateUrl,
+			// 		data: data,
+			// 		headers: {
+			// 			'X-Requested-With': 'XMLHttpRequest',
+			// 			'csrftoken': csrftoken,
+			// 		},
+			// 		success: function (res) {
+			// 			console.log(res);
+			// 			const subtotalPrice = $('.subtotal-price');
+			// 			const itemTotal = this_.closest('tr').find('.item-total');
+			// 			subtotalPrice.text(res['subtotal']);
+			// 			itemTotal.text(res['total']);
+
+			// 			if (res['order_total']) {
+			// 				$('.order-total').text(res['order_total']);
+			// 				$('.tax').text(res['tax']);
+			// 			}
+			// 			// subtotalPrice.css('animation', 'valueChange forwards 3s ease-in-out');
+			// 			// itemTotal.css('animation', 'valueChange forwards 3s ease-in-out');
+
+			// 			// $("#total-price").animate({
+			// 			// 	'background': 'red', // Animate background-color to .25
+			// 			// }, {
+			// 			// 	duration: 500, // Animation lasts 1/2 second
+			// 			// 	complete: function() { // Call this when done
+			// 			// 		// $('#total-price').css('animation', 'none') // Change element text.
+			// 			// 	}
+			// 			// });
+			// 		},
+			// 		error: function (res) {
+			// 			requestFailHandler()
+			// 		}
+			// 	})
+			// })
+
+			// Update is_active status for each item
+			// $('input[name=is_active]').on('click', function () {
+			// 	$(this).closest('form').trigger('submit');
+			// })
+			// $('.js-item-active-form').on('submit', function (evt) {
+			// 	evt.stopPropagation();
+			// 	evt.preventDefault();
+
+			// 	data = $(this).serialize();
+			// 	url = $(this).attr('action');
+			// 	targetEle = document.getElementById($(this).attr('target-ele'));
+			// 	console.log(targetEle);
+			// 	$.ajax({
+			// 		type: 'POST',
+			// 		url: url,
+			// 		data: data,
+			// 		headers: {
+			// 			'X-Requested-With': 'XMLHttpRequest',
+			// 			'csrftoken': csrftoken,
+			// 		},
+			// 		success: function (res) {
+			// 			console.log(res)
+			// 			res['is_active'] === false ? $(targetEle).addClass('disabled') : $(targetEle).removeClass('disabled');
+			// 			$('.subtotal-price').text(res['subtotal']);
+			// 			if(res['order_total']) {
+			// 				$('.order-total').text(res['order_total']);	
+			// 			}
+			// 			if(res['tax']) {
+			// 				$('.tax').text(res['tax']);	
+			// 			}
+			// 			res['cart_items_count'] === 0 ? $('.checkout-btn').addClass('disabled') : $('.checkout-btn').removeClass('disabled');
+			// 		},
+			// 		error: function (res) {
+			// 			requestFailHandler()
+			// 		}
+			// 	})
+			// })
+
+			// like/dislike handler
+			$('.like-action').click(function (evt) {
+				evt.stopPropagation();
+				evt.preventDefault();
+
+				this_ = $(this);
+				$parentDiv = $('#' + this_.attr('data-div'));
+				$form = $('#' + $(this).attr('data-form'));
+				console.log("$form", $form)
+				data = $($form).serialize();
+				url = $($form).attr('action');
+				$.ajax({
+					type: 'POST',
+					url: url,
+					data: data,
+					headers: {
+						'X-Requested-With': 'XMLHttpRequest',
+						'csrftoken': csrftoken,
+					},
+					success: function (res) {
+						console.log(res)
+						if (res['action'] === 'L') {
+							this_.addClass('btn-outline-primary');
+							$parentDiv.find('.dislike-btn').removeClass('btn-outline-primary');
+						}
+						else if (res['action'] === 'D') {
+							this_.addClass('btn-outline-primary');
+							$parentDiv.find('.like-btn').removeClass('btn-outline-primary');
+						}
+						else {
+							this_.removeClass('btn-outline-primary');
+						}
+						$parentDiv.find('.like-counter').text(res['total_likes']);
+						$parentDiv.find('.dislike-counter').text(res['total_dislikes']);
+					},
+					error: function (res) {
+						console.log(res)
+						requestFailHandler();
+					}
+				})
+			})
+
+			// mute/unmute chat
+			$(document).on('submit', '.js-mute-chat', function (evt) {
+				evt.stopPropagation();
+				evt.preventDefault();
+
+				data = $(this).serialize();
+				url = $(this).attr('action');
+				submitBtn = $(this).children('button[type=submit]');
+				console.log(submitBtn)
+				$.ajax({
+					type: 'POST',
+					url: url,
+					data: data,
+					headers: {
+						'X-Requested-With': 'XMLHttpRequest',
+						'csrftoken': csrftoken,
+					},
+					success: function (res) {
+						console.log(res)
+						submitBtn.text(res['muted'] === true ? 'Unmute' : 'Mute');
+						toastr.success(res['msg']);
+					},
+					error: function (res) {
+						console.log(res)
+						requestFailHandler()
+					}
+				})
+			})
+
+			// favorite/unfavorite book
+			$(document).on('click', '.book_fav', function (evt) {
+				evt.stopPropagation();
+				evt.preventDefault();
+
+				data = { 'book_id': $(this).attr('data-book') };
+				this_ = $(this);
+				$.ajax({
+					type: 'GET',
+					url: '{% url "accounts:update_favorite" %}',
+					data: data,
+					success: function (res) {
+						console.log(res)
+						toastr.success(res['msg'])
+						if (res['added']) {
+							this_.addClass('active')
+						}
+						else {
+							this_.removeClass('active')
+						}
+					},
+					error: function (res) {
+						console.log(res)
+						requestFailHandler()
+					},
+				})
+			});
+
+			function removeAnim(anim) {
+				$(`.${anim}`).on('animationend', function () {
+					$(this).removeClass(anim);
+				})
+			}
+			// htmx.onLoad(function(content) {
+			// 	initTooltip();
+			// 	// cartItemsCount();
+			// 	favBook();
+			// 	jsMuteChat();
+			// })
+			document.body.addEventListener("htmx:afterOnLoad", function (evt) {
+				// reload the cart counter after cart has been changed
+				if ($(evt.detail.target).hasClass('form-cart-ajax')) {
+					cartItemsCount();
+				}
+			})
+		})
+	</script>
+	{% endif %}
+
+	<script>
+
+		// htmx close modal
+		function closeModal() {
+			var container = document.getElementById("modals-here")
+			var backdrop = document.getElementById("modal-backdrop")
+			var modal = document.getElementById("modal")
+
+			modal.classList.remove("show")
+			backdrop.classList.remove("show")
+
+			setTimeout(function () {
+				container.removeChild(backdrop)
+				container.removeChild(modal)
+			}, 200)
+		}
+
+		// ====================================
+		// Handle csrf_token for htmx request
+		// ====================================
+		document.body.addEventListener("htmx:configRequest", (event) => {
+			event.detail.headers["X-CSRFToken"] = "{{ csrf_token }}";
+		});
+		// Django csrf varification
+		function getCookie(name) {
+			let cookieValue = null;
+			if (document.cookie && document.cookie !== '') {
+				const cookies = document.cookie.split(';');
+				for (let i = 0; i < cookies.length; i++) {
+					const cookie = cookies[i].trim();
+					// Does this cookie string begin with the name we want?
+					if (cookie.substring(0, name.length + 1) === (name + '=')) {
+						cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+						break;
+					}
+				}
+			}
+			return cookieValue;
+		}
+		const csrftoken = getCookie('csrftoken');
+
+		$(document).ready(function () {
+
+			toastr.options = {
+				"closeButton": false,
+				"debug": false,
+				"newestOnTop": true,
+				"progressBar": false,
+				"positionClass": "toast-bottom-left",
+				"preventDuplicates": false,
+				"onclick": null,
+				"showDuration": "300",
+				"hideDuration": "1000",
+				"timeOut": "5000",
+				"extendedTimeOut": "1000",
+				"showEasing": "swing",
+				"hideEasing": "linear",
+				"showMethod": "fadeIn",
+				"hideMethod": "fadeOut"
+			}
+
+			// textarea cusomization
+			function updateHeight(ele) {
+				$(ele).css('height', 'auto')
+				$(ele).css('height', `${ele.scrollHeight}px`)
+			}
+			$('textarea').on('keyup', function () {
+				updateHeight(this);
+			})
+			$('textarea').on('focusin', function () {
+				updateHeight(this);
+			})
+			$('textarea').on('focusout', function () {
+				updateHeight(this);
+			})
+
+			const navHeight = $(".navbar").outerHeight(); // height + padding + border
+			// const navHeight = $(".navbar").outerHeight(true); // height + padding + border + margin
+
+
+			// $('.search-box-input').focusin(function () {
+			//     $('#search-box-wrapper').addClass('active');
+			// })
+			// // Close the dropdown menu if the user clicks outside of it
+			// searchWrapper = document.getElementById('search-box-wrapper');
+			// searchElements = searchWrapper.children;
+			// window.onclick = function(event) {
+			//     if (!(isElement(event))) {
+			//         $('#search-box-wrapper').removeClass('active')
+			//     }
+			//     else {
+			//         console.log("Not target");
+			//     }
+			//     // if (!(event.target in searchElements)) {
+			//     // 	$('#search-box-wrapper').removeClass('active');
+			//     // }
+			// }
+			// function isElement(event) {
+			//     for(key in searchElements) {
+			//         if (searchElements[key] === event.target) return true
+			//     }
+			//     return false
+			// }
+
+			$('.sticky-top.sticky-under-navbar').css({
+				'top': navHeight + 10,
+			});
+			$('.sticky-top.sticky-under-navbar-0').css({
+				'top': navHeight,
+			});
+
+			function initTooltip() {
+				var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+				var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+					return new bootstrap.Tooltip(tooltipTriggerEl)
+				})
+			}
+			initTooltip()
+			htmx.onLoad(function (content) {
+				initTooltip();
+			})
+
+			// Bootstrap toast
+			var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+			var toastList = toastElList.map(function (toastEl) {
+				return new bootstrap.Toast(toastEl, 'show')
+			})
+			toastList.forEach(toast => toast.show())
+
+			/* 
+				Script for accessing user location
+			*/
+			// if('geolocation' in navigator) {
+			// 	/* geolocation is available */
+			// 	function success(position) {
+			// 		var point = [position.coords.latitude, position.coords.longitude];
+			// 		console.log("Point:", point);
+
+			// 		updateUserLocation(point)
+			// 	}
+
+			// 	function error(error) {
+			// 		console.log(`ERROR(${error.code}): ${error.message}`);
+			// 	}
+
+			// 	const options = {
+			// 		// enableHighAccuracy: true,
+			// 		maximumAge: 30000,
+			// 		timeout: 40000
+			// 	};
+
+			// 	const watchID = navigator.geolocation.watchPosition(success, error, options);
+			// 	//   navigator.geolocation.clearWatch(watchID);
+
+			// } else {
+			// 	/* geolocation IS NOT available */
+			// 	console.log("Geolocation is not available!")
+			// }
+			// function updateUserLocation(point) {
+			// 	var latlong = [point[0],point[1]];
+			// 	$.ajax({
+			// 		type: 'GET',
+			// 		url: `/update_location/?latlong=${latlong[0]},${latlong[1]}`,
+			// 		success: function (response) {
+			// 			console.log(response)
+			// 		},
+			// 		error: function (response) {
+			// 			console.log(response)
+			// 			requestFailHandler()
+			// 		}
+			// 	})
+			// }
+
+			// =============================
+			// Main search close on-click outside
+			// =============================
+			// $searchBox = $(".search-box");
+
+			// $(window).click(function (e) {
+			// 	if (
+			// 		$(e.target).closest(
+			// 		".search-box"
+			// 		).length
+			// 	) {
+			// 		return;
+			// 	}
+
+			// 	$($searchBox).removeClass("open");
+			// 	$(dimBG).fadeOut();
+			// });
+
+
+			// =============================
+			// Clone user profile to other elements instead of reloading it each time
+			// =============================
+			// var imgCloned = false;
+			// $("#userPanel").click(function () {
+			// 	if (!imgCloned) {
+			// 		var $thisPic = $('#userPanel').find(".avatar").clone();
+			// 		$($thisPic).addClass('avatar-md');
+
+			// 		$("#dropUserProfile").html($thisPic); // this will add image to the 'dropUserProfile' tag
+			// 		imgCloned = true;
+			// 	}
+			// });
+
+			/* 
+				Script for handling like and dislike
+			*/
+			// $('.like-btn').click(function (e) {
+			// 	e.preventDefault();
+			// 	handleLikeSubmit(this);
+			// })
+			// $('.dislike-btn').click(function (e) {
+			// 	e.preventDefault();
+			// 	handleDisLikeSubmit(this);
+			// })
+			// function handleLikeSubmit(ele) {
+			// 	data = $(ele).parent().serialize();
+			// 	$.ajax({
+			// 		type: 'POST',
+			// 		url: "",
+			// 		data: data,
+			// 		headers: {
+			// 			'X-Requested-With': 'XMLHttpRequest',
+			// 			'csrftoken': csrftoken,
+			// 		},
+			// 		success: function (response) {
+			// 			console.log(response)
+			// 			if (response['added'] == true) {
+			// 				var counter = parseInt($(ele).find('.like-counter').text()) + 1;
+			// 				if (response['has_disliked'] == true) {
+			// 					var dislikeCounter = parseInt($(ele).parent().find('.dislike-counter').text()) - 1;
+			// 					dislikeCounter = dislikeCounter < 0 ? 0 : dislikeCounter;
+			// 					$(ele).parent().find('.dislike-counter').text(dislikeCounter)
+			// 					$(ele).parent().find('.dislike-btn').removeClass('btn-outline-primary')
+			// 					$(ele).parent().find('.dislike-btn').addClass('btn-light')
+			// 				}
+			// 				$(ele).removeClass('btn-light')
+			// 				$(ele).addClass('btn-outline-primary')
+			// 			}
+			// 			else {
+			// 				var counter = parseInt($(ele).find('.like-counter').text()) - 1;
+			// 				counter = counter < 0 ? 0 : counter;
+			// 				$(ele).removeClass('btn-outline-primary')
+			// 				$(ele).addClass('btn-light')
+			// 			}
+			// 			$(ele).find('.like-counter').text(counter)
+			// 		},
+			// 		error: function (response) {
+			// 			console.log(response)
+			// requestFailHandler()
+			// 		}
+			// 	})
+			// }
+			// function handleDisLikeSubmit(ele) {
+			// 	data = $(ele).parent().serialize();
+			// 	$.ajax({
+			// 		type: 'POST',
+			// 		url: "",
+			// 		data: data,
+			// 		headers: {
+			// 			'X-Requested-With': 'XMLHttpRequest',
+			// 			'csrftoken': csrftoken,
+			// 		},
+			// 		success: function (response) {
+			// 			console.log(response)
+			// 			if (response['added'] == true) {
+			// 				var counter = parseInt($(ele).find('.dislike-counter').text()) + 1;
+			// 				if (response['has_liked'] == true) {
+			// 					var likeCounter = parseInt($(ele).parent().find('.like-counter').text()) - 1;
+			// 					likeCounter = likeCounter < 0 ? 0 : likeCounter;
+			// 					$(ele).parent().find('.like-counter').text(likeCounter);
+			// 					$(ele).parent().find('.like-btn').removeClass('btn-outline-primary')
+			// 					$(ele).parent().find('.like-btn').addClass('btn-light')
+			// 				}
+			// 				$(ele).removeClass('btn-light')
+			// 				$(ele).addClass('btn-outline-primary')
+			// 			}
+			// 			else {
+			// 				var counter = parseInt($(ele).find('.dislike-counter').text()) - 1;
+			// 				counter = counter < 0 ? 0 : counter;
+			// 				$(ele).removeClass('btn-outline-primary')
+			// 				$(ele).addClass('btn-light')
+			// 			}
+			// 			$(ele).find('.dislike-counter').text(counter)
+			// 		},
+			// 		error: function (response) {
+			// 			console.log(response)
+			// 			requestFailHandler()
+			// 		}
+			// 	})
+			// }
+
+
+			// const myText = document.getElementById("my-text");
+			// // myText.style.cssText = `height: ${myText.scrollHeight}px; overflow-y: hidden`;
+			// myText.addEventListener('input', function() {
+			// 	this.style.height = 'auto';
+			// 	this.style.height = `${this.scrollHeight}px`
+			// })
+
+
+			// Open link in new window
+
+			// const ele = $('.js-target-new-window');
+			// $(ele).submit(function (e) {
+			// 	console.log("Form submitted!!!!");
+			// 	setTimeout(function () {
+			// 		console.log("time outted")
+			// 	}, 5000)
+			// 	e.preventDefault();
+			// 	const url = $(this).attr('action');
+			// 	$.ajax ({
+			// 		type: 'POST',
+			// 		url: url,
+			// 		data: $(this).serialize(),
+			// 		headers: {
+			// 			'X-Requested-With': 'XMLHttpRequest',
+			// 			'csrftoken': csrftoken,
+			// 		},
+			// 		success: function (res) {
+			// 			console.log(res, "Form successfuly submitted.");
+			// 		},
+			// 		error: function (res) {
+			// 			console.log(res, "Something went wrong!");
+			// 			requestFailHandler()
+			// 		}
+			// 	})
+			// 	window.open(url, 'Order complete', 'width=600, height=600')
+			// })
+			// $(ele).click(function () {
+			// 	const url = $(this).attr('href');
+			// 	window.open(url, 'Order complete', 'width=600, height=600')
+			// })
+		})
+
+	</script>
+
+	{% block script %}
+	{% endblock %}
+</body>
+
+</html>

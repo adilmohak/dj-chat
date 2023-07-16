@@ -1,0 +1,31 @@
+{% extends '_base.html' %}
+
+{% load static crispy_forms_tags %}
+{% block title %} Create Room | FidelBooks {% endblock %}
+
+{% block content %}
+
+<div class="col-md-6 mx-auto p-5">
+	<div class="card">
+		<div class="card-header">
+			<h5 class="lead m-0">Create Room <i class="zmdi zmdi-comments"></i></h5>
+		</div>
+		<form method="POST">
+			{% csrf_token %}
+			<div class="pt-4 px-4">
+				{{ form|crispy }}
+			</div>
+			<button type="submit" class="btn btn-fb-primary me-auto m-4">
+				+ Create Room
+			</button>
+		</form>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block newsletter %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block script %}
+{% endblock %}

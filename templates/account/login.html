@@ -1,0 +1,51 @@
+{% extends "_base.html" %}
+
+{% load i18n %}
+{% load static crispy_forms_tags account %}
+
+{% block title %}{% trans "Sign In" %}{% endblock %}
+
+{% block content %}
+
+<div class="container pb-3 pt-lg-3">
+	<div class="row justify-content-center">
+		<div class="col-md-4 bg-white p-3 pt-4 pt-lg-3">
+			<h4 class="text-primary">{% trans "Sign In" %}</h4>
+
+			<form class="login" method="POST" action="{% url 'account_login' %}">
+				{% csrf_token %}
+				<div class="pt-4 px-4">
+					{{ form|crispy }}
+					{% if redirect_field_value %}
+					<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+					{% endif %}
+					<a href="{% url 'account_reset_password' %}" class="small d-inline-flex float-end"
+						style="margin-top: -10px;">Forgot Password?</a>
+					<br>
+					<button type="submit" class="btn btn-fb-primary w-100">
+						Login <i class="zmdi zmdi-long-arrow-right ms-2"></i>
+					</button>
+				</div>
+			</form>
+			<div class="text-center mt-4">
+				New here? <a href="{{ signup_url }}"> Create account </a>
+			</div>
+
+		</div>
+		<div class="col-md-4 border-left d-flex flex-column justify-content-center align-items-center bg-dark p-3">
+			<div class="text-muted text-center">
+				<p>
+					{% blocktrans %}If you have not created an account yet, then please
+					<a href="{{ signup_url }}" class="btn btn-primary">sign up</a> first.{% endblocktrans %}
+				</p>
+				<p class="small">
+					By continuing, you agree to FidelBooks's
+					<a href="#" class="text-light"> Conditions of Use </a> and <a href="#" class="text-light"> Privacy
+						Notice </a>.
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

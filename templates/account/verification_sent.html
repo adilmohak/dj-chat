@@ -1,0 +1,30 @@
+{% extends "_base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Verify Your E-mail Address" %}{% endblock %}
+
+{% block content %}
+
+<div class="container py-3">
+    <div class="row justify-content-center">
+        <div class="col-md-4 bg-white p-3">
+
+            <div class="text-center">
+                <h4 class="text-primary">{% trans "Verify Your E-mail Address" %}</h4>
+
+                {% if user.is_authenticated %}
+                {% include "account/snippets/already_logged_in.html" %}
+                {% endif %}
+
+                <p class="small">{% blocktrans %}We have sent an e-mail to you for verification.
+                    Follow the link provided to finalize the signup process. If you do not see the
+                    verification e-mail in your main inbox, check your spam folder. Please contact
+                    us if you do not receive the verification e-mail within a few minutes.{% endblocktrans %}</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

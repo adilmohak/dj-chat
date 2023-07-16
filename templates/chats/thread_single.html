@@ -1,0 +1,354 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load chats_extras %}
+
+{% block title %}All Messages - FidelBooks{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<script src="{% static 'js/chat.js' %}"></script>
+
+<style>
+	p {
+		font-weight: 300 !important;
+	}
+
+	body {
+		height: 100vh !important;
+		max-height: 100vh !important;
+		max-height: 100vh !important;
+		overflow: hidden;
+	}
+
+	.fade-top {
+		background-image: linear-gradient(0deg, var(--bs-light) 50%, #ffffff00 100%);
+	}
+
+	#room-indicator {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(255, 255, 255, .5);
+	}
+
+	.htmx-indicator {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		transform: none;
+		z-index: 10;
+	}
+</style>
+
+<div class="d-lg-none aside-nav chats-list ms-auto scroller">
+	<div class="aside-nav-toggler bg-white p-2"></div>
+	<div class="text-center border-bottom px-4 py-2 align-items-center d-flex">
+		<span>Messages</span>
+		<a role="button" class="btn btn-sm btn-outline-primary ms-auto"
+			hx-get="{% url 'chats:thread_new' %}?next={{ request.path }}" hx-target="#modals-here"
+			hx-indicator="#room-indicator">
+			New message</a>
+	</div>
+	<div contenteditable="true" spellcheck="true" dir="auto" data-placeholder="Message" class="bg-white border p-2">
+
+	</div>
+	<ul class="chat-list py-2 px-2 m-0" style="max-height: 90vh; overflow-y: auto;">
+		{% for room in rooms %}
+		{% get_partner request.user room as partner %}
+		<li>
+			<a role="button" class="py-3 px-4 mt-1 d-flex align-items-start text-dark chat-link radius-400 close-aside"
+				hx-get="{% url 'chats:thread' partner.id %}" hx-target="#chat-area" hx-indicator="#room-indicator"
+				hx-push-url="true">
+				<div>
+					<div class="avatar avatar-md">
+						<img src="{{ partner.avatar.url }}" alt="">
+					</div>
+				</div>
+				<div class="ms-2">
+					<h6 class="small mb-1 text-truncate">{{ partner.get_name }}</h6>
+					<div class="small text-muted text-truncate">
+						{% if room.room.latest_message.author == request.user %}
+						<span class="text-success">You:</span>
+						{% endif %}
+						{{ room.room.latest_message.content }}
+					</div>
+				</div>
+			</a>
+		</li>
+		{% empty %}
+		<div class="my-5 text-center">
+			<i class="far fa-meh-blank text-muted fa-3x mb-1"></i>
+			<p>So Empty</p>
+			<a href="#" class="btn btn-sm btn-fb-primary rounded-pill">Start New Message</a>
+		</div>
+		{% endfor %}
+	</ul>
+</div>
+
+<div class="container">
+	<div class="row py-3">
+		<div class="d-none d-lg-block col-lg-4 ms-auto scroller">
+
+			<div class="chat-nav position-relative radius-400 border bg-light scroll-y scroller"
+				style="height: 83vh; max-height: 83vh; z-index: 1;">
+
+				<!-- head -->
+				<header class="text-center border-bottom bg-light" style="position: sticky; top: 0; z-index: 1;">
+					<div class="align-items-center d-flex px-4 py-2">
+						<div>Messages</div>
+						<div class="ms-auto">
+							<a role="button" class="btn btn-sm btn-outline-primary ms-auto"
+								hx-get="{% url 'chats:thread_new' %}?next={{ request.path }}" hx-target="#modals-here">
+								New message
+								<div class="text-center htmx-indicator">
+									<span class="dots-loader">
+										<i class="spinner__dot spinner__dot--one"></i>
+										<i class="spinner__dot spinner__dot--two"></i>
+										<i class="spinner__dot spinner__dot--three"></i>
+									</span>
+								</div>
+							</a>
+						</div>
+					</div>
+
+					{% if supports %}
+					<ul class="nav nav-pills nav-fill justify-content-center" id="pills-tab" role="tablist">
+						<li class="nav-item" role="presentation">
+							<button class="nav-link py-3 active" id="pills-personal-tab" data-bs-toggle="pill"
+								data-bs-target="#pills-personal" type="button" role="tab" aria-controls="pills-personal"
+								aria-selected="true">
+								Personal
+							</button>
+						</li>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link py-3" id="pills-group-tab" data-bs-toggle="pill"
+								data-bs-target="#pills-group" type="button" role="tab" aria-controls="pills-group"
+								aria-selected="true">
+								Collections
+							</button>
+						</li>
+					</ul>
+					{% endif %}
+				</header>
+
+				<div class="tab-content" id="pills-tabContent">
+					<div class="tab-pane fade show active" id="pills-personal" role="tabpanel"
+						aria-labelledby="pills-personal-tab">
+						<!-- nav -->
+						<ul class="list-unstyled">
+							{% for room in rooms %}
+							{% get_partner request.user room as partner %}
+							<li class="px-2 mt-1">
+								<a role="button" class="py-3 px-2 mx-auto row w-100 text-dark chat-link"
+									hx-get="{% url 'chats:thread' partner.id %}" hx-target="#chat-area"
+									hx-indicator="#room-indicator" hx-push-url="true">
+									<div class="col-2 p-0">
+										<div>
+											<div class="avatar avatar-md">
+												<img src="{{ partner.avatar.url }}" alt="">
+											</div>
+										</div>
+									</div>
+									<div class="col-10 position-relative">
+										<h6 class="small mb-1 text-truncate">{{ partner.get_name }}</h6>
+										<div class="small text-muted text-truncate">
+											{% if room.room.latest_message.author == request.user %}
+											<span class="text-success">You:</span>
+											{% endif %}
+											{{ room.room.latest_message.content }}
+										</div>
+										<div class="position-absolute text-dark px-2 radius-400"
+											style="background-color: #85cdca; top: 50%; right: 0; transform: translate(-50%, -50%);">
+											3</div>
+									</div>
+								</a>
+							</li>
+							<li class="px-2 mt-1">
+								<a role="button" class="py-3 px-4 mx-auto row w-100 text-dark chat-link"
+									hx-get="{% url 'chats:thread' partner.id %}" hx-target="#chat-area"
+									hx-indicator="#room-indicator" hx-push-url="true">
+									<div class="col-2 p-0">
+										<div>
+											<div class="avatar avatar-md">
+												<img src="{{ partner.avatar.url }}" alt="">
+											</div>
+										</div>
+									</div>
+									<div class="col-10 position-relative">
+										<h6 class="small mb-1 text-truncate">{{ partner.get_name }}</h6>
+										<div class="small text-muted text-truncate">
+											{% if room.room.latest_message.author == request.user %}
+											<span class="text-success">You:</span>
+											{% endif %}
+											{{ room.room.latest_message.content }}
+										</div>
+										<div class="position-absolute text-dark px-2 radius-400"
+											style="background-color: #85cdca; top: 50%; right: 0; transform: translate(-50%, -50%);">
+											3</div>
+									</div>
+								</a>
+							</li>
+							{% empty %}
+							<div class="my-5 text-center">
+								<i class="far fa-meh-blank text-muted fa-3x mb-1"></i>
+								<p>So Empty</p>
+								<a href="#" class="btn btn-sm btn-fb-primary rounded-pill">Start New Message</a>
+							</div>
+							{% endfor %}
+						</ul>
+					</div>
+
+					<div class="tab-pane fade" id="pills-group" role="tabpanel" aria-labelledby="pills-group-tab">
+
+						<ul class="chat-list py-2 px-0 m-0">
+							{% for support in supports %}
+							<li>
+								<a role="button"
+									class="py-3 px-4 d-flex align-items-start text-dark chat-link position-relative"
+									hx-get="{% url 'chats:page_support' support.page.id %}" hx-target="#chat-area"
+									hx-indicator="#room-indicator" hx-push-url="true">
+									<div>
+										<div class="avatar avatar-md">
+											<img src="{{ support.page.logo.url }}" alt="{{ support.page.name }}">
+										</div>
+									</div>
+									<div class="ms-2">
+										<h6 class="small mb-1 text-truncate">{{ support.page.name }}</h6>
+										<div class="small text-muted text-truncate">
+											{% if support.room.latest_message.author == request.user %}
+											<span class="text-success">You:</span>
+											{% endif %}
+											{{ support.room.latest_message.content }}
+										</div>
+									</div>
+									<div class="position-absolute align-self-center end-0 me-3 text-dark px-2 radius-400"
+										style="background-color: #85cdca;">3</div>
+								</a>
+							</li>
+							{% empty %}
+							<div class="my-5 text-center">
+								<i class="far fa-meh-blank text-muted fa-3x mb-1"></i>
+								<p>So Empty</p>
+								<a href="#" class="btn btn-sm btn-fb-primary rounded-pill">Start New Message</a>
+							</div>
+							{% endfor %}
+						</ul>
+
+					</div>
+				</div>
+
+				<div class="fade-top p-4" style="position: sticky; bottom: 0;"></div>
+			</div>
+
+		</div>
+		<div class="col-lg-6 me-auto d-flex" style="height: 83vh; max-height: 83vh;">
+			<div id="chat-area" class="position-relative d-flex radius-400 border w-100">
+				<div id="room-indicator" class="htmx-indicator"></div>
+				{% include 'chats/partials/thread.html' %}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="modals-here"></div>
+
+{% endblock %}
+
+{% block newsletter %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block script %}
+<template id="my-template">
+	<swal-title>
+		Save changes to "Untitled 1" before closing?
+	</swal-title>
+	<swal-icon type="warning" color="red"></swal-icon>
+	<swal-button type="confirm">
+		Save As
+	</swal-button>
+	<swal-button type="cancel" class="btn border">
+		Cancel
+	</swal-button>
+	<swal-button type="deny">
+		Close without Saving
+	</swal-button>
+	<swal-param name="allowEscapeKey" value="false" />
+	<swal-param name="customClass" value='{ "popup": "my-popup" }' />
+</template>
+<script>
+	// Swal.fire({
+	// 	template: '#my-template'
+	// })
+	// Swal.fire(
+	// 	'Good job!',
+	// 	'You clicked the button!',
+	// 	'success'
+	// )
+	// Swal.fire({title: 'Are you sure?', text:'This will delete the chat permanently and it cannot be <strong>undone!</strong>'})
+	$('.delete-chat').click(function () {
+		Swal.fire({
+			title: '<h5>Are you sure?</h5>',
+			icon: 'warning',
+			html: 'This will delete the chat permanently and it cannot be <b>undone!</b>',
+			showCloseButton: true,
+			showCancelButton: true,
+			focusConfirm: false,
+			confirmButtonText: 'Delete Chat',
+			confirmButtonAriaLabel: 'Delete chat',
+			cancelButtonText: 'Cancel',
+			cancelButtonAriaLabel: 'Cancel',
+			confirmButtonColor: 'var(--bs-danger)',
+			cancelButtonColor: '#000',
+			// buttonsStyling: false,
+		})
+	})
+	$('.delete-chat').click(function () {
+		Swal.fire({
+			title: '<h5>Are you sure?</h5>',
+			icon: 'warning',
+			html: 'This will delete the chat permanently and it cannot be <b>undone!</b>',
+			showCloseButton: true,
+			showCancelButton: true,
+			focusConfirm: false,
+			confirmButtonText: 'Delete Chat',
+			confirmButtonAriaLabel: 'Delete chat',
+			cancelButtonText: 'Cancel',
+			cancelButtonAriaLabel: 'Cancel',
+			confirmButtonColor: 'var(--bs-danger)',
+			cancelButtonColor: '#000',
+			// buttonsStyling: false,
+		})
+	})
+
+	// const Toast = Swal.mixin({
+	// 	toast: true,
+	// 	position: 'bottom-start',
+	// 	showConfirmButton: false,
+	// 	timer: 3000,
+	// 	timerProgressBar: false,
+	// 	didOpen: (toast) => {
+	// 		toast.addEventListener('mouseenter', Swal.stopTimer)
+	// 		toast.addEventListener('mouseleave', Swal.resumeTimer)
+	// 	}
+	// })
+
+	// Toast.fire({
+	// 	icon: 'success',
+	// 	title: 'Signed in successfully'
+	// })
+
+	$('.chat-link').click(function () {
+		$('.chat-link.active').removeClass('active');
+		$(this).addClass('active');
+		history.pushState({ tab: 'message room' }, '', this.href);
+	})
+</script>
+{% endblock %}

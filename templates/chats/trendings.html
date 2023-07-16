@@ -1,0 +1,7 @@
+{% for room in discussions %}
+<a href="{{ room.get_absolute_url }}" class="text-dark">
+	<div class="card border bg-light mb-2 p-2 small">
+		{{ room.headline }}: {{ room.description|truncatewords:5 }}
+	</div>
+</a>
+{% endfor %}
