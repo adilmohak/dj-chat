@@ -27,7 +27,7 @@ def index(request):
 # 	return render(request, 'chats/room.html', {
 # 		'room': room,
 # 		'room_name_json': mark_safe(json.dumps(room_name)),
-# 		'username': mark_safe(json.dumps(request.user.email))
+# 		'username': mark_safe(json.dumps(request.user.username))
 # 	})
 
 
@@ -42,7 +42,7 @@ def discussion_room(request, slug):
         {
             "room": room,
             "room_name_json": mark_safe(json.dumps(room_name)),
-            "username": mark_safe(json.dumps(request.user.email)),
+            "username": mark_safe(json.dumps(request.user.username)),
         },
     )
 
@@ -230,7 +230,7 @@ def thread(request, partner_id):
             ).distinct(),
             "supports": PageSupport.objects.filter(members=request.user),
             "room_name_json": mark_safe(json.dumps(thread.room.id)),
-            "username": mark_safe(json.dumps(request.user.email)),
+            "username": mark_safe(json.dumps(request.user.username)),
         },
     )
 
@@ -259,7 +259,7 @@ def page_support(request, page_id):
             # 'room': support_group.room,
             # 'rooms': Thread.objects.filter(Q(user1=request.user) | Q(user2=request.user)).distinct(),
             # 'room_name_json': mark_safe(json.dumps(support_group.room.id)),
-            "username": mark_safe(json.dumps(request.user.email)),
+            "username": mark_safe(json.dumps(request.user.username)),
         },
     )
 

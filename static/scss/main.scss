@@ -5,19 +5,19 @@
 @import "fonts/poppins";
 
 :root {
-  --dj-primary: #41b3a3;
-  --dj-primary-200: rgba(64, 179, 163, 0.2);
-  --dj-primary-300: rgba(64, 179, 163, 0.3);
-  --dj-primary-400: rgba(64, 179, 163, 0.4);
-  --dj-primary-500: rgba(64, 179, 163, 0.5);
-  --dj-primary-600: rgba(64, 179, 163, 0.6);
-  --dj-primary-700: rgba(64, 179, 163, 0.7);
-  --dj-primary-800: rgba(64, 179, 163, 0.8);
+  --dj-primary: #ffc530;
+  --dj-primary-200: rgba(254, 173, 0, 0.2);
+  --dj-primary-300: rgba(254, 173, 0, 0.3);
+  --dj-primary-400: rgba(254, 173, 0, 0.4);
+  --dj-primary-500: rgba(254, 173, 0, 0.5);
+  --dj-primary-600: rgba(254, 173, 0, 0.6);
+  --dj-primary-700: rgba(254, 173, 0, 0.7);
+  --dj-primary-800: rgba(254, 173, 0, 0.8);
   --dj-danger-200: rgba(220, 53, 69, 0.2);
   --dj-danger-300: rgba(220, 53, 69, 0.3);
   --dj-danger-400: rgba(220, 53, 69, 0.4);
   --dj-light-green: #85cdca;
-  --dj-dark: #3f3d56;
+  --dj-dark: hsl(41, 100%, 25%);
   --dj-orange: #fd7e14;
   --dj-body-bg: #fafafa;
   --dynamic-font-scale: 1;
@@ -1085,6 +1085,11 @@ a.hover-underline:hover {
   &:hover {
     background-color: #efefef;
   }
+}
+
+.form-control:focus {
+  border-color: var(--dj-primary);
+  box-shadow: 0 0 0 3px var(--dj-primary-400);
 }
 
 @import "partials/glitch";

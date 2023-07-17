@@ -28,12 +28,13 @@
 			<div class="col-md-4 d-none d-md-block">
 				<div class="card p-3 mb-2">
 					<a href="{{ request.user.get_absolute_url }}" class="d-flex align-items-top mb-1">
-						<div class="avatar me-2">
-							<img src="{{ request.user.avatar.url }}" alt="">
+						<div class="avatar avatar-text me-2">
+							{{ request.user.username|first }}
 						</div>
-						<div class="publisher-detail">
-							<h6 class="p-0 m-0">{{ request.user }}</h6>
-							<h6 class="p-0 mb-2 text-muted">{{ request.user.job }}</h6>
+						<div class="publisher-detail text-dark">
+							<h6 class="mb-0">{{ request.user }}</h6>
+							<p class="mb-2 text-muted" style="font-size: 12px;">
+								Last login: {{ request.user.last_login|date }}</p>
 						</div>
 					</a>
 					<a role="button" class="btn btn-sm btn-fb-primary" hx-get="{% url 'chats:discussion_create' %}"

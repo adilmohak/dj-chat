@@ -2,15 +2,6 @@
 {% load i18n %}
 
 <style>
-	/* .primary-search {
-		display: block;
-	}
-	.primary-search input:read-only {
-		background-color: #f1f1f1;
-	}
-	.primary-search input::placeholder {
-		color: #949494;
-	} */
 	.search-sm {
 		display: none;
 	}
@@ -21,7 +12,9 @@
 		}
 
 		.search-sm {
-			display: block;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 		}
 	}
 </style>
@@ -32,19 +25,9 @@
 
 		<!-- nav menu left -->
 		<ul class="navbar-nav me-auto mb-lg-0">
-			<a href="/">
-				<img src="{% static 'images/favicons/favicon-txt-141x30.png' %}" width="120px" alt="FidelBooks">
+			<a class="navbar-brand" href="/">
+				<img src="{% static 'images/favicon-txt.svg' %}" width="120px" alt="FidelBooks">
 			</a>
-			{% if request.user.is_authenticated %}
-			<li class="nav-item ms-2">
-				<a class="nav-link d-flex flex-column text-center small py-0
-				{% if fee in request.path or rec in request.path or new in request.path or boo in request.path or peo in request.path or rec_ in request.path or bes in request.path %} active-link {% endif %}"
-					style="line-height: .8;" href="">
-					<i class="zmdi zmdi-home" style="font-size: 25px;"></i> <span class="small">{% translate 'Home'
-						%}</span></a>
-			</li>
-			{% endif %}
-
 		</ul>
 
 		<!-- nav menu center -->
@@ -56,7 +39,7 @@
 
 		<!-- nav menu right -->
 		<ul class="navbar-nav ms-auto mb-lg-0">
-			<button class="search-sm btn btn-circle mx-2 align-self-center border bg-light text-muted"
+			<button class="search-sm btn btn-nav mx-2 align-self-center border bg-light text-muted"
 				data-bs-toggle="modal" data-bs-target="#primarySearchModal">
 				<i class="zmdi zmdi-search fa-1-5x text-gray-400"></i></button>
 
@@ -70,34 +53,6 @@
 			{% endif %}
 
 			{% if request.user.is_authenticated %}
-			<!-- Notification panel -->
-			<li class="nav-item dropdown scroller me-2">
-				<a hx-get="" hx-target="#notifications-list" class="btn-nav nav-link position-relative" href="#"
-					id="notificationPanel" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-					data-bs-auto-close="outside">
-					<i class="zmdi zmdi-notifications fw-900"></i>
-					<span class="notify-badge">
-						<span id="total-unread-main-notifications-counter"></span>
-						<span class="visually-hidden">unread notifications</span>
-					</span>
-				</a>
-				<!-- Dropdown - notifications -->
-				<ul class="dropdown-list dropdown-menu dropdown-menu-end dropdown-menu-sm-popup animated--grow-in origin-right"
-					aria-labelledby="addPanel">
-					<h6 class="small pt-2 text-center text-gray-500">
-						{% translate 'Notification Center' %}
-					</h6>
-					<div id="notifications-list">
-						<div class="text-center m-3">
-							<span class="dots-loader">
-								<i class="spinner__dot spinner__dot--one"></i>
-								<i class="spinner__dot spinner__dot--two"></i>
-								<i class="spinner__dot spinner__dot--three"></i>
-							</span>
-						</div>
-					</div>
-				</ul>
-			</li>
 			<!-- Discussion panel -->
 			<li class="nav-item me-2">
 				<a class="nav-link btn-nav position-relative 
@@ -151,36 +106,6 @@
 					</div>
 				</ul>
 			</li>
-			<!-- Cart panel -->
-			<li class="nav-item dropdown scroller me-2">
-				<a hx-get="" hx-target="#cart-items" hx-trigger="click"
-					class="btn-nav nav-link position-relative {% if request.path == car %} active-link {% endif %}"
-					href="#" id="cartPanel" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-					data-bs-auto-close="outside">
-					<i class="zmdi zmdi-shopping-cart fw-900"></i>
-					<span class="notify-badge">
-						<span id="cart-items-counter"></span>
-						<span class="visually-hidden">uncheckout cart items</span>
-					</span>
-				</a>
-				<!-- Dropdown - cart -->
-				<div class="dropdown-list dropdown-menu dropdown-menu-end dropdown-menu-sm-popup animated--grow-in origin-right py-0"
-					aria-labelledby="messagesDropdown">
-
-					<h6 class="small pt-2 text-center text-gray-500">
-						{% translate 'Your Cart' %}
-					</h6>
-					<div id="cart-items">
-						<div class="text-center m-3">
-							<span class="dots-loader">
-								<i class="spinner__dot spinner__dot--one"></i>
-								<i class="spinner__dot spinner__dot--two"></i>
-								<i class="spinner__dot spinner__dot--three"></i>
-							</span>
-						</div>
-					</div>
-				</div>
-			</li>
 			<!-- Add panel -->
 			<li class="nav-item dropdown scroller me-2">
 				<a class="btn-nav nav-link position-relative" href="#" id="addPanel" role="button"
@@ -192,7 +117,6 @@
 					<h6 class="small pt-2 text-center text-gray-500">{% translate 'Add Panel' %}</h6>
 					<li>
 						<a class="dropdown-item d-flex align-items-center px-2" href="">
-							<img src="{% static 'images/open-book-plus-45.png' %}" class="me-2" alt="">
 							<div>
 								<h6 class="m-0 small">Add Book</h6>
 								<p class="x-small text-gray-500">
@@ -203,7 +127,6 @@
 					</li>
 					<li>
 						<a class="dropdown-item d-flex align-items-center px-2" href="?type=swap">
-							<img src="{% static 'images/book-hold-plus-45.png' %}" class="me-2" alt="">
 							<div>
 								<h6 class="m-0 small">Add Book To Swap</h6>
 								<p class="x-small text-gray-500">
@@ -226,7 +149,6 @@
 					</li> -->
 					<li>
 						<a class="dropdown-item d-flex align-items-center px-2" href="">
-							<img src="{% static 'images/business-page-plus-45.png' %}" class="me-2" alt="">
 							<div>
 								<h6 class="m-0 small">Create Collection</h6>
 								<span class="badge bg-warning small-200 rounded-pill"><strong><i
@@ -244,25 +166,19 @@
 			<li class="nav-item dropdown scroller">
 				<a href="#user-panel" id="userPanel" role="button" data-bs-toggle="dropdown" aria-expanded="false"
 					data-bs-auto-close="outside">
-					<div class="avatar">
-						<img src="{{ request.user.avatar.url }}" alt="{{ request.user.get_name }}">
+					<div class="avatar avatar-text">
+						{{ request.user.username|first }}
 					</div>
 				</a>
 				<ul class="dropdown-menu dropdown-menu-end animated--grow-in origin-right" aria-labelledby="userPanel"
-					style="max-width: 260px;">
+					style="width: 240px;">
 
 					<!-- {% if not perms.books.special_status %}
 							<li class="text-center"><a href="#" class="my-2 text-warning">Go pro now.</a></li>
 						{% endif %} -->
 					<li><a class="dropdown-item" href="{{ request.user.get_absolute_url }}"><i
 								class="zmdi zmdi-account me-2"></i> Profile</a></li>
-					<li><a class="dropdown-item" href="{% url 'collections:list' %}">
-							<i class="zmdi zmdi-collection-item me-2"></i> My Collections</a>
-					</li>
-					<li><a class="dropdown-item" href="{% url 'carts:order_history' %}">
-							<i class="zmdi zmdi-time-restore me-2"></i> History</a>
-					</li>
-					<li><a class="dropdown-item" href="{% url 'accounts:profile_setting' %}">
+					<li><a class="dropdown-item" href="#">
 							<i class="zmdi zmdi-settings me-2"></i> Setting</a>
 					</li>
 					{% if request.user.is_superuser %}
@@ -287,8 +203,8 @@
 
 					<div class="divider my-2"></div>
 
-					<li>
-						<div class="x-small">last joined: {{ request.user.last_joined|date }}</div>
+					<li class="px-3">
+						<div class="x-small">last joined: {{ request.user.last_login|date }}</div>
 						<form method="post" action="{% url 'account_logout' %}">
 							{% csrf_token %}
 							{% if redirect_field_value %}

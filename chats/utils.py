@@ -41,7 +41,7 @@ from django.db.models import Q
 
 
 def mark_messages_as_read(messages, username):
-    user = User.objects.get(email=username)
+    user = User.objects.get(username=username)
     for msg in messages:
         # check if the msg is created by current user and it is unread
         if not msg.author == user and msg.unread:

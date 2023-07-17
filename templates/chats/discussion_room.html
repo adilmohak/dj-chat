@@ -106,11 +106,11 @@
 						</div>
 						{% endif %}
 					</div>
-					<p><span class="bold-400">{{ room.headline }}:</span> <span class="small">{{ room.description
-							}}</span></p>
+					<p><span class="bold-400">{{ room.headline }}:</span> <span class="small">
+							{{ room.description }}</span></p>
 					<div class="d-flex">
 						{% for tag in room.tags.all %}
-						<span class="small bg-fb-primary-200 text-primary rounded-pill px-2 me-1">{{ tag }}</span>
+						<span class="small bg-fb-primary-200 rounded-pill px-2 me-1">{{ tag }}</span>
 						{% endfor %}
 					</div>
 				</div>
@@ -199,6 +199,8 @@
 	roomName = {{ room_name_json }};
 	username = {{ username }};
 	roomId = {{ room.room.id }};
+
+	console.log("Room name", roomName, "Username", username, "Room id", roomId);
 	// next = '{{ next_page }}';
 
 	$().chat(roomName, username, roomId, null, true);

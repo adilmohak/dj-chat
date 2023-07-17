@@ -1,18 +1,18 @@
 .btn-fb-primary {
-  color: #fff;
-  background-color: #41b3a3;
-  border-color: #41b3a3;
+  color: #000;
+  background-color: var(--dj-primary);
+  border-color: var(--dj-primary);
 }
 .btn-fb-primary:hover {
-  color: #fff;
-  background-color: #3e8e83;
-  border-color: #3a887d;
+  color: #000;
+  background-color: var(--dj-primary-600);
+  border-color: var(--dj-primary-600);
 }
 .btn-check:focus + .btn-fb-primary,
 .btn-fb-primary:focus {
-  color: #fff;
-  background-color: #3e8e83;
-  border-color: #3a887d;
+  color: #000;
+  background-color: var(--dj-primary-600);
+  border-color: var(--dj-primary-600);
   box-shadow: 0 0 0 0.25rem rgba(101, 203, 165, 0.5);
 }
 .btn-check:checked + .btn-fb-primary,
@@ -20,8 +20,8 @@
 .btn-fb-primary:active,
 .btn-fb-primary.active,
 .show > .btn-fb-primary.dropdown-toggle {
-  color: #fff;
-  background-color: #3a887d;
+  color: #000;
+  background-color: var(--dj-primary-600);
   border-color: #367c73;
 }
 .btn-check:checked + .btn-fb-primary:focus,
@@ -33,9 +33,9 @@
 }
 .btn-fb-primary:disabled,
 .btn-fb-primary.disabled {
-  color: #fff;
-  background-color: #41b3a3;
-  border-color: #41b3a3;
+  color: #000;
+  background-color: var(--dj-primary);
+  border-color: var(--dj-primary);
 }
 
 .btn.shadow {
