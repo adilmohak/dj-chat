@@ -20,6 +20,7 @@ urlpatterns = [
     path(
         "auth/", include("allauth.urls")
     ),  # basic user managements (login/logout, signup, change email/password)
+    path("select2/", include("django_select2.urls")), # Javascript select2 for multiple selects
     path("admin/", admin.site.urls),
 ]
 
