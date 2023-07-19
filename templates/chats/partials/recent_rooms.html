@@ -1,40 +1,37 @@
 {% load static %}
 
 {% for room in rooms %}
-	<div class="mb-2">
-		<a href="{{ room.get_absolute_url }}" class="d-inline-flex position-relative bg-light border radius-200 p-2">
-			<p class="small mb-0">
-				<b>{{ room.headline }}:</b>
-				{{ room.description|truncatewords:6 }}
-			</p>
-			<!-- <span class="notify-badge" style="display: block;">
+<div class="mb-2">
+	<a href="{{ room.get_absolute_url }}" class="d-inline-flex position-relative bg-light border radius-200 p-2">
+		<p class="small mb-0">
+			<b>{{ room.headline }}:</b>
+			{{ room.description|truncatewords:6 }}
+		</p>
+		<!-- <span class="notify-badge" style="display: block;">
 				<span id="">34</span>
 				<span class="visually-hidden">unread notifications</span>
 			</span> -->
-		</a>
-	</div>
+	</a>
+</div>
 {% empty %}
-	<div class="d-flex flex-column justify-content-center align-items-center">
-		<img src="{% static 'images/empty-folder.png' %}" width="70px">
-		<h6 class="text-muted text-center mt-2">Nothing to show here.</h6>
-	</div>
+<div class="d-flex flex-column justify-content-center align-items-center">
+	<img src="{% static 'images/empty-folder.png' %}" width="70px">
+	<h6 class="text-muted text-center mt-2">Nothing to show here.</h6>
+</div>
 {% endfor %}
 
 {% if page_obj.has_next %}
 <div id="paginator">
-	<a hx-get="{% url 'core:user_rooms' %}?page={{ page_obj.next_page_number }}" 
-	hx-target="#paginator"
-	hx-trigger="click"
-	hx-swap="outerHTML"
-	role="button" id="load-more" class="btn btn-sm w-100">
-	Load More <i class="fa fa-circle-arrow-right fa-2x"></i> 
-	<div class="htmx-indicator">
-		<span class="dots-loader">
-			<i class="spinner__dot spinner__dot--one"></i>
-			<i class="spinner__dot spinner__dot--two"></i>
-			<i class="spinner__dot spinner__dot--three"></i>
-		</span>
-	</div>
+	<a hx-get="?page={{ page_obj.next_page_number }}" hx-target="#paginator" hx-trigger="click" hx-swap="outerHTML"
+		role="button" id="load-more" class="btn btn-sm w-100">
+		Load More <i class="fa fa-circle-arrow-right fa-2x"></i>
+		<div class="htmx-indicator">
+			<span class="dots-loader">
+				<i class="spinner__dot spinner__dot--one"></i>
+				<i class="spinner__dot spinner__dot--two"></i>
+				<i class="spinner__dot spinner__dot--three"></i>
+			</span>
+		</div>
 	</a>
 </div>
 {% endif %}

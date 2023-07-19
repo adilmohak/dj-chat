@@ -3,17 +3,20 @@
 <div id="modal-backdrop" class="modal-backdrop fade show" style="display:block;"></div>
 <div id="modal" class="modal fade show animated--grow-in" tabindex="-1" style="display:block;">
 	<div class="modal-dialog modal-dialog-centered">
-	  <div class="modal-content radius-400 overflow-hidden border-0">
+		<div class="modal-content radius-400 overflow-hidden border-0">
 
-		<div class="modal-header px-3 py-2 bg-fb-primary-200" style="border-color: var(--light-green);">
-		  <h6 class="modal-title">Recent Rooms <span class="badge bg-secondary radius-400">{{ recent_rooms_count }}</span></h6>
-		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeModal()"></button>
-		</div>
-		<div class="modal-body">
+			<div class="modal-header px-3 py-2 bg-fb-primary-200" style="border-color: var(--light-green);">
+				<h6 class="modal-title">Recent Rooms <span class="badge bg-secondary radius-400">{{ recent_rooms_count
+						}}</span></h6>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+					onclick="closeModal()"></button>
+			</div>
+			<div class="modal-body">
 
-			{% for room in rooms %}
+				{% for room in rooms %}
 				<div class="mb-2">
-					<a href="{{ room.get_absolute_url }}" class="d-inline-flex position-relative bg-light border radius-200 p-2">
+					<a href="{{ room.get_absolute_url }}"
+						class="d-inline-flex position-relative bg-light border radius-200 p-2">
 						<p class="small mb-0">
 							<b>{{ room.headline }}:</b>
 							{{ room.description|truncatewords:6 }}
@@ -29,33 +32,30 @@
 					<img src="{% static 'images/empty-folder.png' %}" width="70px">
 					<h6 class="text-muted text-center mt-2">Nothing to show here.</h6>
 				</div>
-			{% endfor %}
-			
-			{% if page_obj.has_next %}
-			<div id="paginator">
-				<a hx-get="{% url 'core:user_rooms' %}?page={{ page_obj.next_page_number }}" 
-				hx-target="#paginator"
-				hx-trigger="click"
-				hx-swap="outerHTML"
-				role="button" id="load-more" class="btn btn-sm w-100">
-				Load More <i class="fa fa-circle-arrow-right fa-2x"></i> 
-				<div class="htmx-indicator">
-					<span class="dots-loader">
-						<i class="spinner__dot spinner__dot--one"></i>
-						<i class="spinner__dot spinner__dot--two"></i>
-						<i class="spinner__dot spinner__dot--three"></i>
-					</span>
+				{% endfor %}
+
+				{% if page_obj.has_next %}
+				<div id="paginator">
+					<a hx-get="?page={{ page_obj.next_page_number }}" hx-target="#paginator" hx-trigger="click"
+						hx-swap="outerHTML" role="button" id="load-more" class="btn btn-sm w-100">
+						Load More <i class="fa fa-circle-arrow-right fa-2x"></i>
+						<div class="htmx-indicator">
+							<span class="dots-loader">
+								<i class="spinner__dot spinner__dot--one"></i>
+								<i class="spinner__dot spinner__dot--two"></i>
+								<i class="spinner__dot spinner__dot--three"></i>
+							</span>
+						</div>
+					</a>
 				</div>
+				{% endif %}
+
+			</div>
+			<div class="modal-footer">
+				<a href="" class="small a-fb-default">
+					<i class="fa fa-random"></i> Join Random Discussion
 				</a>
 			</div>
-			{% endif %}
-			
 		</div>
-		<div class="modal-footer">
-			<a href="{% url 'core:people_nearby' %}" class="small a-fb-default">
-				<i class="fa fa-random"></i> Join Random Discussion
-			</a>
-		</div>
-	  </div>
 	</div>
 </div>

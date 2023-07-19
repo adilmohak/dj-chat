@@ -278,7 +278,7 @@ def thread_new(request):
                 )
                 msgs.append(message.id)
             names = [
-                f'<span class="badge bg-dark me-1">{r.get_name}</span>'
+                f'<span class="badge bg-dark me-1">{r.username}</span>'
                 for r in recipients
             ]
 
