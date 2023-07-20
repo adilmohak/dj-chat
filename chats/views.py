@@ -15,10 +15,6 @@ from .models import Message, PageSupport, Room, Thread, DiscussionRoom
 from .forms import DiscussionRoomForm, BulkMessageForm, InviteForm
 
 
-def index(request):
-    return render(request, "chats/index.html", {})
-
-
 # @login_required
 # def room(request, id):
 # 	# room_obj, new_obj = Room.objects.new_or_get(request)
@@ -235,35 +231,6 @@ def thread(request, partner_id):
     )
 
 
-@login_required
-def page_support(request, page_id):
-    # user = get_object_or_404(User, i)
-    # page = get_object_or_404(Collection, id=page_id)
-    # support_group, created = PageSupport.objects.new_or_get(request.user, page)
-
-    display = request.GET.get("display")
-    if request.htmx and display == "popup":
-        template_name = "chats/partials/page_support_popup.html"
-    elif request.htmx:
-        template_name = "chats/partials/page_support.html"
-    else:
-        template_name = "chats/page_support_single.html"
-
-    return render(
-        request,
-        template_name,
-        {
-            "partner": request.user,
-            # 'support_group': support_group,
-            # 'page': page,
-            # 'room': support_group.room,
-            # 'rooms': Thread.objects.filter(Q(user1=request.user) | Q(user2=request.user)).distinct(),
-            # 'room_name_json': mark_safe(json.dumps(support_group.room.id)),
-            "username": mark_safe(json.dumps(request.user.username)),
-        },
-    )
-
-
 def thread_new(request):
     if request.method == "POST":
         form = BulkMessageForm(request.POST)
@@ -347,7 +314,7 @@ def chat_mute(request):
         room.muted = not room.muted
         room.save()
         msg = "Chat has been muted." if room.muted else "Chat has been unmuted."
-        if request.htmx:
+        if request.htmx or request.is_ajax():
             return JsonResponse({"muted": room.muted, "msg": msg})
         else:
             messages.success(request, msg)

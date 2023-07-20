@@ -94,10 +94,10 @@
 					<div id="results" class="animated--fade-in">
 						<div class="ms-2 mt-1 text-muted small">{% translate 'Start typing' %}...</div>
 					</div>
-					<!-- <h6 class="mt-4 pb-2 border-bottom">Recent searches</h6>
-					<span class="badge bg-light text-dark border-pill border me-2">The Alchemist</span>
-					<span class="badge bg-light text-dark border-pill border me-2">The Alchemist</span>
-					<span class="badge bg-light text-dark border-pill border me-2">The Alchemist</span> -->
+					<h6 class="mt-4 pb-2 border-bottom">Recent searches</h6>
+					<span class="badge bg-light text-dark border-pill border me-2">Lorem ipsun set amet</span>
+					<span class="badge bg-light text-dark border-pill border me-2">dolor incidunt voluptatum</span>
+					<span class="badge bg-light text-dark border-pill border me-2">excepturi facilis quisquam</span>
 				</div>
 			</div>
 		</div>
@@ -127,9 +127,6 @@
 
 	<!-- Custom js -->
 	<script src="{% static 'js/main.js' %}"></script>
-	{% if request.user.is_authenticated %}
-	<!-- <script src="{% static 'js/notifications.js' %}"></script> -->
-	{% endif %}
 
 	<script>
 		// log all events triggered by htmx -- usefull for debuging
@@ -138,44 +135,6 @@
 		// 		console.log(event, elt, data);
 		// 	}
 		// }
-	</script>
-
-	<script>
-		$(document).ready(function () {
-			primarySearchModal = document.getElementById('primarySearchModal');
-			primarySearchInput = document.getElementById('id_primary_search_input');
-			primarySearchModal.addEventListener('shown.bs.modal', function () {
-				primarySearchInput.focus()
-			})
-
-			$('.collapse').collapse();
-		})
-
-		{% if messages %}
-
-		toastr.options = {
-			"closeButton": false,
-			"debug": false,
-			"newestOnTop": false,
-			// "progressBar": true,
-			"positionClass": "toast-bottom-left",
-			"preventDuplicates": false,
-			"onclick": null,
-			"showDuration": "300",
-			"hideDuration": "1000",
-			"timeOut": "5000",
-			"extendedTimeOut": "1000",
-			"showEasing": "swing",
-			"hideEasing": "linear",
-			"showMethod": "fadeIn",
-			"hideMethod": "fadeOut"
-		};
-		{% autoescape off %}
-		{% for msg in messages %}
-		toastr.{ { msg.level_tag } } (`{{ msg|safe }}`);
-		{% endfor %}
-		{% endautoescape %}
-		{% endif %}
 	</script>
 
 	{% if request.user.is_authenticated %}
@@ -196,25 +155,25 @@
 				toastr.error(msg);
 			}
 
-			// function total_unread_messages() {
-			// 	$.ajax({
-			// 			type: 'GET',
-			// 			url: "{% url 'chats:total_unread_messages' %}",
-			// 			success: function (response) {
-			// 				if (response['total_unread_counter'] > 0){
-			// 					$('#total-unread-msgs').parent('.notify-badge').css('display', 'block')
-			// 					$('#total-unread-msgs').text(`${response['total_unread_counter']}`);
-			// 					$('.zmdi-email').addClass('animated-bell-ring');
-			// 				}
-			// 				else {$('#total-unread-msgs').parent('.notify-badge').css('display', 'none')}
-			// 			},
-			// 			error: function (response) {
-			// 				console.log(response)
-			// 				requestFailHandler()
-			// 			}
-			// 	})
-			// }
-			// total_unread_messages()
+			function total_unread_messages() {
+				$.ajax({
+					type: 'GET',
+					url: "{% url 'chats:total_unread_messages' %}",
+					success: function (response) {
+						if (response['total_unread_counter'] > 0) {
+							$('#total-unread-msgs').parent('.notify-badge').css('display', 'block')
+							$('#total-unread-msgs').text(`${response['total_unread_counter']}`);
+							$('.zmdi-email').addClass('animated-bell-ring');
+						}
+						else { $('#total-unread-msgs').parent('.notify-badge').css('display', 'none') }
+					},
+					error: function (response) {
+						// console.log(response)
+						requestFailHandler()
+					}
+				})
+			}
+			total_unread_messages()
 
 			// mute/unmute chat
 			$(document).on('submit', '.js-mute-chat', function (evt) {
@@ -224,7 +183,7 @@
 				data = $(this).serialize();
 				url = $(this).attr('action');
 				submitBtn = $(this).children('button[type=submit]');
-				console.log(submitBtn)
+				// console.log(submitBtn)
 				$.ajax({
 					type: 'POST',
 					url: url,
@@ -307,6 +266,13 @@
 		const csrftoken = getCookie('csrftoken');
 
 		$(document).ready(function () {
+			primarySearchModal = document.getElementById('primarySearchModal');
+			primarySearchInput = document.getElementById('id_primary_search_input');
+			primarySearchModal.addEventListener('shown.bs.modal', function () {
+				primarySearchInput.focus()
+			})
+
+			$('.collapse').collapse();
 
 			toastr.options = {
 				"closeButton": false,
@@ -363,6 +329,15 @@
 			})
 			toastList.forEach(toast => toast.show())
 		})
+
+		{% if messages %}
+		{% autoescape off %}
+		{% for msg in messages %}
+		console.log("msg---->", msg)
+		toastr.{ { msg.level_tag } } ({{ msg | safe }});
+		{% endfor %}
+		{% endautoescape %}
+		{% endif %}
 
 	</script>
 
