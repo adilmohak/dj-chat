@@ -98,7 +98,7 @@
 								<i class="fa fa-ellipsis-v"></i>
 							</button>
 							<ul class="dropdown-menu" aria-labelledby="configDiscussion">
-								<li><a class="dropdown-item" href="#"
+								<li><a class="dropdown-item" href="{% url 'chats:discussion_update' room.id %}"
 										hx-get="{% url 'chats:discussion_update' room.id %}"
 										hx-target="#modals-here">Edit</a></li>
 								<!-- <li><a class="dropdown-item text-danger" href="#">Delete</a></li> -->

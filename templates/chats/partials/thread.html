@@ -6,16 +6,17 @@
 
 	<div class="chat-head px-3 py-2 bg-fb-light-green d-flex justify-content-between align-items-center">
 		<a href="{{ partner.get_absolute_url }}" class="d-flex align-items-center text-dark me-3">
-			<div class="avatar">
-				<img src="{{ partner.avatar.url }}" alt="">
+			<div class="avatar avatar-text">
+				{{ partner.username }}
 			</div>
 			<div class="ms-2 small mb-0 p-0 text-truncate">{{ partner.get_name }}</div>
 			<!-- <p>{{ room.room.headline }}</p> -->
 		</a>
-		
+
 		<!-- room actions -->
 		<div class="ms-auto dropdown">
-			<button class="btn btn-sm btn-circle" type="button" id="chatMenu" data-bs-toggle="dropdown" aria-expanded="false">
+			<button class="btn btn-sm btn-circle" type="button" id="chatMenu" data-bs-toggle="dropdown"
+				aria-expanded="false">
 				<i class="fa fa-ellipsis"></i>
 			</button>
 			<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="chatMenu">
@@ -24,7 +25,8 @@
 						{% csrf_token %}
 						<input type="hidden" name="room_id" value="{{ room.id }}">
 						<input type="hidden" name="next" value="{{ request.path }}">
-						<button type="submit" class="dropdown-item small py-2">{% if room.muted %} Unmute {% else %} Mute {% endif %}</button>
+						<button type="submit" class="dropdown-item small py-2">{% if room.muted %} Unmute {% else %}
+							Mute {% endif %}</button>
 					</form>
 				</li>
 				<li>
@@ -37,9 +39,8 @@
 				</li>
 				<li>
 					<button type="submit" class="dropdown-item small text-danger py-2"
-					hx-get="{% url 'chats:chat_clear_history' %}?room_id={{ room.id }}&partner_id={{ partner.id }}"
-					hx-target="#modals-here"
-					hx-indicator="#room-indicator">Clear history</button>
+						hx-get="{% url 'chats:chat_clear_history' %}?room_id={{ room.id }}&partner_id={{ partner.id }}"
+						hx-target="#modals-here" hx-indicator="#room-indicator">Clear history</button>
 					<!-- <form action="{% url 'chats:chat_clear_history' %}" method="POST">
 						{% csrf_token %}
 						<input type="hidden" name="room_id" value="{{ room.id }}">
@@ -48,10 +49,8 @@
 					</form> -->
 				</li>
 				<li>
-					<button class="delete-chat dropdown-item small text-danger py-2"
-					hx-trigger="confirmed"
-					hx-get="{% url 'chats:chat_delete' %}?room_id={{ room.id }"
-					_="on click
+					<button class="delete-chat dropdown-item small text-danger py-2" hx-trigger="confirmed"
+						hx-get="{% url 'chats:chat_delete' %}?room_id={{ room.id }" _="on click
 						call Swal.fire({title: 'Are you sure?', text:'This will delete the chat permanently and it cannot be <strong>undone!</strong>'})
 						if result.isConfirmed trigger confirmed">Delete Chat</button>
 					<!-- <button type="submit" class="dropdown-item small text-danger py-2"
@@ -87,7 +86,8 @@
 				<i class="fa fa-face-angry"></i>
 			</button>
 		</div>
-		<textarea name="message" id="chat-message-input" class="form-control" placeholder="Write a message..." rows="1"></textarea>
+		<textarea name="message" id="chat-message-input" class="form-control" placeholder="Write a message..."
+			rows="1"></textarea>
 		<!-- <input type="text" id="chat-message-input" class="form-control" placeholder="Write a message..." autofocus> -->
 		<div>
 			<button type="button" class="btn btn-sm bg-gray-400 ms-3" id="chat-message-submit">
@@ -100,11 +100,11 @@
 <div id="modals-here"></div>
 
 <script>
-		roomName = {{ room_name_json }};
-		username = {{ username }};
-		roomId = {{ room.id }};
-		// next = '{{ next_page }}';
-		msg_counter_url = "{% url 'chats:total_unread_messages' %}";
-		
-		$().chat(roomName, username, roomId, msg_counter_url);
+	roomName = {{ room_name_json }};
+	username = {{ username }};
+	roomId = {{ room.id }};
+	// next = '{{ next_page }}';
+	msg_counter_url = "{% url 'chats:total_unread_messages' %}";
+
+	$().chat(roomName, username, roomId, msg_counter_url);
 </script>

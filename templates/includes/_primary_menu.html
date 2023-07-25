@@ -6,6 +6,10 @@
 		display: none;
 	}
 
+	.primary-search {
+		max-width: 800px;
+	}
+
 	@media screen and (max-width: 767px) {
 		.primary-search {
 			display: none;
@@ -106,62 +110,6 @@
 					</div>
 				</ul>
 			</li>
-			<!-- Add panel -->
-			<li class="nav-item dropdown scroller me-2">
-				<a class="btn-nav nav-link position-relative" href="#" id="addPanel" role="button"
-					data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-					<i class="zmdi zmdi-plus fw-900"></i>
-				</a>
-				<ul class="dropdown-list dropdown-menu dropdown-menu-end animated--grow-in origin-right"
-					aria-labelledby="addPanel">
-					<h6 class="small pt-2 text-center text-gray-500">{% translate 'Add Panel' %}</h6>
-					<li>
-						<a class="dropdown-item d-flex align-items-center px-2" href="">
-							<div>
-								<h6 class="m-0 small">Add Book</h6>
-								<p class="x-small text-gray-500">
-									Add a book, set your price, and start selling right away.
-								</p>
-							</div>
-						</a>
-					</li>
-					<li>
-						<a class="dropdown-item d-flex align-items-center px-2" href="?type=swap">
-							<div>
-								<h6 class="m-0 small">Add Book To Swap</h6>
-								<p class="x-small text-gray-500">
-									Have a book already? Add it here and choose which books you want to exchange.
-								</p>
-							</div>
-						</a>
-					</li>
-					<!-- <li>
-						<a class="dropdown-item d-flex align-items-center px-2"
-							href="?type=giveaway">
-							<img src="{% static 'images/gift-plus-45.png' %}" class="me-2" alt="">
-							<div>
-								<h6 class="m-0 small">Add Giveaway</h6>
-								<p class="small text-gray-500">
-									Lorem ipsum dolor sit amet consect adipisicing elit. Error repellendus.
-								</p>
-							</div>
-						</a>
-					</li> -->
-					<li>
-						<a class="dropdown-item d-flex align-items-center px-2" href="">
-							<div>
-								<h6 class="m-0 small">Create Collection</h6>
-								<span class="badge bg-warning small-200 rounded-pill"><strong><i
-											class="zmdi zmdi-fire"></i> Need verification
-									</strong></span><br>
-								<p class="x-small text-gray-500">
-									Have you own a bookstore? Add it here and start selling from your bookstore.
-								</p>
-							</div>
-						</a>
-					</li>
-				</ul>
-			</li>
 			<!-- User panel -->
 			<li class="nav-item dropdown scroller">
 				<a href="#user-panel" id="userPanel" role="button" data-bs-toggle="dropdown" aria-expanded="false"
@@ -186,20 +134,6 @@
 							<i class="zmdi zmdi-view-dashboard me-2"></i> Administration</a>
 					</li>
 					{% endif %}
-
-					<!-- <div class="divider my-2"></div>
-
-						<li><div class="text-muted text-center small mb-2">Your Pages</div></li>
-						
-						<div id="user-pages">
-							<div class="text-center" id="pages-indicator">
-								<span class="dots-loader">
-									<i class="spinner__dot spinner__dot--one"></i>
-									<i class="spinner__dot spinner__dot--two"></i>
-									<i class="spinner__dot spinner__dot--three"></i>
-								</span>
-							</div>
-						</div> -->
 
 					<div class="divider my-2"></div>
 

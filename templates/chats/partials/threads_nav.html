@@ -9,8 +9,7 @@
 
 <li>
 	<a class="dropdown-item position-relative
-	{% if unread == True %} unread {% endif %}" 
-	href="{% url 'chats:thread' partner.id %}">
+	{% if unread == True %} unread {% endif %}" href="{% url 'chats:thread' room.id %}?pid={{ partner.id }}">
 		{% if count > 0 %}
 		<span class="notify-badge" style="display: block;">
 			<span>{{ count }}</span>
@@ -19,14 +18,16 @@
 		{% endif %}
 		<div class="row">
 			<div class="col-2 position-relative px-0">
-				<div class="avatar avatar-md">
-					<img src="{{ partner.avatar.url }}" alt="">
+				<div class="avatar avatar-md avatar-text">
+					{{ partner.username }}
 				</div>
 				<div class="status-indicator bg-success"></div>
 			</div>
 			<div class="col-10">
 				<div class="small text-truncate">{{ room.room.latest_message.content }}</div>
-				<div class="x-small text-truncate text-gray-500">{{ partner.get_name }} · {{ room.room.latest_message.created|timesince }}</div>
+				<div class="x-small text-truncate text-gray-500">
+					{{ partner.get_name }} · {{ room.room.latest_message.created|timesince }}
+				</div>
 			</div>
 		</div>
 	</a>

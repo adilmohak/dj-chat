@@ -65,11 +65,11 @@
 		{% get_partner request.user room as partner %}
 		<li>
 			<a role="button" class="py-3 px-4 mt-1 d-flex align-items-start text-dark chat-link radius-400 close-aside"
-				hx-get="{% url 'chats:thread' partner.id %}" hx-target="#chat-area" hx-indicator="#room-indicator"
-				hx-push-url="true">
+				hx-get="{% url 'chats:thread' room.id %}?pid={{ partner.id }}" hx-target="#chat-area"
+				hx-indicator="#room-indicator" hx-push-url="true">
 				<div>
-					<div class="avatar avatar-md">
-						<img src="{{ partner.avatar.url }}" alt="">
+					<div class="avatar avatar-md avatar-text">
+						{{ partner.username }}
 					</div>
 				</div>
 				<div class="ms-2">
@@ -148,37 +148,12 @@
 							{% get_partner request.user room as partner %}
 							<li class="px-2 mt-1">
 								<a role="button" class="py-3 px-2 mx-auto row w-100 text-dark chat-link"
-									hx-get="{% url 'chats:thread' partner.id %}" hx-target="#chat-area"
-									hx-indicator="#room-indicator" hx-push-url="true">
+									hx-get="{% url 'chats:thread' room.id %}?pid={{ partner.id }}"
+									hx-target="#chat-area" hx-indicator="#room-indicator" hx-push-url="true">
 									<div class="col-2 p-0">
 										<div>
-											<div class="avatar avatar-md">
-												<img src="{{ partner.avatar.url }}" alt="">
-											</div>
-										</div>
-									</div>
-									<div class="col-10 position-relative">
-										<h6 class="small mb-1 text-truncate">{{ partner.get_name }}</h6>
-										<div class="small text-muted text-truncate">
-											{% if room.room.latest_message.author == request.user %}
-											<span class="text-success">You:</span>
-											{% endif %}
-											{{ room.room.latest_message.content }}
-										</div>
-										<div class="position-absolute text-dark px-2 radius-400"
-											style="background-color: #85cdca; top: 50%; right: 0; transform: translate(-50%, -50%);">
-											3</div>
-									</div>
-								</a>
-							</li>
-							<li class="px-2 mt-1">
-								<a role="button" class="py-3 px-4 mx-auto row w-100 text-dark chat-link"
-									hx-get="{% url 'chats:thread' partner.id %}" hx-target="#chat-area"
-									hx-indicator="#room-indicator" hx-push-url="true">
-									<div class="col-2 p-0">
-										<div>
-											<div class="avatar avatar-md">
-												<img src="{{ partner.avatar.url }}" alt="">
+											<div class="avatar avatar-md avatar-text">
+												{{ partner.username }}
 											</div>
 										</div>
 									</div>

@@ -1,6 +1,6 @@
-<span class="badge bg-dark mb-3 p-2">Search results: <mark><i>{{ query }}</i></mark></span>
-{% if not search_result.count > 0 %}
-<div class="alert alert-warning d-flex align-items-center" role="alert">
+<span class="badge bg-dark mb-3 p-2">{{ rooms.count }} result{{ rooms.count|pluralize }}</span>
+{% if not rooms.count > 0 %}
+<div class="alert alert-warning py-1 small d-flex align-items-center" role="alert">
 	<i class="zmdi zmdi-alert-circle bi flex-shrink-0 me-2"></i>
 	<div>
 		<b>No result:</b> try different search using room topic, description, or owner name
@@ -9,5 +9,5 @@
 
 {% endif %}
 <div class="row">
-	{% include 'chats/partials/discussion_card.html' with rooms=search_result %}
+	{% include 'chats/partials/discussion_card.html' with rooms=rooms %}
 </div>

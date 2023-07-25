@@ -14,7 +14,7 @@
 <div class="d-md-none plus-area">
 	<a role="button" class="btn btn-lg btn-fb-primary shadow border" hx-get="{% url 'chats:discussion_create' %}"
 		hx-target="#modals-here" hx-indicator="#indicator"><i class="fa fa-plus"></i></a>
-	<a role="button" class="btn btn-lg btn-light shadow border" hx-get="{% url 'chats:recent_rooms' %}?display=modal"
+	<a role="button" class="btn btn-lg btn-light shadow border" hx-get="{% url 'chats:user_rooms' %}?display=modal"
 		hx-target="#modals-here" hx-indicator="#indicator"><i class="fa fa-history"></i>
 		<span class="notify-badge" style="display: block;">
 			<span id="">34</span>
@@ -42,14 +42,14 @@
 				</div>
 				<div class="card p-3 mb-2">
 					<h6>Recent Rooms</h6>
-					<!-- <div class="" hx-get="{% url 'chats:recent_rooms' %}?display=sticky" hx-trigger="load"
+					<div class="" hx-get="{% url 'chats:user_rooms' %}?display=sticky" hx-trigger="load"
 						hx-target="this" id="user-books-list">
 						<span class="dots-loader">
 							<i class="spinner__dot spinner__dot--one"></i>
 							<i class="spinner__dot spinner__dot--two"></i>
 							<i class="spinner__dot spinner__dot--three"></i>
 						</span>
-					</div> -->
+					</div>
 				</div>
 			</div>
 			<div class="col-md-8">
@@ -99,8 +99,8 @@
 						<div id="paginator">
 							<a hx-get="{% url 'chats:rooms' %}?page={{ rooms.next_page_number }}" hx-target="#paginator"
 								hx-trigger="click" hx-swap="outerHTML" role="button" id="load-more"
-								class="btn btn-fb-primary w-100">
-								Load More <i class="fa fa-circle-arrow-right fa-2x"></i>
+								class="btn btn-sm border w-100 mt-3">
+								Load More <i class="fa fa-circle-arrow-down"></i>
 								<div class="htmx-indicator">
 									<span class="dots-loader">
 										<i class="spinner__dot spinner__dot--one"></i>

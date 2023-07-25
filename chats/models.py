@@ -375,59 +375,59 @@ class DiscussionRoom(models.Model):
             self.save()
 
 
-class PageSupportManager(models.Manager):
-    def new_or_get(self, user, page):
-        qs = self.get_queryset().filter(members=user, page=page)
-        if qs.count() == 1:
-            created = False
-            chat_obj = qs.first()
-        else:
-            room = Room.objects.create(is_support=True)
-            chat_obj = PageSupport.objects.new(room=room, user=user, page=page)
-            created = True
-        return chat_obj, created
+# class PageSupportManager(models.Manager):
+#     def new_or_get(self, user, page):
+#         qs = self.get_queryset().filter(members=user, page=page)
+#         if qs.count() == 1:
+#             created = False
+#             chat_obj = qs.first()
+#         else:
+#             room = Room.objects.create(is_support=True)
+#             chat_obj = PageSupport.objects.new(room=room, user=user, page=page)
+#             created = True
+#         return chat_obj, created
 
-    def new(self, room, user, page):
-        new_chat = self.model.objects.create(room=room, user=user, page=page)
-        return new_chat
+#     def new(self, room, user, page):
+#         new_chat = self.model.objects.create(room=room, user=user, page=page)
+#         return new_chat
 
 
-class PageSupport(models.Model):
-    # we can't make UUID because the model containes manytomany field
-    # id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+# class PageSupport(models.Model):
+#     # we can't make UUID because the model containes manytomany field
+#     # id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
-    # user is who initiates the support room, if the users deletes, then we don't need
-    # to store data associated to the support group
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="initiator"
-    )
+#     # user is who initiates the support room, if the users deletes, then we don't need
+#     # to store data associated to the support group
+#     user = models.ForeignKey(
+#         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="initiator"
+#     )
 
-    # Since this is a support room we need to store the page(Collection)
-    # page = models.ForeignKey('book_collections.Collection', on_delete=models.CASCADE)
+#     # Since this is a support room we need to store the page(Collection)
+#     # page = models.ForeignKey('book_collections.Collection', on_delete=models.CASCADE)
 
-    # OneToOneField to ensure that one room can have only one support group
-    room = models.OneToOneField(Room, on_delete=models.CASCADE)
+#     # OneToOneField to ensure that one room can have only one support group
+#     room = models.OneToOneField(Room, on_delete=models.CASCADE)
 
-    # members will be only page admins and the room initiator, more particularly the `user`
-    members = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, related_name="group_members", blank=True
-    )
+#     # members will be only page admins and the room initiator, more particularly the `user`
+#     members = models.ManyToManyField(
+#         settings.AUTH_USER_MODEL, related_name="group_members", blank=True
+#     )
 
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
+#     created = models.DateTimeField(auto_now_add=True)
+#     modified = models.DateTimeField(auto_now=True)
 
-    objects = PageSupportManager()
+#     objects = PageSupportManager()
 
-    def __str__(self):
-        return f"{self.user}"
+#     def __str__(self):
+#         return f"{self.user}"
 
-    def add_members(self):
-        """This will add page admins who has permission to access chats and the initiator"""
-        admins = self.page.admins().values("user")
-        admin_users = set(get_user_model().objects.filter(id__in=admins))
-        admin_users.add(self.user)
-        admin_users.add(self.page.user)
-        self.members.set(admin_users)
+#     def add_members(self):
+#         """This will add page admins who has permission to access chats and the initiator"""
+#         admins = self.page.admins().values("user")
+#         admin_users = set(get_user_model().objects.filter(id__in=admins))
+#         admin_users.add(self.user)
+#         admin_users.add(self.page.user)
+#         self.members.set(admin_users)
 
 
 # class UnreadMessages(models.Model):
