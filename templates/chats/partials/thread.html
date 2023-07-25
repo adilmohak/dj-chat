@@ -41,34 +41,11 @@
 					<button type="submit" class="dropdown-item small text-danger py-2"
 						hx-get="{% url 'chats:chat_clear_history' %}?room_id={{ room.id }}&partner_id={{ partner.id }}"
 						hx-target="#modals-here" hx-indicator="#room-indicator">Clear history</button>
-					<!-- <form action="{% url 'chats:chat_clear_history' %}" method="POST">
-						{% csrf_token %}
-						<input type="hidden" name="room_id" value="{{ room.id }}">
-						<input type="hidden" name="partner_id" value="{{ partner.id }}">
-						<button type="submit" class="dropdown-item small text-danger py-2">Clear history</button>
-					</form> -->
 				</li>
 				<li>
-					<button class="delete-chat dropdown-item small text-danger py-2" hx-trigger="confirmed"
-						hx-get="{% url 'chats:chat_delete' %}?room_id={{ room.id }" _="on click
-						call Swal.fire({title: 'Are you sure?', text:'This will delete the chat permanently and it cannot be <strong>undone!</strong>'})
-						if result.isConfirmed trigger confirmed">Delete Chat</button>
-					<!-- <button type="submit" class="dropdown-item small text-danger py-2"
-					hx-get="{% url 'chats:chat_delete' %}?room_id={{ room.id }}"
-					hx-target="#modals-here"
-					hx-indicator="#room-indicator">Delete chat</button> -->
-					<!-- <button class="dropdown-item small text-danger py-2"
-					hx-delete="{% url 'chats:chat_delete' %}?room_id={{ room.id }}" 
-					hx-confirm="Are you sure you wish to delete your account?"
-					hx-target="#modals-here"
-					hx-indicator="#room-indicator">
-						Delete Chat
-					</button> -->
-					<!-- <form action="{% url 'chats:chat_delete' %}" method="POST">
-						{% csrf_token %}
-						<input type="hidden" name="room_id" value="{{ room.id }}">
-						<button type="submit" class="dropdown-item small text-danger py-2">Delete chat</button>
-					</form> -->
+					<button class="delete-chat dropdown-item small text-danger py-2" hx-target="#modals-here"
+						hx-get="{% url 'chats:chat_delete' room.id %}" hx-indicator="#room-indicator">Delete
+						Chat</button>
 				</li>
 			</ul>
 		</div>
@@ -88,7 +65,6 @@
 		</div>
 		<textarea name="message" id="chat-message-input" class="form-control" placeholder="Write a message..."
 			rows="1"></textarea>
-		<!-- <input type="text" id="chat-message-input" class="form-control" placeholder="Write a message..." autofocus> -->
 		<div>
 			<button type="button" class="btn btn-sm bg-gray-400 ms-3" id="chat-message-submit">
 				<i class="zmdi zmdi-mail-send fa-1-5x"></i>

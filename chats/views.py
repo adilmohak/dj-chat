@@ -159,10 +159,17 @@ class UserRoomListView(ListView):
 #     return render(request, template_name, context)
 
 
-@login_required
-def trendings(request):
-    discussions = DiscussionRoom.objects.get_trendings()
-    return render(request, "chats/trendings.html", {"discussions": discussions})
+class Trendings(ListView):
+    queryset = DiscussionRoom.objects.get_trendings()
+    template_name = "chats/trendings.html"
+    context_object_name = "discussions"
+    paginate_by = 3
+
+
+# @login_required
+# def trendings(request):
+#     discussions = DiscussionRoom.objects.get_trendings()
+#     return render(request, "chats/trendings.html", {"discussions": discussions})
 
 
 class InvitePeople(FormView):
@@ -545,10 +552,13 @@ class ClearHistory(View):
 #         )
 
 
-def chat_delete(request):
-    room_id = request.GET.get("room_id")
-    if request.method == "POST":
-        get_object_or_404(Room, id=room_id).delete()
+class RoomDeleteView(DeleteView):
+    context_object_name = "room"
+    queryset = Room.objects.all()
+    template_name = "chats/partials/chat_delete_popup.html"
+
+    def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
+        self.get_object().delete()
         msg = "Chat has been deleted."
         if request.htmx:
             return JsonResponse({"deleted": True, "message": msg})
@@ -557,15 +567,30 @@ def chat_delete(request):
             next = request.POST.get("next")
             if next:
                 return redirect(next)
-            return redirect("chats:threads")
-    else:
-        return render(
-            request, "chats/partials/chat_delete_popup.html", {"room_id": room_id}
-        )
+        return redirect("chats:threads")
 
 
-def chat_mute(request):
-    if request.method == "POST":
+# def chat_delete(request):
+#     room_id = request.GET.get("room_id")
+#     if request.method == "POST":
+#         get_object_or_404(Room, id=room_id).delete()
+#         msg = "Chat has been deleted."
+#         if request.htmx:
+#             return JsonResponse({"deleted": True, "message": msg})
+#         else:
+#             messages.success(request, msg)
+#             next = request.POST.get("next")
+#             if next:
+#                 return redirect(next)
+#             return redirect("chats:threads")
+#     else:
+#         return render(
+#             request, "chats/partials/chat_delete_popup.html", {"room_id": room_id}
+#         )
+
+
+class RoomMutate(View):
+    def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
         room_id = request.POST.get("room_id")
         room = get_object_or_404(Room, id=room_id)
         room.muted = not room.muted
@@ -579,6 +604,23 @@ def chat_mute(request):
             if next:
                 return redirect(next)
             return redirect("chats:threads")
+
+
+# def chat_mute(request):
+#     if request.method == "POST":
+#         room_id = request.POST.get("room_id")
+#         room = get_object_or_404(Room, id=room_id)
+#         room.muted = not room.muted
+#         room.save()
+#         msg = "Chat has been muted." if room.muted else "Chat has been unmuted."
+#         if request.htmx or request.is_ajax():
+#             return JsonResponse({"muted": room.muted, "msg": msg})
+#         else:
+#             messages.success(request, msg)
+#             next = request.POST.get("next")
+#             if next:
+#                 return redirect(next)
+#             return redirect("chats:threads")
 
 
 def total_unread_messages(request):
