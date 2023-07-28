@@ -83,11 +83,11 @@ DJANGO_APPS = [
     "django.forms",
 ]
 THIRD_PARTY_APPS = [
+    "channels",
     "crispy_forms",
     "crispy_bootstrap5",
     "allauth",
     "allauth.account",
-    "channels",
     "django_htmx",
     "django_select2",
     # "mathfilters",  # basic calculations inside templates

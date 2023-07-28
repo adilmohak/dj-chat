@@ -8,7 +8,7 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from channels.layers import get_channel_layer
 
-from .models import DiscussionRoom, Message, PageSupport, Room, Thread
+from .models import DiscussionRoom, Message, Room, Thread
 from .utils import mark_messages_as_read
 
 
@@ -16,6 +16,8 @@ User = get_user_model()
 
 
 class ChatConsumer(WebsocketConsumer):
+    print("Fetching...")
+
     def fetch_messages(self, data):
         room = get_object_or_404(Room, id=data["roomId"])
         messages = Message.objects.filter(room=data["roomId"])
@@ -68,9 +70,8 @@ class ChatConsumer(WebsocketConsumer):
         return {
             "id": message.id,
             "author": message.author.username,
-            "author_uri": message.author.get_absolute_url,
-            "name": message.author.get_name,
-            "avatar": message.author.avatar.url,
+            "name": f"{message.author.first_name} {message.author.last_name}",
+            # "avatar": message.author.avatar.url,
             "content": message.content,
             "date_created": str(localize(message.created)),
         }
@@ -78,15 +79,16 @@ class ChatConsumer(WebsocketConsumer):
     commands = {"fetch_messages": fetch_messages, "new_message": new_message}
 
     def connect(self):
-        self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
-        self.room_group_name = "chat_%s" % self.room_name
+        print("WebSocket connected")
+        self.room_id = self.scope["url_route"]["kwargs"]["room_id"]
+        self.room_group_name = "chat_%s" % self.room_id
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name, self.channel_name
         )
         self.accept()
-        print("WebSocket connected")
 
     def disconnect(self, close_code):
+        print("WebSocket closed")
         id = self.room_group_name.split("_")[1]
         room = Room.objects.get(id=id)
         if not room.has_messages():
@@ -94,15 +96,13 @@ class ChatConsumer(WebsocketConsumer):
                 DiscussionRoom.objects.get(room=room).delete()
             elif room.is_private:
                 Thread.objects.get(room=room).delete()
-            elif room.is_support:
-                PageSupport.objects.get(room=room).delete()
 
         async_to_sync(self.channel_layer.group_discard)(
             self.room_group_name, self.channel_name
         )
-        print("WebSocket closed")
 
     def receive(self, text_data):
+        print("WebSocket received data:", text_data)
         data = json.loads(text_data)
         self.commands[data["command"]](self, data)
 

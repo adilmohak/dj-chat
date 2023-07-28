@@ -27,3 +27,10 @@ application = ProtocolTypeRouter(
         ),
     }
 )
+
+# application = ProtocolTypeRouter(
+#     {
+#         "http": get_asgi_application(),
+#         "websocket": URLRouter(chats.routing.websocket_urlpatterns),
+#     }
+# )

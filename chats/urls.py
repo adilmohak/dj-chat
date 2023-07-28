@@ -14,7 +14,7 @@ urlpatterns = [
     ),
     path("trendings/", views.Trendings.as_view(), name="trendings"),
     path("invite_people/", views.InvitePeople.as_view(), name="invite_people"),
-    # path('room/<int:id>/', views.room, name='room'),
+    path("room/<int:id>/", views.RoomDetailView.as_view(), name="room"),
     path(
         "discussion_create/",
         views.DiscussionFormView.as_view(),

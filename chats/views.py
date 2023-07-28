@@ -27,6 +27,12 @@ from .models import Message, Room, Thread, DiscussionRoom
 from .forms import DiscussionRoomForm, BulkMessageForm, InviteForm
 
 
+class RoomDetailView(DetailView):
+    context_object_name = "room"
+    queryset = Room.objects.all()
+    template_name = "chats/room.html"
+
+
 class DiscussionDetailView(DetailView):
     context_object_name = "room"
     queryset = DiscussionRoom.objects.all()

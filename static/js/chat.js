@@ -12,6 +12,7 @@
     msg_counter_url = null,
     group = false
   ) {
+    console.log("roomName", roomName, "username", username, "roomId", roomId);
     // Chat socket closed/disconnected handler
     function websocketDisconnected() {
       toastr.warning("WebSocket disconnected. reconnecting...");
@@ -49,7 +50,7 @@
 									<pre class="m-0">${msg.content}</pre>
 									<div style="box-sizing: border-box; display: flex; position: absolute; right: -6px; bottom: 0px; transform: scaleX(-1);">
 										<svg width="6" height="11" viewBox="0 0 6 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<path d="M-3.05176e-05 10.5019C-3.05176e-05 10.777 0.222986 11 0.49809 11H5.99997V0C5.99997 4.06498 4.64357 7.63316 0.640783 9.52185C0.25977 9.70162 -3.05176e-05 10.0768 -3.05176e-05 10.4981V10.4981L-2.69413e-05 10.5L-3.05176e-05 10.5019V10.5019Z" fill="#85cdca"></path>
+											<path d="M-3.05176e-05 10.5019C-3.05176e-05 10.777 0.222986 11 0.49809 11H5.99997V0C5.99997 4.06498 4.64357 7.63316 0.640783 9.52185C0.25977 9.70162 -3.05176e-05 10.0768 -3.05176e-05 10.4981V10.4981L-2.69413e-05 10.5L-3.05176e-05 10.5019V10.5019Z" fill="#ffc530"></path>
 										</svg>
 									</div>
 								</div>
@@ -89,7 +90,7 @@
 								<pre class="msg-content m-0">${msg.content}</pre>
 								<div style="box-sizing: border-box; display: flex; position: absolute; right: -6px; bottom: 0px; transform: scaleX(-1);">
 									<svg width="6" height="11" viewBox="0 0 6 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path d="M-3.05176e-05 10.5019C-3.05176e-05 10.777 0.222986 11 0.49809 11H5.99997V0C5.99997 4.06498 4.64357 7.63316 0.640783 9.52185C0.25977 9.70162 -3.05176e-05 10.0768 -3.05176e-05 10.4981V10.4981L-2.69413e-05 10.5L-3.05176e-05 10.5019V10.5019Z" fill="#85cdca"></path>
+										<path d="M-3.05176e-05 10.5019C-3.05176e-05 10.777 0.222986 11 0.49809 11H5.99997V0C5.99997 4.06498 4.64357 7.63316 0.640783 9.52185C0.25977 9.70162 -3.05176e-05 10.0768 -3.05176e-05 10.4981V10.4981L-2.69413e-05 10.5L-3.05176e-05 10.5019V10.5019Z" fill="#ffc530"></path>
 									</svg>
 								</div>
 							</div>
@@ -163,14 +164,13 @@
     }
     total_unread_messages();
 
-    const chatSocket = new ReconnectingWebSocket(
-      (window.location.protocol === "https:" ? "wss" : "ws") +
-        "://" +
-        window.location.host +
-        "/ws/chats/" +
-        roomName +
-        "/"
-    );
+    const websocket_url =
+      // (window.location.protocol === "https:" ? "wss" : "ws") +
+      "ws://" + window.location.host + "/ws/chats/2/";
+    // roomName +
+    // "/";
+    console.log("websocket_url", websocket_url);
+    const chatSocket = new ReconnectingWebSocket(websocket_url);
     chatSocket.onopen = function (e) {
       websocketConnected();
       fetchMessages(next);
