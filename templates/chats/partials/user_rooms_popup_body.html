@@ -10,9 +10,10 @@
 {% endfor %}
 
 {% if page_obj.has_next %}
-<div id="user-room-paginator">
-	<a hx-get="{% url 'chats:user_rooms' %}?page={{ page_obj.next_page_number }}" hx-target="#user-room-paginator"
-		hx-trigger="click" hx-swap="outerHTML" role="button" id="load-more" class="btn btn-sm border w-100">
+<div id="user-room-modal-paginator">
+	<a hx-get="{% url 'chats:user_rooms' %}?page={{ page_obj.next_page_number }}&display=modal&paginat=true"
+		hx-target="#user-room-modal-paginator" hx-trigger="click" hx-swap="outerHTML" role="button" id="load-more"
+		class="btn btn-sm border w-100">
 		Load More <i class="fa fa-circle-arrow-down"></i>
 		<div class="htmx-indicator">
 			<span class="dots-loader">

@@ -9,5 +9,7 @@
 
 {% endif %}
 <div class="row">
-	{% include 'chats/partials/discussion_card.html' with rooms=rooms %}
+	{% for room in rooms %}
+	{% include 'chats/partials/discussion_card.html' %}
+	{% endfor %}
 </div>

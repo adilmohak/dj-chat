@@ -65,7 +65,7 @@ class DiscussionDetailView(DetailView):
 
 class DiscussionListView(ListView):
     context_object_name = "rooms"
-    paginate_by = 2
+    paginate_by = 16
 
     def get_queryset(self) -> QuerySet[Any]:
         queryset = DiscussionRoom.objects.all()
@@ -124,7 +124,7 @@ class DiscussionListView(ListView):
 
 class UserRoomListView(ListView):
     context_object_name = "rooms"
-    paginate_by = 3
+    paginate_by = 1
 
     def get_queryset(self) -> QuerySet[Any]:
         queryset = DiscussionRoom.objects.filter(members=self.request.user).order_by(
@@ -133,9 +133,13 @@ class UserRoomListView(ListView):
         return queryset
 
     def get_template_names(self) -> List[str]:
-        if self.request.GET.get("display") == "sticky":
-            return "chats/partials/user_rooms.html"
-        return "chats/partials/user_rooms_popup.html"
+        if self.request.GET.get("display") == "modal" and self.request.GET.get(
+            "paginat"
+        ):
+            return "chats/partials/user_rooms_popup_body.html"
+        if self.request.GET.get("display") == "modal":
+            return "chats/partials/user_rooms_popup.html"
+        return "chats/partials/user_rooms.html"
 
 
 # @login_required

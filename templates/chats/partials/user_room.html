@@ -1,0 +1,12 @@
+<div class="mb-2">
+	<a href="{{ room.get_absolute_url }}" class="d-inline-flex position-relative bg-light border radius-200 p-2">
+		<p class="small mb-0">
+			<b>{{ room.headline }}:</b>
+			{{ room.description|truncatewords:6 }}
+		</p>
+		<!-- <span class="notify-badge" style="display: block;">
+				<span id="">34</span>
+				<span class="visually-hidden">unread notifications</span>
+			</span> -->
+	</a>
+</div>

@@ -42,8 +42,8 @@
 				</div>
 				<div class="card p-3 mb-2">
 					<h6>Recent Rooms</h6>
-					<div class="" hx-get="{% url 'chats:user_rooms' %}?display=sticky" hx-trigger="load"
-						hx-target="this" id="user-books-list">
+					<div class="" hx-get="{% url 'chats:user_rooms' %}" hx-trigger="load" hx-target="this"
+						id="user-books-list">
 						<span class="dots-loader">
 							<i class="spinner__dot spinner__dot--one"></i>
 							<i class="spinner__dot spinner__dot--two"></i>
