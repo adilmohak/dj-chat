@@ -61,7 +61,9 @@
       var partnerMsg = function (msg) {
         return $.parseHTML(`<li class="mb-2">
 								<a href="${msg.author_uri}" target="_blank" class="ms-2 text-dark d-inline-flex">
-									<img class="avatar" src="${msg.avatar}" alt="avatar">
+                  <div class="avatar avatar-text">
+                    ${msg.author[0]}
+                  </div>
 								</a><br>
 								<div class="message-box text-break group-reply bg-gray-200 mt-1 px-3 py-2">
 									<pre class="m-0">${msg.content}</pre>
@@ -190,11 +192,12 @@
     });
 
     // Load more messages on button click
-    // loadMoreBtn.on('click', function () {
-    // 	$(this).addClass('animated--scale-in-out');
-    // 	removeAnim("animated--scale-in-out");
-    // 	fetchMessages(parseInt(loadMoreBtn.attr('value')));
-    // })
+    loadMoreBtn.on("click", function (e) {
+      e.preventDefault();
+      $(this).addClass("animated--scale-in-out");
+      removeAnim("animated--scale-in-out");
+      fetchMessages(parseInt(loadMoreBtn.attr("value")));
+    });
 
     function removeAnim(anim) {
       $(`.${anim}`).on("animationend", function () {

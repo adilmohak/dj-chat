@@ -82,7 +82,7 @@ class DiscussionListView(ListView):
 
     def get_template_names(self) -> List[str]:
         if self.request.htmx:
-            return "chats/partials/discussion_card.html"
+            return "chats/partials/discussions.html"
         return "chats/discussions.html"
 
     def get_paginate_by(self, queryset: QuerySet[Any]) -> int | None:

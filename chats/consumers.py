@@ -8,7 +8,7 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from channels.layers import get_channel_layer
 
-from .models import DiscussionRoom, Message, Room, Thread
+from .models import Message, Room
 from .utils import mark_messages_as_read
 
 
@@ -16,8 +16,6 @@ User = get_user_model()
 
 
 class ChatConsumer(WebsocketConsumer):
-    print("Fetching...")
-
     def fetch_messages(self, data):
         room = get_object_or_404(Room, id=data["roomId"])
         messages = Message.objects.filter(room=data["roomId"])
@@ -89,14 +87,6 @@ class ChatConsumer(WebsocketConsumer):
 
     def disconnect(self, close_code):
         print("WebSocket closed")
-        id = self.room_group_name.split("_")[1]
-        room = Room.objects.get(id=id)
-        if not room.has_messages():
-            if room.is_discussion:
-                DiscussionRoom.objects.get(room=room).delete()
-            elif room.is_private:
-                Thread.objects.get(room=room).delete()
-
         async_to_sync(self.channel_layer.group_discard)(
             self.room_group_name, self.channel_name
         )

@@ -1,4 +1,3 @@
-{% for room in rooms %}
 <div class="col-md-6 mb-2">
 	<a href="{{ room.get_absolute_url }}" class="text-dark">
 		<div class="card h-100 p-3 link-card position-relative">
@@ -18,10 +17,10 @@
 			<div class="d-flex justify-content-between align-items-center mt-auto">
 				<small class="text-muted">{{ room.created|date }}</small>
 				<div class="avatar-group">
-					<div href="#" class="hidden-avatars">{{ room.get_messages.count }}+</div>
+					<div class="hidden-avatars">{{ room.get_messages.count }}+</div>
 					{% for member in room.room.snip_room_members %}
-					<div href="#" class="avatar">
-						<img src="{{ member.avatar.url }}" alt="">
+					<div class="avatar avatar-text">
+						{{ member.username|first }}
 					</div>
 					{% endfor %}
 				</div>
@@ -29,4 +28,3 @@
 		</div>
 	</a>
 </div>
-{% endfor %}
