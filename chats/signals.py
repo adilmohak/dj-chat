@@ -19,7 +19,3 @@ def pre_save_thread_receiver(sender, instance, *args, **kwargs):
     ).distinct()
     if rooms.exists():
         return rooms.first()
-
-
-def m2m_changed_page_support_receiver(sender, instance, *args, **kwargs):
-    instance.add_members()

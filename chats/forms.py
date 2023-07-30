@@ -7,8 +7,6 @@ from django_select2 import forms as s2forms
 from .models import DiscussionRoom, Message
 from .models import Tag
 
-# from accounts.models import User
-
 
 class TagWidget(s2forms.ModelSelect2TagWidget):
     search_fields = [

@@ -3,8 +3,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 
-# from accounts.models import BusinessPage
-from .models import Room, Thread, DiscussionRoom, PageSupport
+from .models import Room, Thread, DiscussionRoom
 
 
 class ChatsTests(TestCase):
@@ -24,8 +23,6 @@ class ChatsTests(TestCase):
         self.d_room = DiscussionRoom.objects.create(
             headline="Test Discussion", room=room_for_discussion, owner=self.user1
         )
-        # self.page = BusinessPage.objects.create(user=self.user1, name="Test page")
-        # self.support_group, created = PageSupport.objects.new_or_get(self.user1, page)
 
         self.client.login(username="test1@example.com", password="testing321")
 
@@ -69,16 +66,6 @@ class ChatsTests(TestCase):
         response = self.client.get(reverse("chats:thread_new"))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, template_name="chats/thread_new.html")
-
-    def test_page_support_page(self):
-        # self.client.login(username="test1@example.com", password="testing321")
-        response = self.client.get(
-            reverse("chats:page_support", kwargs={"page_id": self.page.id})
-        )
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(
-            response, template_name="chats/page_support_single.html"
-        )
 
     def test_discussion_create_page(self):
         # self.client.login(username="test1@example.com", password="testing321")

@@ -2,6 +2,7 @@ from typing import Any, Dict, List, Optional
 from django.db import models
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.contrib.auth import get_user_model
 from django.db.models.query import QuerySet
 from django.forms.models import BaseModelForm
@@ -27,12 +28,14 @@ from .models import Message, Room, Thread, DiscussionRoom
 from .forms import DiscussionRoomForm, BulkMessageForm, InviteForm
 
 
+@method_decorator(login_required, name="dispatch")
 class RoomDetailView(DetailView):
     context_object_name = "room"
     queryset = Room.objects.all()
     template_name = "chats/room.html"
 
 
+@method_decorator(login_required, name="dispatch")
 class DiscussionDetailView(DetailView):
     context_object_name = "room"
     queryset = DiscussionRoom.objects.all()
@@ -47,6 +50,7 @@ class DiscussionDetailView(DetailView):
         return ctx
 
 
+@method_decorator(login_required, name="dispatch")
 class DiscussionListView(ListView):
     context_object_name = "rooms"
     paginate_by = 16
@@ -76,6 +80,7 @@ class DiscussionListView(ListView):
         return super().get_paginate_by(queryset)
 
 
+@method_decorator(login_required, name="dispatch")
 class UserRoomListView(ListView):
     context_object_name = "rooms"
     paginate_by = 10
@@ -96,6 +101,7 @@ class UserRoomListView(ListView):
         return "chats/partials/user_rooms.html"
 
 
+@method_decorator(login_required, name="dispatch")
 class Trendings(ListView):
     queryset = DiscussionRoom.objects.get_trendings()
     template_name = "chats/trendings.html"
@@ -103,6 +109,7 @@ class Trendings(ListView):
     paginate_by = 3
 
 
+@method_decorator(login_required, name="dispatch")
 class InvitePeople(FormView):
     def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
         form = InviteForm(request.POST)
@@ -135,6 +142,7 @@ class InvitePeople(FormView):
         # return super().get(request, *args, **kwargs)
 
 
+@method_decorator(login_required, name="dispatch")
 class DiscussionFormView(FormView):
     form_class = DiscussionRoomForm
 
@@ -159,6 +167,7 @@ class DiscussionFormView(FormView):
         return "chats/discussion_room_form.html"
 
 
+@method_decorator(login_required, name="dispatch")
 class DiscussionUpdateView(UpdateView):
     form_class = DiscussionRoomForm
     queryset = DiscussionRoom.objects.all()
@@ -181,6 +190,7 @@ class DiscussionUpdateView(UpdateView):
         return ctx
 
 
+@method_decorator(login_required, name="dispatch")
 class DiscussionSearchView(ListView):
     template_name = "chats/search_room.html"
     context_object_name = "rooms"
@@ -190,6 +200,7 @@ class DiscussionSearchView(ListView):
         return DiscussionRoom.objects.search(query)
 
 
+@method_decorator(login_required, name="dispatch")
 class ThreadListView(ListView):
     context_object_name = "rooms"
 
@@ -204,6 +215,7 @@ class ThreadListView(ListView):
         return "chats/threads.html"
 
 
+@method_decorator(login_required, name="dispatch")
 class ThreadDetailView(DetailView):
     context_object_name = "thread"
 
@@ -242,6 +254,7 @@ class ThreadDetailView(DetailView):
         return ctx
 
 
+@method_decorator(login_required, name="dispatch")
 class ThreadCreateView(FormView):
     form_class = BulkMessageForm
     template_name = "chats/thread_new.html"
@@ -266,6 +279,7 @@ class ThreadCreateView(FormView):
         return redirect("chats:threads")
 
 
+@method_decorator(login_required, name="dispatch")
 class ClearHistory(View):
     def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
         room_id = request.POST.get("room_id")
@@ -300,6 +314,7 @@ class ClearHistory(View):
         )
 
 
+@method_decorator(login_required, name="dispatch")
 class RoomDeleteView(DeleteView):
     context_object_name = "room"
     queryset = Room.objects.all()
@@ -318,6 +333,7 @@ class RoomDeleteView(DeleteView):
         return redirect("chats:threads")
 
 
+@method_decorator(login_required, name="dispatch")
 class RoomMutate(View):
     def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
         room_id = request.POST.get("room_id")
@@ -335,6 +351,7 @@ class RoomMutate(View):
             return redirect("chats:threads")
 
 
+@login_required
 def total_unread_messages(request):
     unread_msgs = Thread.objects.total_unread_messages(request.user)
     return JsonResponse({"total_unread_counter": unread_msgs})

@@ -11,7 +11,6 @@ class ChatsConfig(AppConfig):
         from .signals import (
             pre_save_message_handler,
             pre_save_thread_receiver,
-            m2m_changed_page_support_receiver,
         )
 
         pre_save.connect(pre_save_message_handler, sender=Message)

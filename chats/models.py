@@ -1,10 +1,8 @@
 import datetime
-import json
 import re
 import uuid
 from django.conf import settings
 from django.db import models
-from django.contrib.auth.views import get_user_model
 from django.db.models import Q
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -27,11 +25,6 @@ class Room(TimeStampedModel):
     # Track whether the room should be intended to act like a private chat
     # one-to-one chat
     is_private = models.BooleanField(default=False)
-
-    # Track whether the room should be intended to act like a support chat
-    # support chat is a group chat where acceble only for the page admins
-    # and the chat initiator/customer
-    is_support = models.BooleanField(default=False)
 
     # Track whether the room should be intended to act like a discussion chat
     # a discussion chat is a group chat where acceble by any user
@@ -70,33 +63,31 @@ class Room(TimeStampedModel):
 
     def has_messages(self):
         """check whether the room has messages"""
-        # return Message.objects.filter(room=self).exists()
         return self.room_messages.exists()
 
     def unread_messages(self, user):
-        """Unread messages means: `unread=True` and `not created by us`"""
+        """Unread messages means: `unread=True` and `not created by the current/logged-in user`"""
         return self.room_messages.filter(Q(unread=True) & ~Q(author=user))
 
     def unread_count(self, user):
         """Count of unread messages"""
-        # return self.room_messages.filter(Q(room=self, unread=True) & ~Q(author=user)).count()
         return self.unread_messages(user).count()
 
     def get_messages(self):
         """All messages of the room ever created"""
-        # messages = self.room_messages.filter(room=self)
         return self.room_messages.all()
 
     def latest_message(self):
-        """The latest message created with this room if it exists, otherwise return `None`"""
+        """The latest message created in this room if it exists, otherwise return `None`"""
         if self.has_messages():
-            # return self.room_messages.filter(room=self).latest('created')
             return self.room_messages.latest("created")
         return
 
     def latest_messages_count(self, days_limit=30):
-        """Latest messages of the room, messages that are newer or equal with `days_limit`.
-        This is used for sorting rooms by trendings(highest messages within some period of time)
+        """
+        Latest messages of the room, messages that are newer or equal with `days_limit`.
+        This is used for sorting rooms by trendings.
+        Highest messages within some period of time to the lowest one.
         """
         time_limit = datetime.datetime.now() - datetime.timedelta(days=days_limit)
         messages = self.room_messages.filter(created__gte=time_limit).count()
@@ -104,8 +95,10 @@ class Room(TimeStampedModel):
         return messages
 
     def snip_room_members(self, limit=3):
-        """Return `limit` number of distinct users that has been created messages inside the room.
-        Used for rendering snip users pic"""
+        """
+        Return `limit` number of distinct users that has been created messages inside the room.
+        Used for rendering snip users pic on discussion list view
+        """
         # TODO: Try to use another method instead of `distinct` since it requires
         # to be the same as initial order_by
         messages = (
@@ -158,7 +151,7 @@ class Message(models.Model):
         ordering = ("-created",)
 
     def __str__(self):
-        return self.content
+        return f"{self.created} | {self.content}"
 
     @property
     def replay_msg(self):
@@ -239,7 +232,7 @@ class Thread(models.Model):
 
     class Meta:
         # doesn't allow to create multiple threads with same users
-        # because it doesn't make sense
+        # because it doesn't make sense to have multiple rooms for the exact same users
         unique_together = ["user1", "user2"]
         ordering = ("-room__modified",)
 
@@ -247,12 +240,15 @@ class Thread(models.Model):
         return f"{self.user1} - {self.user2}"
 
     def get_all_messages(self):
+        """Returns all messages associated with this thread"""
         msgs = Message.objects.filter(room=self.room).values()
         return msgs
 
     def get_partner(self, request):
-        """Return the other user(not the current user) in the room,
-        if the current user is user1, then the partner is user2 or vise versa"""
+        """
+        Return the other user(not the current user) in the room,
+        if the current user is user1, then the partner is user2 or vise versa
+        """
         return self.user1 if request.user == self.user2 else self.user2
 
 
@@ -281,8 +277,10 @@ class DiscussionRoomManager(models.Manager):
         return qs
 
     def get_trendings(self, qs=None):
-        """rooms that has more recent(one month range) updates/messages
-        are considered as a highest trending."""
+        """
+        Rooms that has more recent(one month range) updates/messages
+        are considered as a highest trending.
+        """
         # TODO: instead of just comparing with amount of created messages,
         # also compare with how many users created the messages
         if qs == None:
@@ -310,22 +308,6 @@ class DiscussionRoom(models.Model):
     # Optional field which describes the headline further
     description = models.TextField(null=True, blank=True)
 
-    class DiscussionMode(models.TextChoices):
-        NEUTRAL = "NE", _("Neutral")
-        HAPPY = "HA", _("Happy")
-        SAD = "SA", _("Sad")
-        CELEBRATION = "CE", _("Celebration")
-        BUSINESS = "BU", _("Business")
-        CODING = "CO", _("Coding")
-
-    # mode describes what the discussion feeling should be, it's depend on
-    # the headline of the discussion. For example, if the discussion is
-    # about celebration, then the mode should be `Happy`
-    # and accordingly the mode, the UI of discussion also changes
-    mode = models.CharField(
-        max_length=2, choices=DiscussionMode.choices, default=DiscussionMode.NEUTRAL
-    )
-
     # As soon as the user creates a message with this room, he/she will be added to
     # members list
     members = models.ManyToManyField(
@@ -341,16 +323,17 @@ class DiscussionRoom(models.Model):
         help_text="Add tags related to the topic, use dash(-) instead of space.",
     )
 
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
-
     # user friendly url display generated from the headline
     slug = AutoSlugField(
         populate_from="headline", unique=True
     )  # generate slug from headline
 
-    # for searching purpose, all contents of every message in this discussion stores here
+    # for searching purpose, all contents of every message in this discussion stores here as one big text
+    # This way users can able to search discussions based on the coversations inside the room
     messages_dump = models.TextField(null=True, blank=True)
+
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
 
     objects = DiscussionRoomManager()
 
@@ -362,7 +345,10 @@ class DiscussionRoom(models.Model):
         return reverse("chats:discussion_room", kwargs={"slug": self.slug})
 
     def set_messages_dump(self):
-        """Set all message contents in one text. can be run every two days. Helps for searching"""
+        """
+        Set all message contents in one text. can be run every time new message added to the room.
+        Helps for searching
+        """
         msgs = list(Message.objects.filter(room=self.room).values_list("content"))
         if msgs:
             # 1. join all tuples inside list,
@@ -373,63 +359,3 @@ class DiscussionRoom(models.Model):
                 " +", " ", (" ".join([i for m in msgs for i in m]).replace("\n", " "))
             )
             self.save()
-
-
-# class PageSupportManager(models.Manager):
-#     def new_or_get(self, user, page):
-#         qs = self.get_queryset().filter(members=user, page=page)
-#         if qs.count() == 1:
-#             created = False
-#             chat_obj = qs.first()
-#         else:
-#             room = Room.objects.create(is_support=True)
-#             chat_obj = PageSupport.objects.new(room=room, user=user, page=page)
-#             created = True
-#         return chat_obj, created
-
-#     def new(self, room, user, page):
-#         new_chat = self.model.objects.create(room=room, user=user, page=page)
-#         return new_chat
-
-
-# class PageSupport(models.Model):
-#     # we can't make UUID because the model containes manytomany field
-#     # id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-
-#     # user is who initiates the support room, if the users deletes, then we don't need
-#     # to store data associated to the support group
-#     user = models.ForeignKey(
-#         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="initiator"
-#     )
-
-#     # Since this is a support room we need to store the page(Collection)
-#     # page = models.ForeignKey('book_collections.Collection', on_delete=models.CASCADE)
-
-#     # OneToOneField to ensure that one room can have only one support group
-#     room = models.OneToOneField(Room, on_delete=models.CASCADE)
-
-#     # members will be only page admins and the room initiator, more particularly the `user`
-#     members = models.ManyToManyField(
-#         settings.AUTH_USER_MODEL, related_name="group_members", blank=True
-#     )
-
-#     created = models.DateTimeField(auto_now_add=True)
-#     modified = models.DateTimeField(auto_now=True)
-
-#     objects = PageSupportManager()
-
-#     def __str__(self):
-#         return f"{self.user}"
-
-#     def add_members(self):
-#         """This will add page admins who has permission to access chats and the initiator"""
-#         admins = self.page.admins().values("user")
-#         admin_users = set(get_user_model().objects.filter(id__in=admins))
-#         admin_users.add(self.user)
-#         admin_users.add(self.page.user)
-#         self.members.set(admin_users)
-
-
-# class UnreadMessages(models.Model):
-# 	"""This model has a role to count unread messages for a specific user and room"""
-# 	pass
