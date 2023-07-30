@@ -67,42 +67,6 @@
 		<path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
 	</svg> -->
 
-	<!-- Search Modal -->
-	<div class="modal fade" id="primarySearchModal" tabindex="-1" aria-labelledby="primarySearchModalLabel"
-		aria-hidden="true">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content radius-500 pb-3 px-3 px-lg-5 py-lg-3">
-				<div class="modal-header border-0 px-0">
-					<h5 class="mb-0"><i class="fa fa-search text-fb-primary"></i> Search</h5>
-					<button type="button" class="btn-close float-end" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				<div class="modal-body p-0">
-					<div class="position-relative">
-						<input type="search" name="q" autocomplete="off" class="form-control p-2 ps-3"
-							id="id_primary_search_input" placeholder="Search chat rooms & peoples" hx-get=""
-							hx-trigger="keyup changed delay:500ms" hx-target="#results" hx-indicator="#search-indicator"
-							style="border-radius: 2em !important;">
-					</div>
-					<div id="search-indicator" class="htmx-indicator static ms-2">
-						<span class="dots-loader">
-							<i class="spinner__dot spinner__dot--one"></i>
-							<i class="spinner__dot spinner__dot--two"></i>
-							<i class="spinner__dot spinner__dot--three"></i>
-						</span>
-					</div>
-					<div id="results" class="animated--fade-in">
-						<div class="ms-2 mt-1 text-muted small">{% translate 'Start typing' %}...</div>
-					</div>
-					<h6 class="mt-4 pb-2 border-bottom">Recent searches</h6>
-					<span class="badge bg-light text-dark border-pill border me-2">Lorem ipsun set amet</span>
-					<span class="badge bg-light text-dark border-pill border me-2">dolor incidunt voluptatum</span>
-					<span class="badge bg-light text-dark border-pill border me-2">excepturi facilis quisquam</span>
-				</div>
-			</div>
-		</div>
-	</div>
-
 	{% block nav %}
 	{% include 'includes/_primary_menu.html' %}
 	{% endblock %}
@@ -266,11 +230,6 @@
 		const csrftoken = getCookie('csrftoken');
 
 		$(document).ready(function () {
-			primarySearchModal = document.getElementById('primarySearchModal');
-			primarySearchInput = document.getElementById('id_primary_search_input');
-			primarySearchModal.addEventListener('shown.bs.modal', function () {
-				primarySearchInput.focus()
-			})
 
 			$('.collapse').collapse();
 

@@ -1,52 +1,15 @@
 {% load static %}
 {% load i18n %}
 
-<style>
-	.search-sm {
-		display: none;
-	}
-
-	.primary-search {
-		max-width: 800px;
-	}
-
-	@media screen and (max-width: 767px) {
-		.primary-search {
-			display: none;
-		}
-
-		.search-sm {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
-	}
-</style>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-white py-1 d-flex" style="flex-wrap: nowrap !important;"
+<nav class="navbar navbar-expand-lg navbar-light bg-white py-0 d-flex" style="flex-wrap: nowrap !important;"
 	id="navbar_top">
 	<div class="container">
-
-		<!-- nav menu left -->
-		<ul class="navbar-nav me-auto mb-lg-0">
-			<a class="navbar-brand" href="/">
-				<img src="{% static 'images/favicon-txt.svg' %}" width="120px" alt="FidelBooks">
-			</a>
-		</ul>
-
-		<!-- nav menu center -->
-		<div class="primary-search position-relative w-100 mx-2" role="button" data-bs-toggle="modal"
-			data-bs-target="#primarySearchModal">
-			<input role="button" class="form-control ps-5" placeholder="Search chat rooms & peoples" readonly>
-			<i class="zmdi zmdi-search fa-2x me-3 input-icon-left"></i>
-		</div>
+		<a class="navbar-brand me-4" href="/">
+			<img src="{% static 'images/favicon-txt.svg' %}" width="120px" alt="FidelBooks">
+		</a>
 
 		<!-- nav menu right -->
-		<ul class="navbar-nav ms-auto mb-lg-0">
-			<button class="search-sm btn btn-nav mx-2 align-self-center border bg-light text-muted"
-				data-bs-toggle="modal" data-bs-target="#primarySearchModal">
-				<i class="zmdi zmdi-search fa-1-5x text-gray-400"></i></button>
-
+		<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 			{% if not request.user.is_authenticated %}
 			<li class="nav-item my-2 me-2">
 				<a class="btn btn-light border" href="{% url 'account_login' %}">{% translate 'Login' %}</a>
@@ -81,7 +44,7 @@
 					</span>
 				</a>
 				<!-- Dropdown - Messages -->
-				<ul class="dropdown-list dropdown-menu dropdown-menu-end dropdown-menu-sm-popup animated--grow-in origin-right"
+				<ul class="dropdown-list dropdown-menu dropdown-menu-sm-popup animated--grow-in origin-left"
 					aria-labelledby="messagesDropdown">
 					<div class="d-flex align-items-center px-2">
 						<h6 class="small my-3 text-center text-gray-500">
@@ -118,14 +81,13 @@
 						{{ request.user.username|first }}
 					</div>
 				</a>
-				<ul class="dropdown-menu dropdown-menu-end animated--grow-in origin-right" aria-labelledby="userPanel"
+				<ul class="dropdown-menu animated--grow-in origin-left" aria-labelledby="userPanel"
 					style="width: 240px;">
 
 					<!-- {% if not perms.books.special_status %}
 							<li class="text-center"><a href="#" class="my-2 text-warning">Go pro now.</a></li>
 						{% endif %} -->
-					<li><a class="dropdown-item" href="{{ request.user.get_absolute_url }}"><i
-								class="zmdi zmdi-account me-2"></i> Profile</a></li>
+					<li><a class="dropdown-item" href="#"><i class="zmdi zmdi-account me-2"></i> Profile</a></li>
 					<li><a class="dropdown-item" href="#">
 							<i class="zmdi zmdi-settings me-2"></i> Setting</a>
 					</li>
@@ -151,6 +113,19 @@
 				</ul>
 			</li>
 			{% endif %}
+		</ul>
+
+		<!-- nav menu left -->
+		<ul class="navbar-nav mb-2 mb-lg-0">
+			<li class="nav-item me-2">
+				<a href="https://github.com/adilmohak/dj-chat" class="btn btn-sm btn-outline-dark">View on Github</a>
+			</li>
+			<li class="nav-item d-flex">
+				<p class="mb-0 small align-self-center">
+					<a href="https://github.com/adilmohak/dj-chat" target="_blank">Show your
+						support</a>, I really appreciate it!
+				</p>
+			</li>
 		</ul>
 	</div>
 </nav>

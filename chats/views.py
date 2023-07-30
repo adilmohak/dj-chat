@@ -78,7 +78,7 @@ class DiscussionListView(ListView):
 
 class UserRoomListView(ListView):
     context_object_name = "rooms"
-    paginate_by = 1
+    paginate_by = 10
 
     def get_queryset(self) -> QuerySet[Any]:
         queryset = DiscussionRoom.objects.filter(members=self.request.user).order_by(
