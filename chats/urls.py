@@ -21,7 +21,7 @@ urlpatterns = [
         name="discussion_create",
     ),
     path(
-        "discussion_update/<int:pk>/",
+        "discussion_update/<slug>/",
         views.DiscussionUpdateView.as_view(),
         name="discussion_update",
     ),

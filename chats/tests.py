@@ -31,7 +31,7 @@ class ChatsTests(TestCase):
             reverse("chats:discussion_room", kwargs={"slug": self.d_room.slug})
         )
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, template_name="chats/discussion_room.html")
+        self.assertTemplateUsed(response, template_name="chats/discussion_detail.html")
 
     def test_discussion_list_page(self):
         # self.client.login(username="test1@example.com", password="testing321")
@@ -56,7 +56,8 @@ class ChatsTests(TestCase):
     def test_thread_detail_page(self):
         # self.client.login(username="test1@example.com", password="testing321")
         response = self.client.get(
-            reverse("chats:thread", kwargs={"partner_id": self.user1.id})
+            reverse("chats:thread", kwargs={"pk": self.thread.id})
+            + f"?pid={self.user2.id}"
         )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, template_name="chats/thread_single.html")
@@ -78,19 +79,19 @@ class ChatsTests(TestCase):
     def test_discussion_update_page(self):
         # self.client.login(username="test1@example.com", password="testing321")
         response = self.client.get(
-            reverse("chats:discussion_update", kwargs={"id": self.d_room.id})
+            reverse("chats:discussion_update", kwargs={"slug": self.d_room.slug})
         )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(
             response, template_name="chats/discussion_room_form.html"
         )
 
-    def test_recent_discussions_page(self):
+    def test_user_discussions_page(self):
         # self.client.login(username="test1@example.com", password="testing321")
-        response = self.client.get(reverse("chats:recent_rooms"))
+        response = self.client.get(reverse("chats:user_rooms"))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(
-            response, template_name="chats/partials/recent_rooms_popup.html"
+            response, template_name="chats/partials/user_rooms.html"
         )
 
     def test_discussion_search_room_page(self):

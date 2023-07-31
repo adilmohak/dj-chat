@@ -341,7 +341,7 @@ class RoomMutate(View):
         room.muted = not room.muted
         room.save()
         msg = "Chat has been muted." if room.muted else "Chat has been unmuted."
-        if request.htmx or request.is_ajax():
+        if request.htmx:
             return JsonResponse({"muted": room.muted, "msg": msg})
         else:
             messages.success(request, msg)

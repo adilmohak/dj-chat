@@ -70,6 +70,6 @@ INSTALLED_APPS = ["whitenoise.runserver_nostatic"] + INSTALLED_APPS  # noqa F405
 SELECT2_CACHE_BACKEND = "default"
 
 # Config select2 static files for offline work
-SELECT2_JS = "dist/select2-4.0.13/dist/js/select2.min.js"
-SELECT2_CSS = ["dist/select2-4.0.13/dist/css/select2.min.css"]
-SELECT2_I18N_PATH = "dist/select2-4.0.13/dist/js/i18n"
+SELECT2_JS = "vendor/select2-4.0.13/dist/js/select2.min.js"
+SELECT2_CSS = ["vendor/select2-4.0.13/dist/css/select2.min.css"]
+SELECT2_I18N_PATH = "vendor/select2-4.0.13/dist/js/i18n"
