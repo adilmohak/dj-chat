@@ -53,7 +53,7 @@
 	<div class="text-center border-bottom px-4 py-2 align-items-center d-flex">
 		<span>Messages</span>
 		<a role="button" class="btn btn-sm btn-outline-primary ms-auto"
-			hx-get="{% url 'chats:thread_new' %}?next={{ request.path }}" hx-target="#modals-here"
+			hx-get="{% url 'chats:thread_new' %}?next={{ request.path }}" hx-target="#hx-modal"
 			hx-indicator="#room-indicator">
 			New message</a>
 	</div>
@@ -106,7 +106,7 @@
 						<div>Messages</div>
 						<div class="ms-auto">
 							<a role="button" class="btn btn-sm btn-outline-primary ms-auto"
-								hx-get="{% url 'chats:thread_new' %}?next={{ request.path }}" hx-target="#modals-here">
+								hx-get="{% url 'chats:thread_new' %}?next={{ request.path }}" hx-target="#hx-modal">
 								New message
 								<div class="text-center htmx-indicator">
 									<span class="dots-loader">
@@ -169,8 +169,6 @@
 		</div>
 	</div>
 </div>
-
-<div id="modals-here"></div>
 
 {% endblock %}
 

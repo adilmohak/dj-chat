@@ -48,32 +48,32 @@
 							<div class="float-end text-end animated--grow-right">
 								<div class="message-box sent text-break text-start position-relative px-3 py-2">
 									<pre class="m-0">${msg.content}</pre>
+                  <p class="fd-dynamicFontSize--tiny ms-auto date mt-1 mb-0">${msg.date_created}</p>
 									<div style="box-sizing: border-box; display: flex; position: absolute; right: -6px; bottom: 0px; transform: scaleX(-1);">
 										<svg width="6" height="11" viewBox="0 0 6 11" fill="none" xmlns="http://www.w3.org/2000/svg">
 											<path d="M-3.05176e-05 10.5019C-3.05176e-05 10.777 0.222986 11 0.49809 11H5.99997V0C5.99997 4.06498 4.64357 7.63316 0.640783 9.52185C0.25977 9.70162 -3.05176e-05 10.0768 -3.05176e-05 10.4981V10.4981L-2.69413e-05 10.5L-3.05176e-05 10.5019V10.5019Z" fill="#ffc530"></path>
 										</svg>
 									</div>
 								</div>
-								<p class="fd-dynamicFontSize--tiny ms-auto text-muted mt-1 mb-3">${msg.date_created}</p>
 							</div>
 						</li>`);
       };
       var partnerMsg = function (msg) {
         return $.parseHTML(`<li class="mb-2">
-								<a href="${msg.author_uri}" target="_blank" class="ms-2 text-dark d-inline-flex">
+								<div class="ms-2 text-dark d-inline-flex">
                   <div class="avatar avatar-text">
                     ${msg.author[0]}
                   </div>
-								</a><br>
+								</div><br>
 								<div class="message-box text-break group-reply bg-gray-200 mt-1 px-3 py-2">
 									<pre class="m-0">${msg.content}</pre>
+                  <p class="fd-dynamicFontSize--tiny ms-auto text-muted mt-1 mb-0">${msg.date_created}</p>
 								</div>
-								<p class="fd-dynamicFontSize--tiny text-muted mt-1 ps-2">${msg.date_created}</p>
 							</li>`);
       };
     } else {
       var userMsg = function (msg) {
-        return $.parseHTML(`<li class="clearfix">
+        return $.parseHTML(`<li class="clearfix mb-3">
 						<div class="msg-instance float-end text-end animated--grow-right" id="id_msg_${msg.id}">
 							<div class="float-start me-2 msg-actions">
 								<div class="dropdown">
@@ -90,18 +90,18 @@
 							</div>
 							<div class="message-box sent text-break text-start position-relative px-3 py-2">
 								<pre class="msg-content m-0">${msg.content}</pre>
+                <p class="fd-dynamicFontSize--tiny ms-auto date mt-1 mb-0">${msg.date_created}</p>
 								<div style="box-sizing: border-box; display: flex; position: absolute; right: -6px; bottom: 0px; transform: scaleX(-1);">
 									<svg width="6" height="11" viewBox="0 0 6 11" fill="none" xmlns="http://www.w3.org/2000/svg">
 										<path d="M-3.05176e-05 10.5019C-3.05176e-05 10.777 0.222986 11 0.49809 11H5.99997V0C5.99997 4.06498 4.64357 7.63316 0.640783 9.52185C0.25977 9.70162 -3.05176e-05 10.0768 -3.05176e-05 10.4981V10.4981L-2.69413e-05 10.5L-3.05176e-05 10.5019V10.5019Z" fill="#ffc530"></path>
 									</svg>
 								</div>
 							</div>
-							<p class="fd-dynamicFontSize--tiny ms-auto text-muted mt-1 mb-2">${msg.date_created}</p>
 						</div>
 						</li>`);
       };
       var partnerMsg = function (msg) {
-        return $.parseHTML(`<li class="clearfix">
+        return $.parseHTML(`<li class="clearfix mb-3">
 						<div class="msg-instance float-start animated--grow-left" id="id_msg_${msg.id}">
 							<div class="float-end ms-2 msg-actions">
 								<div class="dropdown">
@@ -115,10 +115,10 @@
 									</ul>
 								</div>
 							</div>
-							<div class="message-box text-dark text-break bg-gray-300 border position-relative px-3 py-2" style="border-radius: 2em 2em 2em 0;">
+							<div class="message-box recieved text-dark text-break bg-gray-300 border position-relative px-3 py-2">
 								<pre class="msg-content m-0">${msg.content}</pre>
-							</div>
-							<p class="fd-dynamicFontSize--tiny ms-auto text-muted mt-1 mb-2">${msg.date_created}</p>
+                <p class="fd-dynamicFontSize--tiny ms-auto text-muted mt-1 mb-0">${msg.date_created}</p>
+                </div>
 						</div>
 						</li>`);
       };

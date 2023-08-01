@@ -2,8 +2,10 @@
 
 <script src="{% static 'js/chat.js' %}"></script>
 
-<div class="chat-popup chat-wrapper scroller w-100 justify-content-between d-flex flex-column animated--fade-in" style="z-index: 22; height: 80vh; max-height: 80vh;">
-	<div class="chat-head position-relative px-3 py-2 bg-fb-light-green d-flex justify-content-between align-items-center">
+<div class="chat-popup chat-wrapper scroller w-100 justify-content-between d-flex flex-column animated--fade-in"
+	style="z-index: 22; height: 80vh; max-height: 80vh;">
+	<div
+		class="chat-head position-relative px-3 py-2 bg-fb-light-green d-flex justify-content-between align-items-center">
 		<div id="chat-minimizer"></div>
 		<a href="{{ partner.get_absolute_url }}" class="d-flex align-items-center text-dark" style="z-index: 2;">
 			<div class="avatar">
@@ -11,10 +13,11 @@
 			</div>
 			<div class="ms-2 small mb-0 p-0">{{ partner.get_name|truncatechars:16 }}</div>
 		</a>
-		
+
 		<!-- room actions -->
 		<div class="ms-auto dropdown">
-			<button class="btn btn-sm btn-circle" type="button" id="chatMenu" data-bs-toggle="dropdown" aria-expanded="false">
+			<button class="btn btn-sm btn-circle" type="button" id="chatMenu" data-bs-toggle="dropdown"
+				aria-expanded="false">
 				<i class="fa fa-ellipsis"></i>
 			</button>
 			<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="chatMenu">
@@ -23,7 +26,8 @@
 						{% csrf_token %}
 						<input type="hidden" name="room_id" value="{{ room.id }}">
 						<input type="hidden" name="next" value="{{ request.path }}">
-						<button type="submit" class="dropdown-item small py-2">{% if room.muted %} Unmute {% else %} Mute {% endif %}</button>
+						<button type="submit" class="dropdown-item small py-2">{% if room.muted %} Unmute {% else %}
+							Mute {% endif %}</button>
 					</form>
 				</li>
 				<li>
@@ -36,9 +40,8 @@
 				</li>
 				<li>
 					<button type="submit" class="dropdown-item small text-danger py-2"
-					hx-get="{% url 'chats:chat_clear_history' %}?room_id={{ room.id }}&partner_id={{ partner.id }}"
-					hx-target="#modals-here"
-					hx-indicator="#room-indicator">Clear history</button>
+						hx-get="{% url 'chats:chat_clear_history' %}?room_id={{ room.id }}&partner_id={{ partner.id }}"
+						hx-target="#hx-modal" hx-indicator="#room-indicator">Clear history</button>
 					<!-- <form action="{% url 'chats:chat_clear_history' %}" method="POST">
 						{% csrf_token %}
 						<input type="hidden" name="room_id" value="{{ room.id }}">
@@ -47,20 +50,18 @@
 					</form> -->
 				</li>
 				<li>
-					<button class="delete-chat dropdown-item small text-danger py-2"
-					hx-trigger="confirmed"
-					hx-get="{% url 'chats:chat_delete' %}?room_id={{ room.id }"
-					_="on click
+					<button class="delete-chat dropdown-item small text-danger py-2" hx-trigger="confirmed"
+						hx-get="{% url 'chats:chat_delete' %}?room_id={{ room.id }" _="on click
 						call Swal.fire({title: 'Are you sure?', text:'This will delete the chat permanently and it cannot be <strong>undone!</strong>'})
 						if result.isConfirmed trigger confirmed">Delete Chat</button>
 					<!-- <button type="submit" class="dropdown-item small text-danger py-2"
 					hx-get="{% url 'chats:chat_delete' %}?room_id={{ room.id }}"
-					hx-target="#modals-here"
+					hx-target="#hx-modal"
 					hx-indicator="#room-indicator">Delete chat</button> -->
 					<!-- <button class="dropdown-item small text-danger py-2"
 					hx-delete="{% url 'chats:chat_delete' %}?room_id={{ room.id }}" 
 					hx-confirm="Are you sure you wish to delete your account?"
-					hx-target="#modals-here"
+					hx-target="#hx-modal"
 					hx-indicator="#room-indicator">
 						Delete Chat
 					</button> -->
@@ -86,7 +87,8 @@
 				<i class="fa fa-face-angry"></i>
 			</button>
 		</div>
-		<input type="text" id="chat-message-input" class="form-control" placeholder="Write a message..." autofocus autocomplete="off">
+		<input type="text" id="chat-message-input" class="form-control" placeholder="Write a message..." autofocus
+			autocomplete="off">
 		<div>
 			<button type="button" class="btn btn-fb-primary btn-circle ms-3" id="chat-message-submit">
 				<i class="fa fa-paper-plane"></i>
@@ -96,15 +98,15 @@
 </div>
 
 <script>
-		roomName = {{ room_name_json }};
-		username = {{ username }};
-		roomId = {{ room.id }};
-		// next = '{{ next_page }}';
-		// msg_counter_url = "{% url 'chats:total_unread_messages' %}";
+	roomName = {{ room_name_json }};
+	username = {{ username }};
+	roomId = {{ room.id }};
+	// next = '{{ next_page }}';
+	// msg_counter_url = "{% url 'chats:total_unread_messages' %}";
 
-		$().chat(roomName, username, roomId);
-		
-		$('#chat-minimizer').click(function () {
-			$('.chat-popup').toggleClass('minimize')
-		});
+	$().chat(roomName, username, roomId);
+
+	$('#chat-minimizer').click(function () {
+		$('.chat-popup').toggleClass('minimize')
+	});
 </script>

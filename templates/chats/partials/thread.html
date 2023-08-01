@@ -40,10 +40,10 @@
 				<li>
 					<button type="submit" class="dropdown-item small text-danger py-2"
 						hx-get="{% url 'chats:chat_clear_history' %}?room_id={{ room.id }}&partner_id={{ partner.id }}"
-						hx-target="#modals-here" hx-indicator="#room-indicator">Clear history</button>
+						hx-target="#hx-modal" hx-indicator="#room-indicator">Clear history</button>
 				</li>
 				<li>
-					<button class="delete-chat dropdown-item small text-danger py-2" hx-target="#modals-here"
+					<button class="delete-chat dropdown-item small text-danger py-2" hx-target="#hx-modal"
 						hx-get="{% url 'chats:chat_delete' room.id %}" hx-indicator="#room-indicator">Delete
 						Chat</button>
 				</li>

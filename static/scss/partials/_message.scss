@@ -1,20 +1,26 @@
 .message-box {
-  display: inline-flex;
+  display: inline-block;
   font-size: 14px;
   max-width: 400px;
   pre {
     white-space: pre-wrap !important;
     font-family: "Poppins", sans-serif !important;
+    font-size: 14px;
   }
   &.sent {
     background-color: var(--dj-primary);
-    border-radius: 2em 2em 0 2em;
+    border-radius: 15px 15px 0 15px;
     z-index: 10;
+    .date {
+      color: var(--dj-primary-dark);
+    }
+  }
+  &.recieved {
+    border-radius: 15px 15px 15px 0;
   }
 }
 
 .msg-actions {
-  // z-index: 9999;
   position: relative;
   opacity: 0;
   transition: 0.3s;

@@ -68,13 +68,22 @@
 
 	<!-- {% include 'includes/_messages.html' %} -->
 
+	<style>
+		#content {
+			min-height: 80vh;
+		}
+	</style>
+
 	<div id="content" hx-history-elt>
 		{% block content %}
 		{% endblock %}
 	</div>
 
-	<div id="modals-here"></div>
-	<div id="chat-popup"></div>
+	<div id="hx-modal"></div>
+	<div id="indicator" class="htmx-indicator loader-full">
+		<img id="spinner" width="60px" src="{% static 'images/preloader-md.svg' %}"
+			style="box-shadow: 0 0 15px 5px rgba(0,0,0,.1);" alt="Loading..." />
+	</div>
 
 	{% block footer %}{% include 'includes/_footer.html' %}{% endblock %}
 
@@ -100,7 +109,7 @@
 	<script>
 		// htmx close modal
 		function closeModal() {
-			var container = document.getElementById("modals-here")
+			var container = document.getElementById("hx-modal")
 			var backdrop = document.getElementById("modal-backdrop")
 			var modal = document.getElementById("modal")
 
@@ -119,6 +128,7 @@
 		document.body.addEventListener("htmx:configRequest", (event) => {
 			event.detail.headers["X-CSRFToken"] = "{{ csrf_token }}";
 		});
+
 		// Django csrf varification
 		function getCookie(name) {
 			let cookieValue = null;
@@ -159,7 +169,7 @@
 				"hideMethod": "fadeOut"
 			}
 
-			// textarea cusomization
+			// textarea auto height
 			function updateHeight(ele) {
 				$(ele).css('height', 'auto')
 				$(ele).css('height', `${ele.scrollHeight}px`)

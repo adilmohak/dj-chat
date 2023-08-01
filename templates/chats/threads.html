@@ -32,7 +32,7 @@
 						<div>Messages</div>
 						<div class="ms-auto">
 							<a role="button" class="btn btn-sm btn-outline-primary ms-auto"
-								hx-get="{% url 'chats:thread_new' %}?next={{ request.path }}" hx-target="#modals-here">
+								hx-get="{% url 'chats:thread_new' %}?next={{ request.path }}" hx-target="#hx-modal">
 								New message
 								<div class="text-center htmx-indicator">
 									<span class="dots-loader">

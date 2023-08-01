@@ -13,9 +13,9 @@
 
 <div class="d-md-none plus-area">
 	<a role="button" class="btn btn-lg btn-fb-primary shadow border" hx-get="{% url 'chats:discussion_create' %}"
-		hx-target="#modals-here" hx-indicator="#indicator"><i class="fa fa-plus"></i></a>
+		hx-target="#hx-modal" hx-indicator="#indicator"><i class="fa fa-plus"></i></a>
 	<a role="button" class="btn btn-lg btn-light shadow border" hx-get="{% url 'chats:user_rooms' %}?display=modal"
-		hx-target="#modals-here" hx-indicator="#indicator"><i class="fa fa-history"></i>
+		hx-target="#hx-modal" hx-indicator="#indicator"><i class="fa fa-history"></i>
 		<span class="notify-badge" style="display: block;">
 			<span id="">34</span>
 			<span class="visually-hidden">unread notifications</span>
@@ -38,7 +38,7 @@
 						</div>
 					</a>
 					<a role="button" class="btn btn-sm btn-fb-primary" hx-get="{% url 'chats:discussion_create' %}"
-						hx-target="#modals-here" hx-indicator="#indicator">+ Create a New Room</a>
+						hx-target="#hx-modal" hx-indicator="#indicator">+ Create a New Room</a>
 				</div>
 				<div class="card p-3 mb-2">
 					<h6>Recent Rooms</h6>
@@ -125,11 +125,6 @@
 		</div>
 	</div>
 </section>
-
-<div id="indicator" class="htmx-indicator loader-full">
-	<img id="spinner" width="60px" src="{% static 'images/preloader-md.svg' %}"
-		style="box-shadow: 0 0 15px 5px rgba(0,0,0,.1);" alt="Loading..." />
-</div>
 
 <br><br><br>
 

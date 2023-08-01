@@ -63,7 +63,7 @@
 			</div>
 		</div>
 		<div class="col-2 d-flex align-items-start">
-			<a href="#" hx-get="{% url 'chats:invite_people' %}?room={{ room.id }}" hx-target="#modals-here"
+			<a href="#" hx-get="{% url 'chats:invite_people' %}?room={{ room.id }}" hx-target="#hx-modal"
 				class="btn btn-sm btn-primary">
 				<i class="fa fa-user-plus"></i>
 			</a>
@@ -100,7 +100,7 @@
 							<ul class="dropdown-menu" aria-labelledby="configDiscussion">
 								<li><a class="dropdown-item" href="{% url 'chats:discussion_update' room.slug %}"
 										hx-get="{% url 'chats:discussion_update' room.slug %}" hx-indicator="#indicator"
-										hx-target="#modals-here">Edit</a></li>
+										hx-target="#hx-modal">Edit</a></li>
 								<!-- <li><a class="dropdown-item text-danger" href="#">Delete</a></li> -->
 							</ul>
 						</div>
@@ -126,8 +126,9 @@
 						target="_blank" class="me-2 social-share fst-twitter"><i class="fab fa-twitter"></i></a>
 				</div>
 				<div class="d-flex justify-content-center mt-2">
-					<a href="#" hx-get="{% url 'chats:invite_people' %}?room={{ room.id }}" hx-target="#modals-here"
-						class="btn btn-primary me-2"><i class="fa fa-user-plus"></i> Invite</a>
+					<a href="#" hx-get="{% url 'chats:invite_people' %}?room={{ room.id }}" hx-target="#hx-modal"
+						hx-indicator="#indicator" class="btn btn-primary me-2"><i class="fa fa-user-plus"></i>
+						Invite</a>
 				</div>
 				<div class="break-title text-muted">🔥 Trendings</div>
 				<div hx-get="{% url 'chats:trendings' %}" hx-trigger="load">
@@ -188,11 +189,6 @@
 		</div>
 	</div>
 </section>
-
-<div id="indicator" class="htmx-indicator loader-full">
-	<img id="spinner" width="60px" src="{% static 'images/preloader-md.svg' %}"
-		style="box-shadow: 0 0 15px 5px rgba(0,0,0,.1);" alt="Loading..." />
-</div>
 
 {% endblock %}
 
