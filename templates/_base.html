@@ -206,10 +206,6 @@
 			})
 			toastList.forEach(toast => toast.show())
 
-
-			// const private_rooms_url = "/api-chats/private_rooms/";
-
-
 			// handle when error happen in processing user request
 			function requestFailHandler(
 				error = null,
@@ -241,35 +237,6 @@
 				})
 			}
 			total_unread_messages()
-
-			// mute/unmute chat
-			$(document).on('submit', '.js-mute-chat', function (evt) {
-				evt.stopPropagation();
-				evt.preventDefault();
-
-				data = $(this).serialize();
-				url = $(this).attr('action');
-				submitBtn = $(this).children('button[type=submit]');
-				// console.log(submitBtn)
-				$.ajax({
-					type: 'POST',
-					url: url,
-					data: data,
-					headers: {
-						'X-Requested-With': 'XMLHttpRequest',
-						'csrftoken': csrftoken,
-					},
-					success: function (res) {
-						console.log(res)
-						submitBtn.text(res['muted'] === true ? 'Unmute' : 'Mute');
-						toastr.success(res['msg']);
-					},
-					error: function (res) {
-						console.log(res)
-						requestFailHandler()
-					}
-				})
-			})
 
 			function removeAnim(anim) {
 				$(`.${anim}`).on('animationend', function () {

@@ -1,5 +1,3 @@
-{% load static %}
-
 <div class="chat-wrapper scroller bg-white w-100 justify-content-between d-flex flex-column position-relative">
 
 	<div id="room-indicator" class="htmx-indicator"></div>
@@ -10,31 +8,22 @@
 				{{ partner.username|first }}
 			</div>
 			<div class="ms-2 small mb-0 p-0 text-truncate">{{ partner.username }}</div>
-			<!-- <p>{{ room.room.headline }}</p> -->
 		</div>
 
 		<!-- room actions -->
 		<div class="ms-auto dropdown">
-			<button class="btn btn-sm btn-circle" type="button" id="chatMenu" data-bs-toggle="dropdown"
-				aria-expanded="false">
+			<button class="btn btn-sm btn-circle btn-outline-dark" type="button" id="chatMenu" data-bs-toggle="dropdown"
+				data-bs-auto-close="outside" aria-expanded="false">
 				<i class="fa fa-ellipsis"></i>
 			</button>
 			<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="chatMenu">
 				<li>
-					<form class="js-mute-chat" action="{% url 'chats:chat_mute' %}?pid={{ partner.id }}" method="POST">
+					<form action="{% url 'chats:chat_mute' %}?pid={{ partner.id }}" method="POST">
 						{% csrf_token %}
 						<input type="hidden" name="room_id" value="{{ room.id }}">
-						<input type="hidden" name="next" value="{{ request.path }}">
-						<button type="submit" class="dropdown-item small py-2">{% if room.muted %} Unmute {% else %}
-							Mute {% endif %}</button>
-					</form>
-				</li>
-				<li>
-					<form class="js-mute-chat" action="{% url 'chats:chat_mute' %}?pid={{ partner.id }}" method="POST">
-						{% csrf_token %}
-						<input type="hidden" name="room_id" value="{{ room.id }}">
-						<input type="hidden" name="next" value="{{ request.path }}">
-						<button type="submit" class="dropdown-item small text-danger py-2">Leave</button>
+						<button hx-post="{% url 'chats:chat_mute' %}?pid={{ partner.id }}" hx-target="this"
+							type="submit" class="dropdown-item small py-2">
+							{% if room.muted %} Unmute {% else %} Mute notifications {% endif %}</button>
 					</form>
 				</li>
 				<li>
@@ -52,9 +41,6 @@
 
 	</div>
 	<div class="chat-body px-3 pb-2 pt-3">
-		<div class="text-center mb-3">
-			<a role="button" id="load-more" class="a-fb-default d-inline-flex mb-auto x-small bold-500"></a>
-		</div>
 		<ul id="chat-log" class="mt-auto p-0"></ul>
 	</div>
 	<div class="chat-footer d-flex align-items-center py-2 px-3 border-top">

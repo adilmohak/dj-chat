@@ -159,15 +159,6 @@ table.border-separate {
   background-color: var(--bs-gray-200);
 }
 
-// override the bootstrap style
-.list-group-item-action.active,
-.dropdown-item.active,
-.dropdown-item:focus {
-  background-color: var(--dj-primary-200);
-  border-color: var(--dj-primary);
-  color: var(--dj-primary);
-}
-
 .rounded-pill-left,
 .rounded-pill-left .btn {
   border-top-left-radius: 2em !important;

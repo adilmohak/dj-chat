@@ -119,6 +119,15 @@
   border: 0;
 }
 
+// override the bootstrap style
+.list-group-item-action.active,
+.dropdown-item.active,
+.dropdown-item:focus {
+  background-color: var(--dj-primary-200);
+  border-color: var(--dj-primary);
+  // color: var(--bs-dark);
+}
+
 .navbar .dropdown-list .dropdown-item {
   white-space: normal;
   padding-top: 0.5rem;

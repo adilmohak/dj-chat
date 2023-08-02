@@ -1,0 +1,26 @@
+{% load static %}
+
+<div id="modal-backdrop" class="modal-backdrop fade show" style="display:block;"></div>
+<div id="modal" class="modal fade show animated--grow-in" tabindex="-1" style="display:block;">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content radius-400 overflow-hidden border-0">
+			<div class="modal-header p-3 border-0">
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+					onclick="closeModal()"></button>
+			</div>
+			<div class="modal-body text-center">
+				<h5>Are you sure?</h5>
+				<p>This will delete the message from both side.</p>
+				<div class="d-flex justify-content-center">
+					<button type="button" class="btn btn-light border me-2" data-bs-dismiss="modal" aria-label="Close"
+						onclick="closeModal()">Cancle</button>
+					<form action="{% url 'chats:message_delete' message.id %}" method="POST">
+						{% csrf_token %}
+						<input type="hidden" name="message_id" value="{{ message.id }}">
+						<button type="submit" class="btn btn-danger">Delete message</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -309,7 +309,7 @@ class ClearHistory(View):
         partner_id = request.GET.get("partner_id")
         return render(
             request,
-            "chats/partials/clear_history_popup.html",
+            "chats/partials/clear_history.html",
             {"room_id": room_id, "partner_id": partner_id},
         )
 
@@ -318,7 +318,7 @@ class ClearHistory(View):
 class RoomDeleteView(DeleteView):
     context_object_name = "room"
     queryset = Room.objects.all()
-    template_name = "chats/partials/chat_delete_popup.html"
+    template_name = "chats/partials/chat_delete.html"
 
     def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
         self.get_object().delete()
@@ -341,14 +341,29 @@ class RoomMutate(View):
         room.muted = not room.muted
         room.save()
         msg = "Chat has been muted." if room.muted else "Chat has been unmuted."
+        messages.success(request, msg)
+        return HttpResponse(
+            f"""{"Mute notifications" if not room.muted else "Unmute"}"""
+        )
+
+
+@method_decorator(login_required, name="dispatch")
+class MessageDeleteView(DeleteView):
+    context_object_name = "message"
+    queryset = Message.objects.all()
+    template_name = "chats/partials/message_delete.html"
+
+    def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
+        self.get_object().delete()
+        msg = "Message has been deleted."
         if request.htmx:
-            return JsonResponse({"muted": room.muted, "msg": msg})
+            return JsonResponse({"deleted": True, "message": msg})
         else:
             messages.success(request, msg)
             next = request.POST.get("next")
             if next:
                 return redirect(next)
-            return redirect("chats:threads")
+        return JsonResponse({"deleted": True, "message": msg})
 
 
 @login_required

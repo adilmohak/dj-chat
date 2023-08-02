@@ -144,7 +144,7 @@
 								</div>
 								<div class="position-absolute text-dark px-2 radius-400"
 									style="background-color: #85cdca; top: 50%; right: 0; transform: translate(-50%, -50%);">
-									3</div>
+									{{ unread_messages }}</div>
 							</div>
 						</a>
 					</li>
@@ -191,7 +191,7 @@
 		Close without Saving
 	</swal-button>
 	<swal-param name="allowEscapeKey" value="false" />
-	<swal-param name="customClass" value='{ "popup": "my-popup" }' />
+	<swal-param name="customClass" value="{ 'popup': 'my-popup' }" />
 </template>
 <script>
 	// Swal.fire({
@@ -220,23 +220,23 @@
 			// buttonsStyling: false,
 		})
 	})
-	$('.delete-chat').click(function () {
-		Swal.fire({
-			title: '<h5>Are you sure?</h5>',
-			icon: 'warning',
-			html: 'This will delete the chat permanently and it cannot be <b>undone!</b>',
-			showCloseButton: true,
-			showCancelButton: true,
-			focusConfirm: false,
-			confirmButtonText: 'Delete Chat',
-			confirmButtonAriaLabel: 'Delete chat',
-			cancelButtonText: 'Cancel',
-			cancelButtonAriaLabel: 'Cancel',
-			confirmButtonColor: 'var(--bs-danger)',
-			cancelButtonColor: '#000',
-			// buttonsStyling: false,
-		})
-	})
+	// $('.delete-chat').click(function () {
+	// 	Swal.fire({
+	// 		title: '<h5>Are you sure?</h5>',
+	// 		icon: 'warning',
+	// 		html: 'This will delete the chat permanently and it cannot be <b>undone!</b>',
+	// 		showCloseButton: true,
+	// 		showCancelButton: true,
+	// 		focusConfirm: false,
+	// 		confirmButtonText: 'Delete Chat',
+	// 		confirmButtonAriaLabel: 'Delete chat',
+	// 		cancelButtonText: 'Cancel',
+	// 		cancelButtonAriaLabel: 'Cancel',
+	// 		confirmButtonColor: 'var(--bs-danger)',
+	// 		cancelButtonColor: '#000',
+	// 		// buttonsStyling: false,
+	// 	})
+	// })
 
 	// const Toast = Swal.mixin({
 	// 	toast: true,

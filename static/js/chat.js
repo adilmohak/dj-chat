@@ -44,11 +44,11 @@
 						</div>`);
     if (group) {
       var userMsg = function (msg) {
-        return $.parseHTML(`<li class="clearfix">
+        return $.parseHTML(`<li class="clearfix mb-2">
 							<div class="float-end text-end animated--grow-right">
 								<div class="message-box sent text-break text-start position-relative px-3 py-2">
 									<pre class="m-0">${msg.content}</pre>
-                  <p class="fd-dynamicFontSize--tiny ms-auto date mt-1 mb-0">${msg.date_created}</p>
+                  <p class="fd-dynamicFontSize--tiny ms-auto date mt-1 mb-0">${msg.created}</p>
 									<div style="box-sizing: border-box; display: flex; position: absolute; right: -6px; bottom: 0px; transform: scaleX(-1);">
 										<svg width="6" height="11" viewBox="0 0 6 11" fill="none" xmlns="http://www.w3.org/2000/svg">
 											<path d="M-3.05176e-05 10.5019C-3.05176e-05 10.777 0.222986 11 0.49809 11H5.99997V0C5.99997 4.06498 4.64357 7.63316 0.640783 9.52185C0.25977 9.70162 -3.05176e-05 10.0768 -3.05176e-05 10.4981V10.4981L-2.69413e-05 10.5L-3.05176e-05 10.5019V10.5019Z" fill="#ffc530"></path>
@@ -67,30 +67,33 @@
 								</div><br>
 								<div class="message-box text-break group-reply bg-gray-200 mt-1 px-3 py-2">
 									<pre class="m-0">${msg.content}</pre>
-                  <p class="fd-dynamicFontSize--tiny ms-auto text-muted mt-1 mb-0">${msg.date_created}</p>
+                  <p class="fd-dynamicFontSize--tiny ms-auto text-muted mt-1 mb-0">${msg.created}</p>
 								</div>
 							</li>`);
       };
     } else {
       var userMsg = function (msg) {
-        return $.parseHTML(`<li class="clearfix mb-3">
-						<div class="msg-instance float-end text-end animated--grow-right" id="id_msg_${msg.id}">
+        return $.parseHTML(`<li class="clearfix mb-2" id="id_msg_${msg.id}">
+						<div class="msg-instance float-end text-end animated--grow-right">
 							<div class="float-start me-2 msg-actions">
 								<div class="dropdown">
 									<button class="btn btn-circle border shadow" type="button" id="msgActions" data-bs-toggle="dropdown" aria-expanded="false">
 										<i class="fa fa-ellipsis"></i>
 									</button>
 									<ul class="dropdown-menu" aria-labelledby="msgActions">
-										<li><a msg-target="#id_msg_${msg.id}" class="dropdown-item small px-2 py-1" href="${msg.replay_url}">Replay</a></li>
-										<li><a msg-target="#id_msg_${msg.id}" class="msg-edit dropdown-item small px-2 py-1" href="#">Edit</a></li>
-										<li><a msg-target="#id_msg_${msg.id}" class="msg-edit dropdown-item small px-2 py-1" href="#">Copy Text</a></li>
-										<li><a msg-target="#id_msg_${msg.id}" class="msg-delete dropdown-item small px-2 py-1 text-danger" href="${msg.delete_url}">Delete</a></li>
+										<li><a class="dropdown-item small px-2 py-1" href="${msg.replay_url}">Replay</a></li>
+										<li><a class="msg-edit dropdown-item small px-2 py-1" href="#">Edit</a></li>
+										<li><a class="msg-edit dropdown-item small px-2 py-1" href="#">Copy Text</a></li>
+                    <li>
+                      <button class="msg-delete dropdown-item small px-2 py-1 text-danger" 
+                      hx-get="${msg.delete_url}" hx-target="#id_msg_${msg.id}" hx-indicator="#room-indicator">Delete</button>
+                    </li>
 									</ul>
 								</div>
 							</div>
 							<div class="message-box sent text-break text-start position-relative px-3 py-2">
 								<pre class="msg-content m-0">${msg.content}</pre>
-                <p class="fd-dynamicFontSize--tiny ms-auto date mt-1 mb-0">${msg.date_created}</p>
+                <p class="fd-dynamicFontSize--tiny ms-auto date mt-1 mb-0">${msg.created}</p>
 								<div style="box-sizing: border-box; display: flex; position: absolute; right: -6px; bottom: 0px; transform: scaleX(-1);">
 									<svg width="6" height="11" viewBox="0 0 6 11" fill="none" xmlns="http://www.w3.org/2000/svg">
 										<path d="M-3.05176e-05 10.5019C-3.05176e-05 10.777 0.222986 11 0.49809 11H5.99997V0C5.99997 4.06498 4.64357 7.63316 0.640783 9.52185C0.25977 9.70162 -3.05176e-05 10.0768 -3.05176e-05 10.4981V10.4981L-2.69413e-05 10.5L-3.05176e-05 10.5019V10.5019Z" fill="#ffc530"></path>
@@ -101,8 +104,8 @@
 						</li>`);
       };
       var partnerMsg = function (msg) {
-        return $.parseHTML(`<li class="clearfix mb-3">
-						<div class="msg-instance float-start animated--grow-left" id="id_msg_${msg.id}">
+        return $.parseHTML(`<li class="clearfix mb-2" id="id_msg_${msg.id}">
+						<div class="msg-instance float-start animated--grow-left">
 							<div class="float-end ms-2 msg-actions">
 								<div class="dropdown">
 									<button class="btn btn-circle border shadow" type="button" id="msgActions" data-bs-toggle="dropdown" aria-expanded="false">
@@ -111,13 +114,16 @@
 									<ul class="dropdown-menu" aria-labelledby="msgActions">
 										<li><a msg-target="#id_msg_${msg.id}" class="dropdown-item small px-2 py-1" href="${msg.replay_url}">Replay</a></li>
 										<li><a msg-target="#id_msg_${msg.id}" class="msg-edit dropdown-item small px-2 py-1" href="#">Edit</a></li>
-										<li><a msg-target="#id_msg_${msg.id}" class="msg-delete dropdown-item small px-2 py-1 text-danger" href="${msg.delete_url}">Delete</a></li>
-									</ul>
+                    <li>
+                      <button class="msg-delete dropdown-item small px-2 py-1 text-danger" 
+                      hx-get="${msg.delete_url}" hx-target="#id_msg_${msg.id}" hx-indicator="#room-indicator">Delete</button>
+                    </li>
+                  </ul>
 								</div>
 							</div>
 							<div class="message-box recieved text-dark text-break bg-gray-300 border position-relative px-3 py-2">
 								<pre class="msg-content m-0">${msg.content}</pre>
-                <p class="fd-dynamicFontSize--tiny ms-auto text-muted mt-1 mb-0">${msg.date_created}</p>
+                <p class="fd-dynamicFontSize--tiny ms-auto text-muted mt-1 mb-0">${msg.created}</p>
                 </div>
 						</div>
 						</li>`);
@@ -129,13 +135,16 @@
      * ------------------------------------------------------------------------
      */
 
-    var next = 1;
+    let next = 1;
+    let fetch_messages = true;
 
     chatBody.on("scroll", function () {
       if (chatBody.scrollTop() <= 30) {
         fetchMessages((next += 1));
         // wait 500 ms before fetching next page
-        // setTimeout(function () {console.log("paginating messages")}, 500)
+        setTimeout(function () {
+          console.log("paginating messages");
+        }, 500);
       }
     });
 
@@ -191,7 +200,10 @@
       onkeyup(e);
     });
 
-    // Load more messages on button click
+    /* 
+      Load more messages on button click
+      This is used inside discussion room
+    */
     loadMoreBtn.on("click", function (e) {
       e.preventDefault();
       $(this).addClass("animated--scale-in-out");
@@ -208,6 +220,8 @@
     function onmessage(e) {
       const data = JSON.parse(e.data);
       if (data["next_page"] === null) {
+        console.log("All messages has been fetched!");
+        fetch_messages = false;
         loadMoreBtn.replaceWith("");
       } else {
         loadMoreBtn.html("Load more messages");
@@ -219,12 +233,6 @@
           data["history_cleared"]
             ? chatBody.prepend(historyCleared)
             : chatBody.prepend(emptyMessage);
-          // if (data['history_cleared']) {
-          // 	chatBody.prepend(historyCleared)
-          // }
-          // else {
-          // 	chatBody.prepend(emptyMessage)
-          // }
           return;
         }
         // Loop though each message and add to the chat log
@@ -266,7 +274,6 @@
         chatSubmit.removeClass("btn-fb-primary");
         chatSubmit.attr("disabled", true);
       }
-      return;
       if (!group && e.keyCode === 13) {
         // enter, return
         chatSubmit.trigger("click");
@@ -280,6 +287,9 @@
 
     var prev = 0;
     function fetchMessages(page) {
+      // fetch_messages can be false if there is no messages to fetch
+      if (fetch_messages === false) return;
+
       // Check if the message has been loaded already
       if (prev === page) return;
 
@@ -319,48 +329,48 @@
         // For thread scroll the chatBody to the end
         chatBody.scrollTop(chatBody.prop("scrollHeight"));
       }
-      editMsg();
+      // editMsg();
     }
 
-    $(".msg-delete").click(function (e) {
-      e.stopPropagation();
-      e.preventDefault();
-      $.ajax({
-        type: "GET",
-        url: $(this).attr("href"),
-        success: function (res) {
-          console.log(res);
-        },
-        error: function (res) {
-          console.log(res);
-        },
-      });
-    });
+    // $(".msg-delete").click(function (e) {
+    //   e.stopPropagation();
+    //   e.preventDefault();
+    //   $.ajax({
+    //     type: "GET",
+    //     url: $(this).attr("href"),
+    //     success: function (res) {
+    //       console.log(res);
+    //     },
+    //     error: function (res) {
+    //       console.log(res);
+    //     },
+    //   });
+    // });
 
-    function editMsg() {
-      $(".msg-edit").click(function (e) {
-        e.stopPropagation();
-        e.preventDefault();
+    // function editMsg() {
+    //   $(".msg-edit").click(function (e) {
+    //     e.stopPropagation();
+    //     e.preventDefault();
 
-        console.log(
-          "$($(this).attr('msg-target')).find('.msg-content').text()",
-          $($(this).attr("msg-target")).find(".msg-content").text()
-        );
-        $(msgInput).val(
-          $($(this).attr("msg-target")).find(".msg-content").text()
-        );
-        $(msgInput).trigger("focus");
-        // $.ajax({
-        // 	type: 'GET',
-        // 	url: $(this).attr('href'),
-        // 	success: function(res) {
-        // 		console.log(res)
-        // 	},
-        // 	error: function(res) {
-        // 		console.log(res)
-        // 	}
-        // })
-      });
-    }
+    //     console.log(
+    //       "Message content",
+    //       $($(this).attr("msg-target")).find(".msg-content").text()
+    //     );
+    //     $(msgInput).val(
+    //       $($(this).attr("msg-target")).find(".msg-content").text()
+    //     );
+    //     $(msgInput).trigger("focus");
+    //     // $.ajax({
+    //     // 	type: 'GET',
+    //     // 	url: $(this).attr('href'),
+    //     // 	success: function(res) {
+    //     // 		console.log(res)
+    //     // 	},
+    //     // 	error: function(res) {
+    //     // 		console.log(res)
+    //     // 	}
+    //     // })
+    //   });
+    // }
   };
 })(jQuery);

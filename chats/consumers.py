@@ -1,6 +1,7 @@
 import json
 from django.contrib.auth import get_user_model
 from django.shortcuts import redirect, render, get_object_or_404
+from django.urls import reverse
 from django.utils.formats import localize
 from django.core.paginator import PageNotAnInteger, EmptyPage, Paginator
 
@@ -71,7 +72,9 @@ class ChatConsumer(WebsocketConsumer):
             "name": f"{message.author.first_name} {message.author.last_name}",
             # "avatar": message.author.avatar.url,
             "content": message.content,
-            "date_created": str(localize(message.created)),
+            "modified": str(localize(message.modified)),
+            "created": str(localize(message.created)),
+            "delete_url": reverse("chats:message_delete", kwargs={"pk": message.id}),
         }
 
     commands = {"fetch_messages": fetch_messages, "new_message": new_message}
