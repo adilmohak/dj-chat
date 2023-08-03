@@ -14,7 +14,7 @@
 				<div class="d-flex justify-content-center">
 					<button type="button" class="btn btn-light border me-2" data-bs-dismiss="modal" aria-label="Close"
 						onclick="closeModal()">Cancle</button>
-					<form action="{% url 'chats:chat_clear_history' %}" method="POST">
+					<form action="{% url 'chats:clear_history' %}" method="POST">
 						{% csrf_token %}
 						<input type="hidden" name="room_id" value="{{ room_id }}">
 						<input type="hidden" name="partner_id" value="{{ partner_id }}">

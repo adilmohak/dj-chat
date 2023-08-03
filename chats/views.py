@@ -301,7 +301,7 @@ class ClearHistory(View):
 
             discussion_slug = request.POST.get("discussion_slug")
             if discussion_slug:
-                return redirect("chats:discussion_room", discussion_slug)
+                return redirect("chats:discussion_detail", discussion_slug)
             return redirect(request.path)
 
     def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:

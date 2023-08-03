@@ -99,7 +99,7 @@
 						{% endfor %}
 						{% if page_obj.has_next %}
 						<div id="rooms-paginator">
-							<a hx-get="{% url 'chats:rooms' %}?page={{ page_obj.next_page_number }}"
+							<a hx-get="{% url 'chats:discussions' %}?page={{ page_obj.next_page_number }}"
 								hx-target="#rooms-paginator" hx-trigger="click" hx-swap="outerHTML" role="button"
 								id="load-more" class="btn btn-sm border w-100 mt-3">
 								Load More <i class="fa fa-circle-arrow-down"></i>
@@ -115,7 +115,7 @@
 						{% endif %}
 					</div>
 					<!-- <button class="btn btn-outline-primary w-100" id="htmx-loader"
-						hx-get="{% url 'chats:rooms' %}?page={{ page_number|add:'1' }}" hx-target="#roomsContainer>.row"
+						hx-get="{% url 'chats:discussions' %}?page={{ page_number|add:'1' }}" hx-target="#roomsContainer>.row"
 						hx-swap="beforeend">
 						Load More Rooms...
 					</button> -->
@@ -139,7 +139,7 @@
 
 	// let next_page = parseInt({{ page_number }}) + 1;
 	// let total_pages = {{ num_pages }};
-	// let url = "{% url 'chats:rooms' %}?page=";
+	// let url = "{% url 'chats:discussions' %}?page=";
 
 	$(document).ready(function () {
 		$('.sort-action').on('click', function () {

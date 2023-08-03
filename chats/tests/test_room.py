@@ -12,10 +12,10 @@ from django.contrib.auth.models import User
 from chats.models import Room
 
 
-class RoomDetailViewTestCase(TestCase):
+class RoomTestCase(TestCase):
     def setUp(self):
-        self.room = Room.objects.create(name="Test Room")
-        self.url = reverse("room-detail", args=[self.room.pk])
+        self.room = Room.objects.create(is_private=True)
+        self.url = reverse("chats:room", args=[self.room.pk])
 
         self.client = Client()
         self.user = User.objects.create_user(
@@ -39,7 +39,7 @@ class RoomDetailViewTestCase(TestCase):
 
     def test_room_delete_view(self):
         response = self.client.get(
-            reverse("chats:delete_room", kwargs={"pk": self.room.id})
+            reverse("chats:room_delete", kwargs={"pk": self.room.id})
         )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "chats/partials/chat_delete.html")

@@ -293,9 +293,7 @@ class DiscussionRoomManager(models.Manager):
 
 class DiscussionRoom(models.Model):
     # owner is a user who created the room
-    owner = models.ForeignKey(
-        settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL
-    )
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     # OneToOneField to ensure that one room can have only one discussion room
     room = models.OneToOneField(Room, on_delete=models.CASCADE)
@@ -342,7 +340,7 @@ class DiscussionRoom(models.Model):
 
     @property
     def get_absolute_url(self):
-        return reverse("chats:discussion_room", kwargs={"slug": self.slug})
+        return reverse("chats:discussion_detail", kwargs={"slug": self.slug})
 
     def set_messages_dump(self):
         """

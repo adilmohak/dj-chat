@@ -14,7 +14,7 @@
 				<div class="d-flex justify-content-center">
 					<button type="button" class="btn btn-light border me-2" data-bs-dismiss="modal" aria-label="Close"
 						onclick="closeModal()">Cancle</button>
-					<form action="{% url 'chats:chat_delete' room.id %}" method="POST">
+					<form action="{% url 'chats:room_delete' room.id %}" method="POST">
 						{% csrf_token %}
 						<button type="submit" class="btn btn-danger">Delete chat</button>
 					</form>

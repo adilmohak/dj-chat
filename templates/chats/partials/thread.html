@@ -18,22 +18,22 @@
 			</button>
 			<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="chatMenu">
 				<li>
-					<form action="{% url 'chats:chat_mute' %}?pid={{ partner.id }}" method="POST">
+					<form action="{% url 'chats:room_mutate' %}?pid={{ partner.id }}" method="POST">
 						{% csrf_token %}
 						<input type="hidden" name="room_id" value="{{ room.id }}">
-						<button hx-post="{% url 'chats:chat_mute' %}?pid={{ partner.id }}" hx-target="this"
+						<button hx-post="{% url 'chats:room_mutate' %}?pid={{ partner.id }}" hx-target="this"
 							type="submit" class="dropdown-item small py-2">
 							{% if room.muted %} Unmute {% else %} Mute notifications {% endif %}</button>
 					</form>
 				</li>
 				<li>
 					<button type="submit" class="dropdown-item small text-danger py-2"
-						hx-get="{% url 'chats:chat_clear_history' %}?room_id={{ room.id }}&partner_id={{ partner.id }}"
+						hx-get="{% url 'chats:clear_history' %}?room_id={{ room.id }}&partner_id={{ partner.id }}"
 						hx-target="#hx-modal" hx-indicator="#room-indicator">Clear history</button>
 				</li>
 				<li>
 					<button class="delete-chat dropdown-item small text-danger py-2" hx-target="#hx-modal"
-						hx-get="{% url 'chats:chat_delete' room.id %}" hx-indicator="#room-indicator">Delete
+						hx-get="{% url 'chats:room_delete' room.id %}" hx-indicator="#room-indicator">Delete
 						Chat</button>
 				</li>
 			</ul>
