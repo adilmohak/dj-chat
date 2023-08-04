@@ -1,15 +1,27 @@
 # dj-chat
 
-### Fully functional chat app built with django-channels, websockets, redis, htmx, and other production level packages
+### Fully functional chat app built with `django` and `htmx` with the power of `websockets`. The app includes other production level packages, such as:- channels, websockets, redis, django-allauth, django-crispy-forms, django-select2, etc.
 
 # Current features:
 
-- Private (one-on-one) chat
-- Group chat
+- Threads / Private (one-on-one) chat
+- Group chat / discussion rooms
 - User management (Login/logout, signup, reset/change password)
-- Edited or deleted message instances
-- Replay to specific message instance
-- Create and manage group rooms
+- Mute/unmute message notifications
+- Clear history
+- Delete chat
+- Sort discussions by "Trendings", "Newest", or "Oldest"
+- Discussions pagination without page reloading
+- Auto fetch messags onscroll
+- Display the user's recent rooms
+
+# Pre-requisites:
+
+> The following programs are required to run the project, install them for your OS
+
+- [Any Python-3 version](https://www.python.org/downloads/)
+- [Redis](https://redis.io/download/)
+- [PostgreSQL database](https://www.postgresql.org/download/)
 
 # Installation
 
@@ -19,15 +31,33 @@
 
 - `pip install -r requirements.txt`
 
-- Create `.env` file inside the root directory and setup your database (DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT)
+- Create `.env` file inside the root directory (the same directory as where `manage.py` located)
+
+- Inside your `.env` file put the following variables
+
+```
+DB_NAME=[NAME_OF_YOUR_DB]
+DB_USER=[DB_USERNAME]
+DB_PASSWORD=[DB_PASSWORD]
+DB_HOST=localhost
+DB_PORT=[DB_PORT]
+```
 
 - `python manage.py makemigrations`
 
 - `python manage.py migrate`
 
+- `python manage.py populate_data`
+
+_The above command will populate sample data for you so you can test the app as quickly as possible_
+
+- `redis-server`
+
+_The above command will start the redis server_
+
 - `python manage.py runserver`
 
-Last but not least, go to this address http://127.0.0.1:8000
+- Last but not least, go to this address http://127.0.0.1:8000
 
 # Connect with me
 
