@@ -26,7 +26,7 @@
 			<div class="col-10">
 				<div class="small text-truncate">{{ room.room.latest_message.content }}</div>
 				<div class="x-small text-truncate text-gray-500">
-					{{ partner.get_name }} · {{ room.room.latest_message.created|timesince }}
+					@{{ partner.username }} · {{ room.room.latest_message.created|timesince }}
 				</div>
 			</div>
 		</div>

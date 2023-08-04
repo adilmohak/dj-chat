@@ -32,7 +32,7 @@
 							{{ request.user.username|first }}
 						</div>
 						<div class="publisher-detail text-dark">
-							<h6 class="mb-0">{{ request.user }}</h6>
+							<h6 class="mb-0">{{ request.user.first_name }} {{ request.user.last_name }}</h6>
 							<p class="mb-2 text-muted" style="font-size: 12px;">
 								Last login: {{ request.user.last_login|date }}</p>
 						</div>
