@@ -1,8 +1,5 @@
 pytz==2022.7  # https://github.com/stub42/pytz
-# python-slugify==7.0.0  # https://github.com/un33k/python-slugify
 Pillow==9.3.0  # https://github.com/python-pillow/Pillow
-# rcssmin==1.1.0  # https://github.com/ndparker/rcssmin
-# argon2-cffi==21.3.0  # https://github.com/hynek/argon2_cffi
 whitenoise==6.2.0  # https://github.com/evansd/whitenoise
 redis==4.4.0  # https://github.com/redis/redis-py
 hiredis==2.1.0  # https://github.com/redis/hiredis-py
@@ -17,16 +14,8 @@ django-crispy-forms==1.14.0  # https://github.com/django-crispy-forms/django-cri
 crispy-bootstrap5==0.7  # https://github.com/django-crispy-forms/crispy-bootstrap5
 # django-compressor==4.1  # https://github.com/django-compressor/django-compressor
 django-redis==5.2.0  # https://github.com/jazzband/django-redis
-# Django REST Framework
-# djangorestframework==3.14.0  # https://github.com/encode/django-rest-framework
-# django-cors-headers==3.13.0 # https://github.com/adamchainz/django-cors-headers
-# DRF-spectacular for api documentation
-# drf-spectacular==0.25.1  # https://github.com/tfranzel/drf-spectacular
 
 
 channels==3.0.3
 django-htmx==1.6.0
-# django-select2==7.10.0
-# djangorestframework-gis==0.18
-# django-autoslug==1.9.8
 channels-redis==3.3.1
