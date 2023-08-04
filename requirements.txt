@@ -1,24 +1,3 @@
-pytz
-Pillow
-argon2-cffi
-whitenoise
-redis
-hiredis
+# Change to `requirements/production.txt` once the app is ready for production
 
-# Django
-# ------------------------------------------------------------------------------
-django
-django-environ
-django-model-utils
-django-allauth
-django-crispy-forms
-crispy-bootstrap5
-# django-compressor==4.1  # https://github.com/django-compressor/django-compressor
-django-redis
-
-channels
-django-htmx
-django-autoslug
-channels-redis
-psycopg2
-django-select2
+-r requirements/local.txt

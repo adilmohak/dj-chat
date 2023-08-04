@@ -1,23 +1,29 @@
-# dj-chat
+# dj-chat | A `django` and `htmx` chat application
 
-### Fully functional chat app built with `django` and `htmx` with the power of `websockets`. The app includes other production level packages, such as:- channels, websockets, redis, django-allauth, django-crispy-forms, django-select2, etc.
+Fully functional chat app built with `django` and `htmx` with the power of `websockets`. The app also uses other production-level packages, such as:- channels, redis, django-allauth, django-crispy-forms, django-select2, etc.
+
+> The main goal of this project is to show how django and htmx can be used to build a fully functional high quality application.
+> Bootstrap5 is used to design the UI with custom styles.
 
 # Current features:
 
-- Threads / Private (one-on-one) chat
-- Group chat / discussion rooms
-- User management (Login/logout, signup, reset/change password)
-- Mute/unmute message notifications
-- Clear history
-- Delete chat
-- Sort discussions by "Trendings", "Newest", or "Oldest"
-- Discussions pagination without page reloading
-- Auto fetch messags onscroll
-- Display the user's recent rooms
+- **Private Messaging System:** Users can engage in private one-on-one chat conversations, known as threads.
+- **Group Chat and Discussion Rooms:** The application supports group chat functionality, allowing users to participate in discussion rooms centered around specific topics.
+- **User Authentication and Management:** Users can log in, log out, sign up, and manage(reset/change) their passwords.
+- **Chat History Management:** Users can clear the chat history within a room, providing them with control over their chat environment.
+- **Chat Deletion:** Users have the ability to delete entire chat conversations, offering a way to remove outdated or irrelevant discussions.
+- **Sorting Options:** The discussions can be sorted based on trending topics, newest additions, or oldest discussions, enabling users to find relevant conversations efficiently.
+- **Pagination and Infinite Scrolling:** The application utilizes pagination with infinite scrolling, allowing users to navigate through discussions seamlessly without page reloads. Messages inside private rooms are fetched automatically on the user scrolls up.
+- **Recent Room Display:** Users can easily view their recent chat rooms, making it convenient to access frequently visited discussions.
+- **Multicast Messaging:** Users can send messages to multiple recipients simultaneously.
+- **Dynamic Room Creation and Update:** Users can create and update discussion rooms in real-time without the need to navigate away from the current page.
+- **Real-time Discussion Search:** The application performs live discussion searches as users type, eliminating the need for page reloads and providing instant results.
+- **Invitation Functionality:** Users can invite others to join a discussion room without interrupting their ongoing participation in the conversation.
+- **Message Notifications:** Users have the option to mute or unmute message notifications, controlling their visibility and managing distractions.
 
 # Pre-requisites:
 
-> The following programs are required to run the project, install them for your OS
+> The following programs are required to run the project
 
 - [Any Python-3 version](https://www.python.org/downloads/)
 - [Redis](https://redis.io/download/)
@@ -31,7 +37,7 @@
 
 - `pip install -r requirements.txt`
 
-- Create `.env` file inside the root directory (the same directory as where `manage.py` located)
+- Create a `.env` file inside the root directory (Same directory where `manage.py` is located)
 
 - Inside your `.env` file put the following variables
 
@@ -47,13 +53,9 @@ DB_PORT=[DB_PORT]
 
 - `python manage.py migrate`
 
-- `python manage.py populate_data`
-
-_The above command will populate sample data for you so you can test the app as quickly as possible_
-
 - `redis-server`
 
-_The above command will start the redis server_
+> The above command will start the redis server
 
 - `python manage.py runserver`
 

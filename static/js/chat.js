@@ -76,22 +76,6 @@
         if (msg.author === username) {
           return $.parseHTML(`<li class="clearfix mb-2" id="id_msg_${msg.id}">
                     <div class="msg-instance float-end text-end animated--grow-right">
-                      <div class="float-start me-2 msg-actions">
-                        <div class="dropdown">
-                          <button class="btn btn-circle border shadow" type="button" id="msgActions" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa fa-ellipsis"></i>
-                          </button>
-                          <ul class="dropdown-menu" aria-labelledby="msgActions">
-                            <li><a class="dropdown-item small px-2 py-1" href="${msg.replay_url}">Replay</a></li>
-                            <li><a class="msg-edit dropdown-item small px-2 py-1" href="#">Edit</a></li>
-                            <li><a class="msg-edit dropdown-item small px-2 py-1" href="#">Copy Text</a></li>
-                            <li>
-                              <button class="msg-delete dropdown-item small px-2 py-1 text-danger" 
-                              hx-get="${msg.delete_url}" hx-target="#id_msg_${msg.id}" hx-indicator="#room-indicator">Delete</button>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
                       <div class="message-box sent text-break text-start position-relative px-3 py-2">
                         <pre class="msg-content m-0">${msg.content}</pre>
                         <p class="fd-dynamicFontSize--tiny ms-auto date mt-1 mb-0">${msg.created}</p>
@@ -106,21 +90,6 @@
         } else {
           return $.parseHTML(`<li class="clearfix mb-2" id="id_msg_${msg.id}">
                     <div class="msg-instance float-start animated--grow-left">
-                      <div class="float-end ms-2 msg-actions">
-                        <div class="dropdown">
-                          <button class="btn btn-circle border shadow" type="button" id="msgActions" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa fa-ellipsis"></i>
-                          </button>
-                          <ul class="dropdown-menu" aria-labelledby="msgActions">
-                            <li><a msg-target="#id_msg_${msg.id}" class="dropdown-item small px-2 py-1" href="${msg.replay_url}">Replay</a></li>
-                            <li><a msg-target="#id_msg_${msg.id}" class="msg-edit dropdown-item small px-2 py-1" href="#">Edit</a></li>
-                            <li>
-                              <button class="msg-delete dropdown-item small px-2 py-1 text-danger" 
-                              hx-get="${msg.delete_url}" hx-target="#id_msg_${msg.id}" hx-indicator="#room-indicator">Delete</button>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
                       <div class="message-box recieved text-dark text-break bg-gray-300 border position-relative px-3 py-2">
                         <pre class="msg-content m-0">${msg.content}</pre>
                         <p class="fd-dynamicFontSize--tiny ms-auto text-muted mt-1 mb-0">${msg.created}</p>
@@ -130,6 +99,40 @@
         }
       }
     }
+
+    //   <div class="float-start me-2 msg-actions">
+    //   <div class="dropdown">
+    //     <button class="btn btn-circle border shadow" type="button" id="msgActions" data-bs-toggle="dropdown" aria-expanded="false">
+    //       <i class="fa fa-ellipsis"></i>
+    //     </button>
+    //     <ul class="dropdown-menu" aria-labelledby="msgActions">
+    //       <li><a class="dropdown-item small px-2 py-1" href="${msg.replay_url}">Replay</a></li>
+    //       <li><a class="msg-edit dropdown-item small px-2 py-1" href="#">Edit</a></li>
+    //       <li><a class="msg-edit dropdown-item small px-2 py-1" href="#">Copy Text</a></li>
+    //       <li>
+    //         <button class="msg-delete dropdown-item small px-2 py-1 text-danger"
+    //         hx-get="${msg.delete_url}" hx-target="#id_msg_${msg.id}" hx-indicator="#room-indicator">Delete</button>
+    //       </li>
+    //     </ul>
+    //   </div>
+    // </div>
+
+    //   <div class="float-end ms-2 msg-actions">
+    //   <div class="dropdown">
+    //     <button class="btn btn-circle border shadow" type="button" id="msgActions" data-bs-toggle="dropdown" aria-expanded="false">
+    //       <i class="fa fa-ellipsis"></i>
+    //     </button>
+    //     <ul class="dropdown-menu" aria-labelledby="msgActions">
+    //       <li><a msg-target="#id_msg_${msg.id}" class="dropdown-item small px-2 py-1" href="${msg.replay_url}">Replay</a></li>
+    //       <li><a msg-target="#id_msg_${msg.id}" class="msg-edit dropdown-item small px-2 py-1" href="#">Edit</a></li>
+    //       <li>
+    //         <button class="msg-delete dropdown-item small px-2 py-1 text-danger"
+    //         hx-get="${msg.delete_url}" hx-target="#id_msg_${msg.id}" hx-indicator="#room-indicator">Delete</button>
+    //       </li>
+    //     </ul>
+    //   </div>
+    // </div>
+
     /*
      * ------------------------------------------------------------------------
      * End variables

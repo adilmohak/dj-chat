@@ -1,7 +1,7 @@
 {% extends '_base.html' %}
 {% load static %}
 
-{% block title %}{{ room.headline }} | FidelBooks{% endblock %}
+{% block title %}{{ room.headline }} | Dj-chat{% endblock %}
 
 {% block og %}
 <!-- Open Graph tags to customize link previews -->
@@ -54,7 +54,7 @@
 				<span class="me-2">SHARE</span>
 				<a href="https://www.facebook.com/sharer/sharer.php?kid_directed_site=0&sdk=joey&u={{ request.build_absolute_uri }}&display=popup&ref=plugin&src=share_button"
 					target="_blank" class="me-2 social-share fst-facebook"><i class="fab fa-facebook"></i></a>
-				<a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text=What's your thought? {% for tag in room.tags.all %} #{{ tag }} {% endfor %} @fidelbooks"
+				<a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text=What's your thought? {% for tag in room.tags.all %} #{{ tag }} {% endfor %} @dj-chat"
 					target="_blank" class="me-2 social-share fst-facebook"><i class="fab fa-telegram"></i></a>
 				<a href="https://www.linkedin.com/sharing/share-offsite/?mini=true&url={{ request.build_absolute_uri }}"
 					target="_blank" class="me-2 social-share fst-facebook"><i class="fab fa-linkedin"></i></a>
@@ -118,7 +118,7 @@
 					<span class="me-2">SHARE</span>
 					<a href="https://www.facebook.com/sharer/sharer.php?kid_directed_site=0&sdk=joey&u={{ request.build_absolute_uri }}&display=popup&ref=plugin&src=share_button"
 						target="_blank" class="me-2 social-share fst-facebook"><i class="fab fa-facebook"></i></a>
-					<a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text=What's your thought? {% for tag in room.tags.all %} #{{ tag }} {% endfor %} @fidelbooks"
+					<a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text=What's your thought? {% for tag in room.tags.all %} #{{ tag }} {% endfor %} @dj-chat"
 						target="_blank" class="me-2 social-share fst-facebook"><i class="fab fa-telegram"></i></a>
 					<a href="https://www.linkedin.com/sharing/share-offsite/?mini=true&url={{ request.build_absolute_uri }}"
 						target="_blank" class="me-2 social-share fst-facebook"><i class="fab fa-linkedin"></i></a>
