@@ -78,7 +78,7 @@
 					<input class="form-control ps-5" type="search" name="q" placeholder="Search rooms..."
 						aria-label="Search" hx-get="{% url 'chats:search_room' %}"
 						hx-trigger="keyup changed delay:500ms" hx-target="#roomsContainer"
-						hx-indicator="#rooms-filter-indicator">
+						hx-indicator="#rooms-filter-indicator" autocomplete="off">
 					<i class="fa fa-search input-icon-left"></i>
 					<input type="submit" hidden>
 				</div>
