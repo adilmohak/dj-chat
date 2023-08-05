@@ -1,5 +1,5 @@
 """
-ASGI config for chatter project.
+ASGI config for djchat project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -15,7 +15,7 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 
 import chats.routing
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "chatter.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "djchat.settings")
 
 application = ProtocolTypeRouter(
     {

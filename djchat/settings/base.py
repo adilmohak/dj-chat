@@ -41,7 +41,7 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 # DATABASES = {
 #     "default": env.db(
 #         "DATABASE_URL",
-#         default="postgres:///chatter",
+#         default="postgres:///djchat",
 #     ),
 # }
 DATABASES = {
@@ -62,12 +62,12 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # URLS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#root-urlconf
-ROOT_URLCONF = "chatter.urls"
+ROOT_URLCONF = "djchat.urls"
 # https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
-# WSGI_APPLICATION = "chatter.wsgi.application"
+# WSGI_APPLICATION = "djchat.wsgi.application"
 
 # Since we use channels, it's mandatory to use asgi instead of wsgi
-ASGI_APPLICATION = "chatter.asgi.application"
+ASGI_APPLICATION = "djchat.asgi.application"
 
 # APPS
 # ------------------------------------------------------------------------------
@@ -103,7 +103,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # MIGRATIONS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#migration-modules
-# MIGRATION_MODULES = {"sites": "chatter.contrib.sites.migrations"}
+# MIGRATION_MODULES = {"sites": "djchat.contrib.sites.migrations"}
 
 # AUTHENTICATION
 # ------------------------------------------------------------------------------
@@ -199,7 +199,7 @@ TEMPLATES = [
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
-                # "chatter.users.context_processors.allauth_settings",
+                # "djchat.users.context_processors.allauth_settings",
             ],
         },
     }
@@ -283,12 +283,12 @@ ACCOUNT_EMAIL_VERIFICATION = "optional"
 ACCOUNT_UNIQUE_EMAIL = True
 # ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
-# ACCOUNT_ADAPTER = "chatter.users.adapters.AccountAdapter"
+# ACCOUNT_ADAPTER = "djchat.users.adapters.AccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/forms.html
-# ACCOUNT_FORMS = {"signup": "chatter.users.forms.UserSignupForm"}
-# SOCIALACCOUNT_ADAPTER = "chatter.users.adapters.SocialAccountAdapter"
+# ACCOUNT_FORMS = {"signup": "djchat.users.forms.UserSignupForm"}
+# SOCIALACCOUNT_ADAPTER = "djchat.users.adapters.SocialAccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/forms.html
-# SOCIALACCOUNT_FORMS = {"signup": "chatter.users.forms.UserSocialSignupForm"}
+# SOCIALACCOUNT_FORMS = {"signup": "djchat.users.forms.UserSocialSignupForm"}
 
 # django-compressor
 # ------------------------------------------------------------------------------
