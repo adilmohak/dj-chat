@@ -1,6 +1,9 @@
 {% load static %}
 {% load i18n %}
 
+{% url 'chats:discussions' as dis %}
+{% url 'chats:threads' as thr %}
+
 <nav class="navbar navbar-expand-lg navbar-light bg-white py-0 d-flex" style="flex-wrap: nowrap !important;"
 	id="navbar_top">
 	<div class="container">
@@ -22,8 +25,8 @@
 			{% if request.user.is_authenticated %}
 			<!-- Discussion panel -->
 			<li class="nav-item me-2">
-				<a class="nav-link btn-nav position-relative 
-				{% if request.path == roo %} active-link {% endif %}" href="{% url 'chats:discussions' %}">
+				<a class="nav-link btn-nav position-relative {% if request.path == dis %} active-link {% endif %}"
+					href="{{ dis }}">
 					<i class="zmdi zmdi-comments fw-900"></i>
 					<!-- <i class="zmdi zmdi-comment-text-alt"></i> -->
 					<span class="notify-badge">
@@ -34,9 +37,10 @@
 			</li>
 			<!-- Message panel -->
 			<li class="nav-item dropdown scroller me-2">
-				<a hx-get="{% url 'chats:threads' %}" hx-target="#threads-list"
-					class="btn-nav nav-link position-relative" href="#" id="messagesDropdown" role="button"
-					data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+				<a hx-get="{{ thr }}" hx-target="#threads-list"
+					class="btn-nav nav-link position-relative {% if request.path == thr %} active-link {% endif %}"
+					href="#" id="messagesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+					data-bs-auto-close="outside">
 					<i class="zmdi zmdi-email fw-900"></i>
 					<span class="notify-badge">
 						<span id="total-unread-msgs"></span>
@@ -70,6 +74,9 @@
 								<i class="spinner__dot spinner__dot--three"></i>
 							</span>
 						</div>
+					</div>
+					<div class="border-top pt-2 mt-2 mx-2">
+						<a href="{% url 'chats:threads' %}" class="text-center">All messages</a>
 					</div>
 				</ul>
 			</li>
