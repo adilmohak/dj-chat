@@ -73,7 +73,7 @@ table.border-separate {
   --bd-teal-rgb: 32, 201, 151;
 }
 
-.bg-fb-gradient-1 {
+.bg-gradient-1 {
   --bd-pink-rgb: 214, 51, 132;
   background-image: linear-gradient(
       180deg,
@@ -271,15 +271,8 @@ a.badge:hover {
   scrollbar-width: none; /* Firefox */
 }
 
-.bg-fb-light-green {
+.bg-light-green {
   background-color: var(--dj-light-green) !important;
-}
-
-.bg-fb-primary {
-  background-color: var(--dj-primary) !important;
-}
-.text-fb-primary {
-  color: var(--dj-primary) !important;
 }
 
 // .text-truncate {
@@ -954,38 +947,6 @@ a.hover-underline:hover {
   color: #0d6efd !important;
 }
 
-.a-fb-default {
-  font-weight: normal;
-  font-size: 14px;
-  text-decoration: none;
-  color: var(--bs-dark);
-  padding: 5px;
-  border-radius: 4px;
-  transition: background-color 0.2s;
-}
-.a-fb-default:hover {
-  background-color: var(--dj-primary-200);
-  color: #1560ce;
-}
-
-.bg-fb-primary-200 {
-  background-color: var(--dj-primary-200) !important;
-}
-.bg-fb-primary-300 {
-  background-color: var(--dj-primary-300) !important;
-}
-.bg-fb-primary-400 {
-  background-color: var(--dj-primary-400) !important;
-}
-.bg-fb-danger-200 {
-  background-color: var(--dj-danger-200) !important;
-}
-.bg-fb-danger-300 {
-  background-color: var(--dj-danger-300) !important;
-}
-.bg-fb-danger-400 {
-  background-color: var(--dj-danger-400) !important;
-}
 .bg-gray-200 {
   background-color: var(--bs-gray-200);
 }
@@ -1086,10 +1047,8 @@ a.hover-underline:hover {
 @import "partials/nav";
 @import "partials/buttons";
 @import "partials/avatar";
-@import "partials/stackedAvatars";
 @import "partials/dropdown";
 @import "partials/modal";
 @import "partials/message";
 @import "partials/toast";
-@import "partials/progressForm";
 @import "partials/footer";

@@ -47,7 +47,7 @@
   .avatar {
     margin-left: -10px;
     position: relative;
-    border: 2px solid var(--fb-light-green);
+    border: 2px solid var(--bs-gray-400);
     transition: transform 0.28s;
     &:hover {
       transform: translateX(-5px);

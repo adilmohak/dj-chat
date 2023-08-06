@@ -47,23 +47,6 @@
   padding: 2px 5px;
 }
 
-//   .btn-nav {
-// 	font-size: 28px;
-// 	width: 38px;
-// 	height: 38px;
-// 	border-radius: 4px;
-// 	display: flex;
-// 	align-items: center;
-// 	justify-content: center;
-// 	// background-color: #fff;
-// 	color: rgba(0, 0, 0, 0.4) !important;
-// 	border: none;
-// 	transition: background-color 0.28s, color 0.28s;
-// 	&:hover {
-// 	  color: #000000 !important;
-// 	  background-color: #f1f1f1;
-// 	}
-//   }
 .nav-link.active-link,
 .nav-link:focus,
 .btn-nav.active-link,
@@ -114,21 +97,6 @@
   background-color: rgba(13, 110, 253, 0.2);
   border-color: rgba(13, 110, 253, 0.2);
 }
-
-.btn.btn-candy-primary {
-  box-shadow: none !important;
-}
-.btn-candy-primary {
-  background-color: var(--fb-light-green);
-  color: var(--dark);
-  border-color: hsl(177, 42%, 72%);
-  background-image: linear-gradient(
-    to bottom,
-    hsl(177, 42%, 76%),
-    hsl(177, 42%, 56%)
-  );
-  transition: border 0.05;
-}
 .btn-candy-danger {
   background-color: var(--bs-danger);
   color: var(--bs-light) !important;
@@ -145,21 +113,6 @@
   color: var(--dark);
   border-color: hsl(177, 42%, 72%);
   transition: border 0.05;
-}
-
-.edit-btn {
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-  width: 35px;
-  height: 35px;
-  border-radius: 35px;
-  border: 2px solid #fff;
-  // background-color: #6c63ff;
-  // color: #fff !important;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .close-content-btn {
