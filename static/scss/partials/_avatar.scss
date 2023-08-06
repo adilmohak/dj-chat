@@ -10,7 +10,7 @@
   overflow: hidden;
   background-image: linear-gradient(0deg, var(--dj-primary) 0%, #f4f4f4 100%);
   &.avatar-text {
-    font-size: 30px;
+    font-size: 23px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -27,6 +27,9 @@
   &.avatar-md {
     width: 40px !important;
     height: 40px !important;
+    &.avatar-text {
+      font-size: 30px;
+    }
   }
   &.avatar-lg {
     width: 80px;

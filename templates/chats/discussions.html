@@ -12,7 +12,7 @@
 <br>
 
 <div class="d-md-none plus-area">
-	<a role="button" class="btn btn-lg btn-fb-primary shadow border" hx-get="{% url 'chats:discussion_create' %}"
+	<a role="button" class="btn btn-lg btn-primary shadow border" hx-get="{% url 'chats:discussion_create' %}"
 		hx-target="#hx-modal" hx-indicator="#indicator"><i class="fa fa-plus"></i></a>
 	<a role="button" class="btn btn-lg btn-light shadow border" hx-get="{% url 'chats:user_rooms' %}?display=modal"
 		hx-target="#hx-modal" hx-indicator="#indicator"><i class="fa fa-history"></i>
@@ -37,7 +37,7 @@
 								Last login: {{ request.user.last_login|date }}</p>
 						</div>
 					</a>
-					<a role="button" class="btn btn-sm btn-fb-primary" hx-get="{% url 'chats:discussion_create' %}"
+					<a role="button" class="btn btn-sm btn-primary" hx-get="{% url 'chats:discussion_create' %}"
 						hx-target="#hx-modal" hx-indicator="#indicator">+ Create a New Room</a>
 				</div>
 				<div class="card p-3 mb-2">

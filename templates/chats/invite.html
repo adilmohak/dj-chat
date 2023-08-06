@@ -22,7 +22,7 @@
 					{% endfor %}
 					<input type="hidden" name="next" value="{{ next }}">
 					<button hx-post="{% url 'chats:invite_people' %}" hx-target="#id_invitation" type="submit"
-						class="btn btn-fb-primary"><i class="fa fa-paper-plane"></i> Send Invitation</button>
+						class="btn btn-primary"><i class="fa fa-paper-plane"></i> Send Invitation</button>
 				</form>
 				{{ form.media.js }}
 

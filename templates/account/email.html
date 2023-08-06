@@ -58,7 +58,7 @@
 <form method="post" action="{% url 'account_email' %}" class="js-form add_email">
   {% csrf_token %}
   {{ form|crispy }}
-  <button name="action_add" type="submit" class="btn btn-fb-primary">{% trans "Add E-mail" %}</button>
+  <button name="action_add" type="submit" class="btn btn-primary">{% trans "Add E-mail" %}</button>
 </form>
 {% endif %}
 

@@ -79,7 +79,17 @@
 					<div class="my-5 text-center">
 						<i class="far fa-meh-blank text-muted fa-3x mb-1"></i>
 						<p>So Empty</p>
-						<a href="#" class="btn btn-sm btn-fb-primary rounded-pill">Start New Message</a>
+						<a role="button" class="btn btn-sm btn-primary rounded-pill ms-auto"
+							hx-get="{% url 'chats:thread_new' %}?next={{ request.path }}" hx-target="#hx-modal">
+							Start New Message
+							<div class="text-center htmx-indicator">
+								<span class="dots-loader">
+									<i class="spinner__dot spinner__dot--one"></i>
+									<i class="spinner__dot spinner__dot--two"></i>
+									<i class="spinner__dot spinner__dot--three"></i>
+								</span>
+							</div>
+						</a>
 					</div>
 					{% endfor %}
 				</ul>
