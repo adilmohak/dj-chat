@@ -133,3 +133,4 @@ dmypy.json
 
 local_note.txt
 dump.rdb
+staticfiles/
