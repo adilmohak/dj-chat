@@ -1,0 +1,116 @@
+[
+  {
+    "username": "abenet_tad",
+    "email": "abenet.tad@example.com",
+    "first_name": "Abenet",
+    "last_name": "Tadesse"
+  },
+  {
+    "username": "amira_tek",
+    "email": "amira.tek@example.com",
+    "first_name": "Amira",
+    "last_name": "Tekle"
+  },
+  {
+    "username": "bereket_ale",
+    "email": "bereket.ale@example.com",
+    "first_name": "Bereket",
+    "last_name": "Alemu"
+  },
+  {
+    "username": "chaltu_keb",
+    "email": "chaltu.keb@example.com",
+    "first_name": "Chaltu",
+    "last_name": "Kebbede"
+  },
+  {
+    "username": "dagne_mek",
+    "email": "dagne.mek@example.com",
+    "first_name": "Dagne",
+    "last_name": "Mekonnen"
+  },
+  {
+    "username": "etenesh_geb",
+    "email": "etenesh.geb@example.com",
+    "first_name": "Etenesh",
+    "last_name": "Gebre"
+  },
+  {
+    "username": "fikru_ass",
+    "email": "fikru.ass@example.com",
+    "first_name": "Fikru",
+    "last_name": "Assefa"
+  },
+  {
+    "username": "genet_aye",
+    "email": "genet.aye@example.com",
+    "first_name": "Genet",
+    "last_name": "Ayele"
+  },
+  {
+    "username": "hailemariam_mel",
+    "email": "hailemariam.mel@example.com",
+    "first_name": "Hailemariam",
+    "last_name": "Mulugeta"
+  },
+  {
+    "username": "iyasu_tesh",
+    "email": "iyasu.tesh@example.com",
+    "first_name": "Iyasu",
+    "last_name": "Tesfaye"
+  },
+  {
+    "username": "kalkidan_bek",
+    "email": "kalkidan.bek@example.com",
+    "first_name": "Kalkidan",
+    "last_name": "Bekalu"
+  },
+  {
+    "username": "lemlem_mul",
+    "email": "lemlem.mul@example.com",
+    "first_name": "Lemlem",
+    "last_name": "Mulat"
+  },
+  {
+    "username": "meseret_hai",
+    "email": "meseret.hai@example.com",
+    "first_name": "Meseret",
+    "last_name": "Haile"
+  },
+  {
+    "username": "nigist_yoh",
+    "email": "nigist.yoh@example.com",
+    "first_name": "Nigist",
+    "last_name": "Yohannes"
+  },
+  {
+    "username": "rahel_tse",
+    "email": "rahel.tse@example.com",
+    "first_name": "Rahel",
+    "last_name": "Tsegaye"
+  },
+  {
+    "username": "sisay_keb",
+    "email": "sisay.keb@example.com",
+    "first_name": "Sisay",
+    "last_name": "Kebena"
+  },
+  {
+    "username": "tewodros_geb",
+    "email": "tewodros.geb@example.com",
+    "first_name": "Tewodros",
+    "last_name": "Gebremichael"
+  },
+  {
+    "username": "yemane_wol",
+    "email": "yemane.wol@example.com",
+    "first_name": "Yemane",
+    "last_name": "Woldemariam"
+  },
+  {
+    "username": "zenebech_til",
+    "email": "zenebech.til@example.com",
+    "first_name": "Zenebech",
+    "last_name": "Tilahun"
+  }
+]
