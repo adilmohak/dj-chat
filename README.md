@@ -1,11 +1,11 @@
 # dj-chat | A `django` and `htmx` chat application
 
-Fully functional chat app built with `django` and `htmx` with the power of `websockets`. The app also uses other production-level packages, such as:- channels, redis, django-allauth, django-crispy-forms, django-select2, etc.
+Fully functional chat app built with `django` and `htmx` with the power of `websockets` and `channels`. The app also uses other production-level packages, such as:- channels, redis, django-allauth, django-crispy-forms, django-select2, etc.
 
 > The main goal of this project is to show how django and htmx can be used to build a fully functional high quality application.
 > Bootstrap5 is used to design the UI with custom styles.
 
-![image](https://github.com/adilmohak/dj-chat/assets/60693922/4aca8612-0ff0-4c0b-a7df-c2d19d05a521)
+![Screenshot 2023-08-10 155117](https://github.com/adilmohak/dj-chat/assets/60693922/db5c8628-36ef-446e-ae21-7d5f7a99adf5)
 
 # Current features:
 
