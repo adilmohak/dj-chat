@@ -47,6 +47,9 @@ class Room(TimeStampedModel):
     class Meta:
         ordering = ("-modified", "id")
 
+    def __str__(self):
+        return f"{self.room_thread}"
+
     @property
     def get_absolute_url(self):
         return reverse("chats:room", kwargs={"id": self.id})
@@ -151,7 +154,7 @@ class Message(models.Model):
         ordering = ("-created",)
 
     def __str__(self):
-        return f"{self.created} | {self.content}"
+        return f"{self.author} | {self.content}"
 
     @property
     def replay_msg(self):
@@ -209,7 +212,9 @@ class Thread(models.Model):
     # a room which this thread associated with
     # thread is a OneToOneField relation to room to make sure one
     # thread can have only one room
-    room = models.OneToOneField(Room, on_delete=models.CASCADE)
+    room = models.OneToOneField(
+        Room, related_name="room_thread", on_delete=models.CASCADE
+    )
 
     # Since this is a one-on-one chat, we only store two users
     # First user

@@ -26,29 +26,31 @@
 	<div class="container">
 		<div class="row align-items-top">
 			<div class="col-md-4 d-none d-md-block">
-				<div class="card p-3 mb-2">
-					<a href="{{ request.user.get_absolute_url }}" class="d-flex align-items-top mb-1">
-						<div class="avatar avatar-text me-2">
-							{{ request.user.username|first }}
+				<div style="position: sticky; top: 70px;">
+					<div class="card p-3 mb-2">
+						<a href="{{ request.user.get_absolute_url }}" class="d-flex align-items-top mb-1">
+							<div class="avatar avatar-text me-2">
+								{{ request.user.username|first }}
+							</div>
+							<div class="publisher-detail text-dark">
+								<h6 class="mb-0">{{ request.user.first_name }} {{ request.user.last_name }}</h6>
+								<p class="mb-2 text-muted" style="font-size: 12px;">
+									@{{ request.user.username }} - Last login: {{ request.user.last_login|date }}</p>
+							</div>
+						</a>
+						<a role="button" class="btn btn-sm btn-primary" hx-get="{% url 'chats:discussion_create' %}"
+							hx-target="#hx-modal" hx-indicator="#indicator">+ Create a New Room</a>
+					</div>
+					<div class="card p-3 mb-2">
+						<h6>Recent Rooms</h6>
+						<div class="" hx-get="{% url 'chats:user_rooms' %}" hx-trigger="load" hx-target="this"
+							id="user-books-list">
+							<span class="dots-loader">
+								<i class="spinner__dot spinner__dot--one"></i>
+								<i class="spinner__dot spinner__dot--two"></i>
+								<i class="spinner__dot spinner__dot--three"></i>
+							</span>
 						</div>
-						<div class="publisher-detail text-dark">
-							<h6 class="mb-0">{{ request.user.first_name }} {{ request.user.last_name }}</h6>
-							<p class="mb-2 text-muted" style="font-size: 12px;">
-								Last login: {{ request.user.last_login|date }}</p>
-						</div>
-					</a>
-					<a role="button" class="btn btn-sm btn-primary" hx-get="{% url 'chats:discussion_create' %}"
-						hx-target="#hx-modal" hx-indicator="#indicator">+ Create a New Room</a>
-				</div>
-				<div class="card p-3 mb-2">
-					<h6>Recent Rooms</h6>
-					<div class="" hx-get="{% url 'chats:user_rooms' %}" hx-trigger="load" hx-target="this"
-						id="user-books-list">
-						<span class="dots-loader">
-							<i class="spinner__dot spinner__dot--one"></i>
-							<i class="spinner__dot spinner__dot--two"></i>
-							<i class="spinner__dot spinner__dot--three"></i>
-						</span>
 					</div>
 				</div>
 			</div>

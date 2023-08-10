@@ -4,7 +4,7 @@
 
 {% if page_obj.has_next %}
 <div id="rooms-paginator">
-	<a hx-get="{% url 'chats:rooms' %}?page={{ page_obj.next_page_number }}" hx-target="#rooms-paginator"
+	<a hx-get="{% url 'chats:discussions' %}?page={{ page_obj.next_page_number }}" hx-target="#rooms-paginator"
 		hx-trigger="click" hx-swap="outerHTML" role="button" id="load-more" class="btn btn-sm border w-100 mt-3">
 		Load More <i class="fa fa-circle-arrow-down"></i>
 		<div class="htmx-indicator">

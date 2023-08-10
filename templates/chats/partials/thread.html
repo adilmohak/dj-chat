@@ -7,7 +7,7 @@
 			<div class="avatar avatar-text">
 				{{ partner.username|first }}
 			</div>
-			<div class="ms-2 small mb-0 p-0 text-truncate">{{ partner.username }}</div>
+			<div class="ms-2 small mb-0 p-0 text-truncate">{{ partner.get_full_name|title }}</div>
 		</div>
 
 		<!-- room actions -->

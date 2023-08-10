@@ -62,7 +62,7 @@
 								</div>
 							</div>
 							<div class="col-10 position-relative">
-								<h6 class="small mb-1 text-truncate">{{ partner.username }}</h6>
+								<h6 class="small mb-1 text-truncate">{{ partner.get_full_name|title }}</h6>
 								<div class="small text-muted text-truncate">
 									{% if room.room.latest_message.author == request.user %}
 									<span class="text-success">You:</span>
