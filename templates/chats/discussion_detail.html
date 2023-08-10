@@ -131,7 +131,7 @@
 						Invite</a>
 				</div>
 				<div class="break-title text-muted">🔥 Trendings</div>
-				<div hx-get="{% url 'chats:trendings' %}" hx-trigger="load">
+				<div hx-get="{% url 'chats:trendings' %}?exclude={{ room.id }}" hx-trigger="load">
 					<div class="text-center dots-loader">
 						<i class="spinner__dot spinner__dot--one"></i>
 						<i class="spinner__dot spinner__dot--two"></i>

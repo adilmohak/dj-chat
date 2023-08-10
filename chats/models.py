@@ -3,7 +3,7 @@ import re
 import uuid
 from django.conf import settings
 from django.db import models
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from model_utils.models import TimeStampedModel
@@ -281,18 +281,23 @@ class DiscussionRoomManager(models.Manager):
             ).distinct()  # distinct() is often necessary with Q lookups
         return qs
 
-    def get_trendings(self, qs=None):
+    def get_trendings(self, qs=None, excludes=None):
         """
-        Rooms that has more recent(one month range) updates/messages
+        Discussions that has more recent(one month range) messages
         are considered as a highest trending.
         """
         # TODO: instead of just comparing with amount of created messages,
         # also compare with how many users created the messages
         if qs == None:
             qs = DiscussionRoom.objects.all()
-        one_month_ago = datetime.datetime.now() - datetime.timedelta(days=30)
-        recent_rooms = qs.filter(modified__gte=one_month_ago).order_by("-modified")
-        trendings = recent_rooms.order_by("room__latest_messages_count")
+        if excludes:
+            qs = qs.exclude(id__in=excludes)
+        # one_month_ago = datetime.datetime.now() - datetime.timedelta(days=30)
+        # recent_rooms = qs.filter(modified__gte=one_month_ago).order_by("-modified")
+        # trendings = qs.order_by("-room__latest_messages_count")  # room_messages
+        trendings = qs.annotate(total_messages=Count("room__room_messages")).order_by(
+            "-total_messages"
+        )
         return trendings
 
 

@@ -103,10 +103,16 @@ class UserRoomListView(ListView):
 
 @method_decorator(login_required, name="dispatch")
 class Trendings(ListView):
-    queryset = DiscussionRoom.objects.get_trendings()
     template_name = "chats/trendings.html"
     context_object_name = "discussions"
     paginate_by = 3
+
+    def get_queryset(self) -> QuerySet[Any]:
+        excludes = list(self.request.GET.get("exclude"))
+        queryset = DiscussionRoom.objects.get_trendings(
+            excludes=[int(e) for e in excludes]
+        )
+        return queryset
 
 
 @method_decorator(login_required, name="dispatch")
