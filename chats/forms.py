@@ -36,7 +36,8 @@ class TagWidget(s2forms.ModelSelect2TagWidget):
             new_tags.append(Tag(name=val))
         new_tags = self.queryset.bulk_create(new_tags, ignore_conflicts=True)
 
-        new_pks = [a.pk for a in new_tags]
+        # new_pks = [a.pk for a in new_tags]
+        new_pks = [Tag.objects.get(name=t).id for t in new_tags]
 
         return new_pks + old_tags
 

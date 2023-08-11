@@ -108,9 +108,9 @@
 					</div>
 					<p><span class="bold-400">{{ room.headline }}:</span> <span class="small">
 							{{ room.description }}</span></p>
-					<div class="d-flex">
+					<div class="d-flex flex-wrap">
 						{% for tag in room.tags.all %}
-						<span class="small bg-fb-primary-200 rounded-pill px-2 me-1">{{ tag }}</span>
+						<span class="bg-success-200 small rounded-pill px-2 me-1 mb-1">{{ tag }}</span>
 						{% endfor %}
 					</div>
 				</div>
