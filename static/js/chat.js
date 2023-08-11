@@ -273,10 +273,10 @@
 
     function onkeyup(e) {
       if (e.target.value !== "") {
-        chatSubmit.addClass("btn-fb-primary");
+        chatSubmit.addClass("btn-primary");
         chatSubmit.removeAttr("disabled");
       } else {
-        chatSubmit.removeClass("btn-fb-primary");
+        chatSubmit.removeClass("btn-primary");
         chatSubmit.attr("disabled", true);
       }
       if (!group && e.keyCode === 13) {
