@@ -60,11 +60,12 @@
                     </div>
                   </li>`);
         } else {
-          return $.parseHTML(`<li class="mb-2">
-                    <div class="ms-2 text-dark d-inline-flex">
+          return $.parseHTML(`<li class="mb-3">
+                    <div class="ms-2 text-dark d-inline-flex align-items-center">
                       <div class="avatar avatar-text">
                         ${msg.author[0]}
                       </div>
+                      <h6 class="small ms-2">${msg.name}</h6>
                     </div><br>
                     <div class="message-box text-break group-reply bg-gray-200 mt-1 px-3 py-2">
                       <pre class="m-0">${msg.content}</pre>

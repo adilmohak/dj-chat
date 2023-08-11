@@ -47,8 +47,10 @@ class Room(TimeStampedModel):
     class Meta:
         ordering = ("-modified", "id")
 
-    def __str__(self):
-        return f"{self.room_thread}"
+    # def __str__(self):
+    #     if self.is_private:
+    #         return f"{self.room_thread}"
+    #     return f"{self.discussion_room}"
 
     @property
     def get_absolute_url(self):
@@ -306,7 +308,9 @@ class DiscussionRoom(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     # OneToOneField to ensure that one room can have only one discussion room
-    room = models.OneToOneField(Room, on_delete=models.CASCADE)
+    room = models.OneToOneField(
+        Room, related_name="discussion_room", on_delete=models.CASCADE
+    )
 
     # headline is the main idea or topic about the discussion.
     # all members should be discussed on ideas that are related to the topic

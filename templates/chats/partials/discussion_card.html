@@ -14,7 +14,7 @@
 				<b>{{ room.headline }}:</b>
 				<span class="small">{{ room.description|truncatechars:230 }}</span>
 			</div>
-			<div class="d-flex flex-wrap">
+			<div class="d-flex flex-wrap mt-auto">
 				{% for tag in room.tags.all %}
 				<span class="bg-success-200 small rounded-pill px-2 me-1 mb-1">{{ tag }}</span>
 				{% endfor %}
