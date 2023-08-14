@@ -23,7 +23,7 @@ Fully functional chat app built with `django` and `htmx` with the power of `webs
 - **Invitation Functionality:** Users can invite others to join a discussion room without interrupting their ongoing participation in the conversation.
 - **Message Notifications:** Users have the option to mute or unmute message notifications, controlling their visibility and managing distractions.
 
-# Pre-requisites:
+# Prerequisites:
 
 > The following programs are required to run the project
 

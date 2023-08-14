@@ -1,4 +1,4 @@
-{% extends "account/_base.html" %}
+{% extends "_base.html" %}
 
 {% load i18n %}
 
@@ -12,7 +12,7 @@
   <form method="post" action="{% url 'account_logout' %}">
     {% csrf_token %}
     {% if redirect_field_value %}
-    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
     {% endif %}
     <button type="submit" class="btn btn-dark mt-2">{% trans 'Sign Out' %}</button>
   </form>
