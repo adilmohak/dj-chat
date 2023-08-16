@@ -5,6 +5,8 @@ Fully functional chat app built with `django` and `htmx` with the power of `webs
 > The main goal of this project is to show how django and htmx can be used to build a fully functional high quality application.
 > Bootstrap5 is used to design the UI with custom styles.
 
+### Demo video: https://youtu.be/l1j8yyEc9Us
+
 ![Screenshot 2023-08-10 155117](https://github.com/adilmohak/dj-chat/assets/60693922/db5c8628-36ef-446e-ae21-7d5f7a99adf5)
 
 # Current features:
